@@ -1,0 +1,31 @@
+html {
+    height: 100%;
+}
+body {margin: 0;
+color: #fff;
+min-height: 100%;
+display: grid;
+grid-template-rows: auto 1fr auto;
+}
+header {
+    height: 60px;
+    margin: 0 auto;
+    width: 100%;
+    background-image: linear-gradient(315deg, #d7e4f5 0%, #bacae6 74%);
+}
+main{
+    background-color: #ffffff;  
+}
+footer {
+    height: 60px;
+    background: linear-gradient(315deg, #ff4e00 0%, #ec9f05 74%); 
+    margin: 0 auto;
+    width: 100%;
+}
+div{
+    font-size: xx-large;
+    color: #ff4e00;
+}
+a{
+    font-size:xx-large;
+}

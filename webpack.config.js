@@ -47,6 +47,7 @@ const baseConfig = {
       new EslingPlugin({ extensions: "ts" }),
     ],
 };
+
 module.exports = ({ mode }) => {
   const isProductionMode = mode === 'prod';
   const envConfig = isProductionMode

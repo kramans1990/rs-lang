@@ -39,13 +39,12 @@ const baseConfig = {
             template: path.resolve(__dirname, './src/index.html'),
             filename: 'index.html',
         }),
-        // new CopyPlugin({
-        //          patterns: [
+        new CopyPlugin({
+                 patterns: [                
+                  { from: path.resolve(__dirname, './src','assets'), to: '../dist/assets'},
                 
-        //           { from: path.resolve(__dirname, './async-race','assets'), to: '../dist/assets'},
-                
-        //          ],
-        //        }),
+                 ],
+               }),
     ],
 };
 module.exports = ({ mode }) => {

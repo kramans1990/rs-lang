@@ -6,11 +6,11 @@ import { GamePage } from './pages/gamePage';
 import { AuthPage } from './pages/authPage';
 
 export class App {
-  private _page:ApplicationPage;
+  private _page: ApplicationPage;
 
-  main : HTMLElement | null;
+  main: HTMLElement | null;
 
-  set page(page:ApplicationPage) {
+  set page(page: ApplicationPage) {
     this.main = document.getElementById('main');
     this._page = page;
     if (this.main) {

@@ -9,14 +9,14 @@ import {
 } from '../utils/constants';
 
 export class AuthPageView {
-  view: HTMLFormElement;
+  view: HTMLDivElement;
 
   constructor() {
     this.renderAuthBlock();
   }
 
   renderAuthBlock() {
-    this.view = document.createElement('form');
+    this.view = document.createElement('div');
     this.view.classList.add('authorisation');
     const title = document.createElement('p');
     title.classList.add('auth-title');
@@ -32,7 +32,7 @@ export class AuthPageView {
     passwordInput.setAttribute('placeholder', password);
     passwordInput.setAttribute('autocomplete', 'on');
     const signInButton = document.createElement('button');
-    signInButton.classList.add('create-user-button');
+    signInButton.classList.add('sign-in-button');
     signInButton.innerText = signInButtonText;
     const haveNotYetAccount = document.createElement('div');
     haveNotYetAccount.classList.add('have-not-yet-account');
@@ -42,7 +42,7 @@ export class AuthPageView {
     const haveNotYetAccountButton = document.createElement('button');
     haveNotYetAccountButton.classList.add('have-not-yet-account-button');
     haveNotYetAccountButton.innerText = signUpButtonText;
-    haveNotYetAccount.append(haveNotYetAccountText, haveNotYetAccountButton);
+    haveNotYetAccount.append(haveNotYetAccountSpan, haveNotYetAccountButton);
     this.view.append(title, emailInput, passwordInput, signInButton, haveNotYetAccount);
   }
 }

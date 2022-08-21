@@ -49,7 +49,7 @@ export class AuthPage extends ApplicationPage {
 
   addListeners(): void {
     this.view
-      .querySelector('.create-user-button')
+      .querySelector('.sign-in-button')
       ?.addEventListener('click', async (): Promise<void> => {
         const email = document.querySelector<HTMLInputElement>('.email-input')?.value || '';
         const password = document.querySelector<HTMLInputElement>('.password-input')?.value || '';

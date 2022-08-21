@@ -1,11 +1,11 @@
-const signInButtonText = 'Войти';
+const signInButtonText = 'ВОЙТИ';
 const signInTitle = 'Следи за статистикой в своем аккаунте';
 
 const signUpButtonText = 'Зарегистрироваться';
 
 const email = 'Почта';
 const password = 'Пароль';
-const haveNotYetAccountText = 'Еще не успели создать аккаунт?';
+const haveNotYetAccountText = 'Ещё не успели создать аккаунт?';
 const haveAccount = 'Уже есть аккаунт?';
 
 const invalidEmail = 'Invalid email';

@@ -2,9 +2,14 @@
   "compilerOptions": {
     "resolveJsonModule": true,
     "target": "es2016",    
-    "module": "commonjs",
-    "strict": true,
+    "module": "es6",
+    "moduleResolution": "node",
+    "types": ["node"],
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
     "noImplicitAny": true,
+    "skipLibCheck": true,
+    "strict": true,
     "strictPropertyInitialization": false
   }
 }

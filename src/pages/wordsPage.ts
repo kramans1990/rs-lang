@@ -2,7 +2,7 @@ import { ApplicationPage } from '../types/ApplicationPage';
 import { WordsPageView } from '../views/wordsPageView';
 
 export class WordsPage extends ApplicationPage {
-  wordsPageView : WordsPageView;
+  wordsPageView: WordsPageView;
 
   constructor() {
     super();

@@ -2,7 +2,7 @@ import { ApplicationPage } from '../types/ApplicationPage';
 import { BookPageView } from '../views/bookPageView';
 
 export class BookPage extends ApplicationPage {
-  bookPageView : BookPageView;
+  bookPageView: BookPageView;
 
   constructor() {
     super();

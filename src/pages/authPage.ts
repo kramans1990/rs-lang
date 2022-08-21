@@ -4,7 +4,7 @@ import { User } from '../types/User';
 import * as api from '../Api';
 
 export class AuthPage extends ApplicationPage {
-  authPageView : AuthPageView;
+  authPageView: AuthPageView;
 
   constructor() {
     super();
@@ -18,21 +18,23 @@ export class AuthPage extends ApplicationPage {
     this.addListenears();
   }
 
-  createUser(user:User):void {
+  createUser(user: User): void {
     api.creteUser(user).then(
       async (result) => {
         console.log(result);
         if (result.ok) {
-           //обработка запроса
+          // обработка запроса
         }
       },
-      (error) => { throw error; },
+      (error) => {
+        throw error;
+      },
     );
   }
 
   addListenears() {
     this.view.querySelector('#create-user')?.addEventListener('click', () => {
-      const user:User = new User('UserName', 'example@gmail.com', '12345678');
+      const user: User = new User('UserName', 'example@gmail.com', '12345678');
       this.createUser(user);
     });
   }

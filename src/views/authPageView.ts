@@ -7,7 +7,7 @@ export class AuthPageView {
   }
 
   addContent() {
-    this.view.innerHTML += '<button id=\'create-user\'>CreateUser</button>';
+    this.view.innerHTML += "<button id='create-user'>CreateUser</button>";
   }
 }
 export default AuthPageView;

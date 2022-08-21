@@ -1,7 +1,8 @@
 import { ApplicationPage } from '../types/ApplicationPage';
 import { AuthPageView } from '../views/authPageView';
-import { User } from '../types/User';
 import Api from '../Api';
+import { ISignIn, IUser } from '../types/interfaces';
+import { saveDataToLocalStorage } from '../functions/functions';
 
 export class AuthPage extends ApplicationPage {
   authPageView: AuthPageView;
@@ -17,28 +18,44 @@ export class AuthPage extends ApplicationPage {
     this.api = new Api();
     this.authPageView = new AuthPageView();
     this.view = this.authPageView.view;
-    this.authPageView.addContent();
     this.addListeners();
   }
 
-  async createUser(user: User): Promise<void> {
-    await this.api.createUser(user).then(
-      (result: Response): void => {
+  /* eslint-disable no-alert */
+
+  async signInUser(user: IUser): Promise<void> {
+    await this.api
+      .signInUser(user)
+      .then((result: Response): string | ISignIn => {
         if (result.ok) {
-          // обработка запроса
+          return result.json() as unknown as ISignIn;
         }
-      },
-      (error: Error): never => {
-        throw error;
-      },
-    );
+        return `${result.status} ${result.statusText}`;
+      })
+      .then((data: string | ISignIn): void => {
+        if (typeof data === 'object') {
+          const userData = data;
+          saveDataToLocalStorage('rs-lang-user', JSON.stringify(userData));
+          const wordsPageButton = document.querySelector<HTMLButtonElement>('.words-page');
+          const click = new MouseEvent('click');
+          wordsPageButton?.dispatchEvent(click);
+          // TODO: скрывать кнопку входа
+          // заменить алерт на что-то человеческое
+          return;
+        }
+        alert(data);
+      });
   }
 
   addListeners(): void {
-    this.view.querySelector('#create-user')?.addEventListener('click', (): void => {
-      const user: User = new User('UserName', 'example@gmail.com', '12345678');
-      this.createUser(user);
-    });
+    this.view
+      .querySelector('.create-user-button')
+      ?.addEventListener('click', async (): Promise<void> => {
+        const email = document.querySelector<HTMLInputElement>('.email-input')?.value || '';
+        const password = document.querySelector<HTMLInputElement>('.password-input')?.value || '';
+        const user: IUser = { email, password };
+        await this.signInUser(user);
+      });
   }
 }
 

@@ -4,7 +4,6 @@ html {
 
 body {
   margin: 0;
-  color: #fff;
   min-height: 100%;
   display: grid;
   grid-template-rows: auto 1fr auto;
@@ -60,6 +59,7 @@ footer a {
 .vertical-bar,
 .year {
   font-size: 30px;
+  color: #ffffff;
 }
 
 .gh-logo {

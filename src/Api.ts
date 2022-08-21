@@ -1,4 +1,4 @@
-import { User } from './types/User';
+import { IUser } from './types/interfaces';
 
 class Api {
   baseUrl: string;
@@ -8,12 +8,12 @@ class Api {
   signIn: string;
 
   constructor() {
-    this.baseUrl = 'http://localhost:8001';
+    this.baseUrl = 'https://rs-lang-team112.herokuapp.com';
     this.users = `${this.baseUrl}/users`;
     this.signIn = `${this.baseUrl}/signin`;
   }
 
-  async createUser(user: User): Promise<Response> {
+  async createUser(user: IUser): Promise<Response> {
     const response: Response = await fetch(`${this.users}`, {
       method: 'POST',
       body: JSON.stringify(user),
@@ -31,7 +31,7 @@ class Api {
     return response;
   }
 
-  async signInUser(user: User): Promise<Response> {
+  async signInUser(user: IUser): Promise<Response> {
     const response: Response = await fetch(`${this.signIn}`, {
       method: 'POST',
       body: JSON.stringify({ email: user.email, password: user.password }),

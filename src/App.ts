@@ -11,7 +11,7 @@ export class App {
   main: HTMLElement | null;
 
   set page(page: ApplicationPage) {
-    this.main = document.getElementById('main');
+    this.main = document.querySelector('.main');
     this._page = page;
     if (this.main) {
       this.main.innerHTML = '';
@@ -20,23 +20,23 @@ export class App {
   }
 
   start() {
-    this.addPageListenears();
+    this.addPageListeners();
   }
 
-  addPageListenears() {
-    document.getElementById('words-page')?.addEventListener('click', () => {
+  addPageListeners() {
+    document.querySelector('.words-page')?.addEventListener('click', () => {
       this.page = new WordsPage();
     });
-    document.getElementById('book-page')?.addEventListener('click', () => {
+    document.querySelector('.book-page')?.addEventListener('click', () => {
       this.page = new BookPage();
     });
-    document.getElementById('stat-page')?.addEventListener('click', () => {
+    document.querySelector('.stat-page')?.addEventListener('click', () => {
       this.page = new StatPage();
     });
-    document.getElementById('game-page')?.addEventListener('click', () => {
+    document.querySelector('.game-page')?.addEventListener('click', () => {
       this.page = new GamePage();
     });
-    document.getElementById('auth-page')?.addEventListener('click', () => {
+    document.querySelector('.sign-in-page')?.addEventListener('click', () => {
       this.page = new AuthPage();
     });
   }

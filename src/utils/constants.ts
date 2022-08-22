@@ -1,12 +1,15 @@
-const signInButtonText = 'ВОЙТИ';
+const signInButtonText = 'Войти';
+const upperSignInButtonText = 'ВОЙТИ';
 const signInTitle = 'Следи за статистикой в своем аккаунте';
+const signUpTitle = 'Создай свой аккаунт';
 
 const signUpButtonText = 'Зарегистрироваться';
-
+const upperSignUpButtonText = 'ЗАРЕГИСТРИРОВАТЬСЯ';
+const name = 'Имя';
 const email = 'Почта';
 const password = 'Пароль';
 const haveNotYetAccountText = 'Ещё не успели создать аккаунт?';
-const haveAccount = 'Уже есть аккаунт?';
+const haveAccountText = 'Уже есть аккаунт?';
 
 const invalidEmail = 'Invalid email';
 const invalidPassword = 'Password should contain digits, letters or both';
@@ -18,7 +21,11 @@ export {
   email,
   password,
   haveNotYetAccountText,
-  haveAccount,
+  haveAccountText,
   invalidEmail,
   invalidPassword,
+  signUpTitle,
+  name,
+  upperSignUpButtonText,
+  upperSignInButtonText,
 };

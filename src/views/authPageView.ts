@@ -3,9 +3,9 @@ import {
   email,
   haveNotYetAccountText,
   password,
-  signInButtonText,
   signInTitle,
   signUpButtonText,
+  upperSignInButtonText,
 } from '../utils/constants';
 
 export class AuthPageView {
@@ -33,7 +33,7 @@ export class AuthPageView {
     passwordInput.setAttribute('autocomplete', 'on');
     const signInButton = document.createElement('button');
     signInButton.classList.add('sign-in-button');
-    signInButton.innerText = signInButtonText;
+    signInButton.innerText = upperSignInButtonText;
     const haveNotYetAccount = document.createElement('div');
     haveNotYetAccount.classList.add('have-not-yet-account');
     const haveNotYetAccountSpan = document.createElement('span');

@@ -1,5 +1,5 @@
 export abstract class ApplicationPage {
-  view: HTMLDivElement | HTMLFormElement;
+  view: HTMLDivElement;
 
   constructor() {
     this.setView();

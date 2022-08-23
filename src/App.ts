@@ -1,15 +1,9 @@
-// import { BookPage } from './pages/bookPage';
-// import { StatPage } from './pages/statPage';
-// import { WordsPage } from './pages/wordsPage';
-// import { GamePage } from './pages/gamePage';
-// import { AuthPage } from './pages/authPage';
-// import { RegPage } from './pages/regPage';
 /* eslint-disable import/no-cycle */
-import { ApplicationContoller } from './pages/application-controller';
-import { AuthController } from './pages/auth-page/auth-controller';
-import { RegistrationController } from './pages/registration-page/registration-controller';
+import ApplicationContoller from './pages/application-controller';
+import AuthController from './pages/auth-page/auth-controller';
+import RegistrationController from './pages/registration-page/registration-controller';
 
-export class App {
+class App {
   static main: HTMLElement | null;
 
   static controller: ApplicationContoller;
@@ -23,14 +17,6 @@ export class App {
     }
   }
 
-  // set page(page: ApplicationPage) {
-  //   this.main = document.querySelector('.main');
-  //   this._page = page;
-  //   if (this.main) {
-  //     this.main.innerHTML = '';
-  //     this.main.appendChild(this._page.view);
-  //   }
-  // }
   /* eslint-disable class-methods-use-this */
   start(): void {
     this.addPageListeners();

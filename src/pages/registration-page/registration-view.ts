@@ -1,4 +1,5 @@
-import '../styles/authorisation.css';
+import '../../styles/authorisation.css';
+import ApplicationView from '../application-view';
 import {
   email,
   haveAccountText,
@@ -9,10 +10,11 @@ import {
   upperSignUpButtonText,
 } from '../../utils/constants';
 
-export class RegistrationView {
+export class RegistrationView extends ApplicationView {
   view: HTMLDivElement;
 
   constructor() {
+    super();
     this.renderRegBlock();
   }
 

@@ -7,11 +7,11 @@ import {
   signUpButtonText,
   upperSignInButtonText,
 } from '../../utils/constants';
+import ApplicationView from '../application-view';
 
-export class AuthView {
-  view: HTMLDivElement;
-
+class AuthView extends ApplicationView {
   constructor() {
+    super();
     this.renderAuthBlock();
   }
 
@@ -46,4 +46,5 @@ export class AuthView {
     this.view.append(title, emailInput, passwordInput, signInButton, haveNotYetAccount);
   }
 }
+
 export default AuthView;

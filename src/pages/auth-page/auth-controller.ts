@@ -1,11 +1,11 @@
 // import { ApplicationPage } from '../../types/ApplicationPage';
-import { AuthView } from './auth-view';
+import AuthView from './auth-view';
 import Api from '../../Api';
 import { ISignIn, IUser } from '../../types/interfaces';
 import { saveDataToLocalStorage } from '../../functions/functions';
-import { ApplicationContoller } from '../application-controller';
+import ApplicationContoller from '../application-controller';
 
-export class AuthController extends ApplicationContoller {
+class AuthController extends ApplicationContoller {
   api: Api;
 
   constructor() {

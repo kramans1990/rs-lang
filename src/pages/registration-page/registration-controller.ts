@@ -1,16 +1,15 @@
 import { isValidEmail, isValidPassword, saveDataToLocalStorage } from '../../functions/functions';
 import { invalidEmail, invalidPassword } from '../../utils/constants';
-// import { ApplicationPage } from '../../types/ApplicationPage';
 import { ISignIn, IUser } from '../../types/interfaces';
-import { RegPageView } from '../../views/regPageView';
+import RegView from './registration-view';
 import Api from '../../Api';
-import { ApplicationContoller } from '../application-controller';
+import ApplicationContoller from '../application-controller';
 /* eslint-disable import/no-cycle */
-import { App } from '../../App';
-import { AuthController } from '../auth-page/auth-controller';
+import App from '../../App';
+import AuthController from '../auth-page/auth-controller';
 
-export class RegistrationController extends ApplicationContoller {
-  regPageView: RegPageView;
+class RegistrationController extends ApplicationContoller {
+  regPageView: RegView;
 
   api: Api;
 
@@ -21,7 +20,7 @@ export class RegistrationController extends ApplicationContoller {
 
   setView(): void {
     this.api = new Api();
-    this.pageView = new RegPageView();
+    this.pageView = new RegView();
     // this.view = this.regPageView.view;
     this.addListeners();
   }

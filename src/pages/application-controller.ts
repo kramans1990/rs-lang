@@ -1,6 +1,6 @@
-import { ApplicationView } from './application-view';
+import ApplicationView from './application-view';
 
-export class ApplicationContoller {
+class ApplicationContoller {
   pageView: ApplicationView;
 }
 export default ApplicationContoller;

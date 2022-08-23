@@ -1,10 +1,13 @@
 import { ApplicationPage } from '../types/ApplicationPage';
 import { AuthPageView } from '../views/authPageView';
-import { User } from '../types/User';
-import * as api from '../Api';
+import Api from '../Api';
+import { ISignIn, IUser } from '../types/interfaces';
+import { saveDataToLocalStorage } from '../functions/functions';
 
 export class AuthPage extends ApplicationPage {
   authPageView: AuthPageView;
+
+  api: Api;
 
   constructor() {
     super();
@@ -12,31 +15,48 @@ export class AuthPage extends ApplicationPage {
   }
 
   setView(): void {
+    this.api = new Api();
     this.authPageView = new AuthPageView();
     this.view = this.authPageView.view;
-    this.authPageView.addContent();
-    this.addListenears();
+    this.addListeners();
   }
 
-  createUser(user: User): void {
-    api.creteUser(user).then(
-      async (result) => {
-        console.log(result);
+  /* eslint-disable no-alert */
+
+  async signInUser(user: IUser): Promise<void> {
+    await this.api
+      .signInUser(user)
+      .then((result: Response): string | ISignIn => {
         if (result.ok) {
-          // обработка запроса
+          return result.json() as unknown as ISignIn;
         }
-      },
-      (error) => {
-        throw error;
-      },
-    );
+        return `${result.status} ${result.statusText}`;
+      })
+      .then((data: string | ISignIn): void => {
+        if (typeof data === 'object') {
+          const userData = data;
+          saveDataToLocalStorage('rs-lang-user', JSON.stringify(userData));
+          const wordsPageButton = document.querySelector<HTMLButtonElement>('.words-page');
+          const click = new MouseEvent('click');
+          wordsPageButton?.dispatchEvent(click);
+          // TODO: скрывать кнопку входа
+          // заменить алерт на что-то человеческое
+          return;
+        }
+        alert(data);
+      });
   }
 
-  addListenears() {
-    this.view.querySelector('#create-user')?.addEventListener('click', () => {
-      const user: User = new User('UserName', 'example@gmail.com', '12345678');
-      this.createUser(user);
-    });
+  addListeners(): void {
+    this.view
+      .querySelector('.sign-in-button')
+      ?.addEventListener('click', async (): Promise<void> => {
+        const email = document.querySelector<HTMLInputElement>('.email-input')?.value || '';
+        const password = document.querySelector<HTMLInputElement>('.password-input')?.value || '';
+        const user: IUser = { email, password };
+        await this.signInUser(user);
+      });
   }
 }
+
 export default AuthPage;

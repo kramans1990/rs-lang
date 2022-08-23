@@ -4,6 +4,7 @@ export abstract class ApplicationPage {
   constructor() {
     this.setView();
   }
+
   abstract setView(): void;
 }
 export default ApplicationPage;

@@ -21,7 +21,7 @@ const baseConfig = {
           exclude: /node_modules/,
         },
         {
-          test: /\.(jpg|png|svg|jpeg|gif)$/,
+          test: /\.(jpg|png|jpeg|gif)$/,
           type: 'asset/resource',
         },
       ],
@@ -31,7 +31,7 @@ const baseConfig = {
     },
     output: {
       filename: 'index.js',
-      path: path.resolve(__dirname, '../dist'),
+      path: path.resolve(__dirname, './dist'),
     },
     plugins: [
       new HtmlWebpackPlugin({

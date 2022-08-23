@@ -4,6 +4,7 @@ import { StatPage } from './pages/statPage';
 import { WordsPage } from './pages/wordsPage';
 import { GamePage } from './pages/gamePage';
 import { AuthPage } from './pages/authPage';
+import { RegPage } from './pages/regPage';
 
 export class App {
   private _page: ApplicationPage;
@@ -11,7 +12,7 @@ export class App {
   main: HTMLElement | null;
 
   set page(page: ApplicationPage) {
-    this.main = document.getElementById('main');
+    this.main = document.querySelector('.main');
     this._page = page;
     if (this.main) {
       this.main.innerHTML = '';
@@ -19,25 +20,28 @@ export class App {
     }
   }
 
-  start() {
-    this.addPageListenears();
+  start(): void {
+    this.addPageListeners();
   }
 
-  addPageListenears() {
-    document.getElementById('words-page')?.addEventListener('click', () => {
+  addPageListeners() {
+    document.querySelector('.words-page')?.addEventListener('click', (): void => {
       this.page = new WordsPage();
     });
-    document.getElementById('book-page')?.addEventListener('click', () => {
+    document.querySelector('.book-page')?.addEventListener('click', (): void => {
       this.page = new BookPage();
     });
-    document.getElementById('stat-page')?.addEventListener('click', () => {
+    document.querySelector('.stat-page')?.addEventListener('click', (): void => {
       this.page = new StatPage();
     });
-    document.getElementById('game-page')?.addEventListener('click', () => {
+    document.querySelector('.game-page')?.addEventListener('click', (): void => {
       this.page = new GamePage();
     });
-    document.getElementById('auth-page')?.addEventListener('click', () => {
+    document.querySelector('.sign-in-page')?.addEventListener('click', (): void => {
       this.page = new AuthPage();
+    });
+    document.querySelector('.sign-up-page')?.addEventListener('click', (): void => {
+      this.page = new RegPage();
     });
   }
 }

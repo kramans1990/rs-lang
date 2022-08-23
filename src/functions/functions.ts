@@ -3,6 +3,7 @@
 import { ISignIn } from '../types/interfaces';
 
 export function isValidEmail(email: string): boolean {
+  console.log(email);
   return !!email.match(/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/g); // validation for email
 }
 

@@ -1,4 +1,4 @@
-import '../styles/authorisation.css';
+import '../../styles/authorisation.css';
 import {
   email,
   haveNotYetAccountText,
@@ -6,9 +6,9 @@ import {
   signInTitle,
   signUpButtonText,
   upperSignInButtonText,
-} from '../utils/constants';
+} from '../../utils/constants';
 
-export class AuthPageView {
+export class AuthView {
   view: HTMLDivElement;
 
   constructor() {
@@ -46,4 +46,4 @@ export class AuthPageView {
     this.view.append(title, emailInput, passwordInput, signInButton, haveNotYetAccount);
   }
 }
-export default AuthPageView;
+export default AuthView;

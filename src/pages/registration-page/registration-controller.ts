@@ -1,12 +1,15 @@
-import { isValidEmail, isValidPassword, saveDataToLocalStorage } from '../functions/functions';
-import { invalidEmail, invalidPassword } from '../utils/constants';
-import { ApplicationPage } from '../types/ApplicationPage';
-import { ISignIn, IUser } from '../types/interfaces';
-import { RegPageView } from '../views/regPageView';
-import Api from '../Api';
+import { isValidEmail, isValidPassword, saveDataToLocalStorage } from '../../functions/functions';
+import { invalidEmail, invalidPassword } from '../../utils/constants';
+import { ISignIn, IUser } from '../../types/interfaces';
+import RegView from './registration-view';
+import Api from '../../Api';
+import ApplicationContoller from '../application-controller';
+/* eslint-disable import/no-cycle */
+import App from '../../App';
+import AuthController from '../auth-page/auth-controller';
 
-export class RegPage extends ApplicationPage {
-  regPageView: RegPageView;
+class RegistrationController extends ApplicationContoller {
+  regPageView: RegView;
 
   api: Api;
 
@@ -17,8 +20,8 @@ export class RegPage extends ApplicationPage {
 
   setView(): void {
     this.api = new Api();
-    this.regPageView = new RegPageView();
-    this.view = this.regPageView.view;
+    this.pageView = new RegView();
+    // this.view = this.regPageView.view;
     this.addListeners();
   }
 
@@ -48,11 +51,13 @@ export class RegPage extends ApplicationPage {
         if (typeof data === 'object') {
           const userData = data;
           saveDataToLocalStorage('rs-lang-user', JSON.stringify(userData));
-          const wordsPageButton = document.querySelector<HTMLButtonElement>('.words-page');
-          const click = new MouseEvent('click');
-          wordsPageButton?.dispatchEvent(click);
+          // const wordsPageButton = document.querySelector<HTMLButtonElement>('.words-page');
+          // const click = new MouseEvent('click');
+          // wordsPageButton?.dispatchEvent(click);
+          App.setController(new AuthController());
           // TODO: скрывать кнопку входа
           // заменить алерт на что-то человеческое
+
           return;
         }
         alert(data);
@@ -60,13 +65,13 @@ export class RegPage extends ApplicationPage {
   }
 
   addListeners(): void {
-    this.view
+    this.pageView.view
       .querySelector('.sign-up-button')
       ?.addEventListener('click', async (): Promise<void> => {
         const name = document.querySelector<HTMLInputElement>('.name-input')?.value || '';
         const email = document.querySelector<HTMLInputElement>('.email-input')?.value || '';
         if (!isValidEmail(email)) {
-          alert(invalidEmail);
+          alert(`${invalidEmail} ${email}`);
           return;
         }
         const password = document.querySelector<HTMLInputElement>('.password-input')?.value || '';
@@ -80,4 +85,4 @@ export class RegPage extends ApplicationPage {
   }
 }
 
-export default RegPage;
+export default RegistrationController;

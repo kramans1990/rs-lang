@@ -1,4 +1,5 @@
-import '../styles/authorisation.css';
+import '../../styles/authorisation.css';
+import ApplicationView from '../application-view';
 import {
   email,
   haveAccountText,
@@ -7,12 +8,13 @@ import {
   signInButtonText,
   signUpTitle,
   upperSignUpButtonText,
-} from '../utils/constants';
+} from '../../utils/constants';
 
-export class RegPageView {
+class RegistrationView extends ApplicationView {
   view: HTMLDivElement;
 
   constructor() {
+    super();
     this.renderRegBlock();
   }
 
@@ -52,4 +54,4 @@ export class RegPageView {
     this.view.append(title, nameInput, emailInput, passwordInput, signUpButton, haveAccount);
   }
 }
-export default RegPageView;
+export default RegistrationView;

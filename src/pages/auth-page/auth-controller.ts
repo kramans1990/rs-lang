@@ -1,12 +1,11 @@
-import { ApplicationPage } from '../types/ApplicationPage';
-import { AuthPageView } from '../views/authPageView';
-import Api from '../Api';
-import { ISignIn, IUser } from '../types/interfaces';
-import { saveDataToLocalStorage } from '../functions/functions';
+// import { ApplicationPage } from '../../types/ApplicationPage';
+import AuthView from './auth-view';
+import Api from '../../Api';
+import { ISignIn, IUser } from '../../types/interfaces';
+import { saveDataToLocalStorage } from '../../functions/functions';
+import ApplicationContoller from '../application-controller';
 
-export class AuthPage extends ApplicationPage {
-  authPageView: AuthPageView;
-
+class AuthController extends ApplicationContoller {
   api: Api;
 
   constructor() {
@@ -16,8 +15,7 @@ export class AuthPage extends ApplicationPage {
 
   setView(): void {
     this.api = new Api();
-    this.authPageView = new AuthPageView();
-    this.view = this.authPageView.view;
+    this.pageView = new AuthView();
     this.addListeners();
   }
 
@@ -48,7 +46,7 @@ export class AuthPage extends ApplicationPage {
   }
 
   addListeners(): void {
-    this.view
+    this.pageView.view
       .querySelector('.sign-in-button')
       ?.addEventListener('click', async (): Promise<void> => {
         const email = document.querySelector<HTMLInputElement>('.email-input')?.value || '';
@@ -59,4 +57,4 @@ export class AuthPage extends ApplicationPage {
   }
 }
 
-export default AuthPage;
+export default AuthController;

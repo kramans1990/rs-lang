@@ -10,7 +10,7 @@ import {
   upperSignUpButtonText,
 } from '../../utils/constants';
 
-export class RegistrationView extends ApplicationView {
+class RegistrationView extends ApplicationView {
   view: HTMLDivElement;
 
   constructor() {

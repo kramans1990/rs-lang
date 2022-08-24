@@ -1,7 +1,8 @@
 /* eslint-disable import/no-cycle */
+import RegistrationController from './pages/registration-page/registration-controller';
+import MainPageController from './pages/main-page/main-page-controler';
 import ApplicationContoller from './pages/application-controller';
 import AuthController from './pages/auth-page/auth-controller';
-import RegistrationController from './pages/registration-page/registration-controller';
 
 class App {
   static main: HTMLElement | null;
@@ -19,27 +20,38 @@ class App {
 
   /* eslint-disable class-methods-use-this */
   start(): void {
-    this.addPageListeners();
+    this.addEventListeners();
   }
 
-  addPageListeners() {
-    //   document.querySelector('.words-page')?.addEventListener('click', (): void => {
+  renderMainPage() {
+    const controller: ApplicationContoller = new MainPageController();
+    App.setController(controller);
+  }
+
+  addEventListeners() {
+    window.addEventListener('load', (): void => {
+      this.renderMainPage();
+    });
+    document.querySelector('.main-page-link')?.addEventListener('click', (): void => {
+      this.renderMainPage();
+    });
+    //   document.querySelector('.words-page-link')?.addEventListener('click', (): void => {
     //     this.page = new WordsPage();
     //   });
-    //   document.querySelector('.book-page')?.addEventListener('click', (): void => {
+    //   document.querySelector('.book-page-link')?.addEventListener('click', (): void => {
     //     this.page = new BookPage();
     //   });
-    //   document.querySelector('.stat-page')?.addEventListener('click', (): void => {
+    //   document.querySelector('.stat-page-link')?.addEventListener('click', (): void => {
     //     this.page = new StatPage();
     //   });
-    //   document.querySelector('.game-page')?.addEventListener('click', (): void => {
+    //   document.querySelector('.game-page-link')?.addEventListener('click', (): void => {
     //     this.page = new GamePage();
     //   });
-    document.querySelector('.sign-in-page')?.addEventListener('click', (): void => {
+    document.querySelector('.sign-in-page-link')?.addEventListener('click', (): void => {
       const controller: ApplicationContoller = new AuthController();
       App.setController(controller);
     });
-    document.querySelector('.sign-up-page')?.addEventListener('click', (): void => {
+    document.querySelector('.sign-up-page-link')?.addEventListener('click', (): void => {
       const controller: ApplicationContoller = new RegistrationController();
       App.setController(controller);
     });

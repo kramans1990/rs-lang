@@ -1,4 +1,3 @@
-// import { ApplicationPage } from '../../types/ApplicationPage';
 import AuthView from './auth-view';
 import Api from '../../Api';
 import { ISignIn, IUser } from '../../types/interfaces';
@@ -34,9 +33,9 @@ class AuthController extends ApplicationContoller {
         if (typeof data === 'object') {
           const userData = data;
           saveDataToLocalStorage('rs-lang-user', JSON.stringify(userData));
-          const wordsPageButton = document.querySelector<HTMLButtonElement>('.words-page');
+          const mainPageButton = document.querySelector<HTMLButtonElement>('.main-page-link');
           const click = new MouseEvent('click');
-          wordsPageButton?.dispatchEvent(click);
+          mainPageButton?.dispatchEvent(click);
           // TODO: скрывать кнопку входа
           // заменить алерт на что-то человеческое
           return;

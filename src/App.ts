@@ -2,6 +2,7 @@
 import ApplicationContoller from './pages/application-controller';
 import AuthController from './pages/auth-page/auth-controller';
 import RegistrationController from './pages/registration-page/registration-controller';
+import BookController from './pages/book-page/book-controller';
 
 class App {
   static main: HTMLElement | null;
@@ -26,9 +27,11 @@ class App {
     //   document.querySelector('.words-page')?.addEventListener('click', (): void => {
     //     this.page = new WordsPage();
     //   });
-    //   document.querySelector('.book-page')?.addEventListener('click', (): void => {
-    //     this.page = new BookPage();
-    //   });
+    document.querySelector('.book-page')?.addEventListener('click', (): void => {
+      console.log('oooooooooooo');
+      const controller: ApplicationContoller = new BookController();
+      App.setController(controller);
+    });
     //   document.querySelector('.stat-page')?.addEventListener('click', (): void => {
     //     this.page = new StatPage();
     //   });

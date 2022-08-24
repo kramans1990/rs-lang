@@ -1,0 +1,8 @@
+/* ========== pagination =========== */
+
+.pagination{
+  height: 40px;
+  margin: 55px auto 30px;
+  background-color:var(--color-accent);
+  font-size: 2rem;
+}

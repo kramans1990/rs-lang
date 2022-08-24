@@ -34,7 +34,6 @@
 .level:active{
   padding: 20px 15px;
   height: 100%;
-
 }
 
 .level span{
@@ -50,45 +49,57 @@
 .level-1:hover{
   color: #CDC1A2;
 }
+
 .level-2{
   background: var(--color-gray-medium);
   border: 2px solid var(--color-gray-medium);
 }
+
 .level-2:hover{
   color: var(--color-gray-medium);
 }
+
 .level-3{
   background: #FFCB05;
   border: 2px solid #FFCB05;
 }
+
 .level-3:hover{
   color: #FFCB05;
 }
+
 .level-4{
   background: var(--color-main);
   border: 2px solid var(--color-main);
 }
+
 .level-4:hover{
   color: var(--color-main);
 }
+
 .level-5{
   background: #725747;
   border: 2px solid #725747;
 }
+
 .level-5:hover{
   color: #725747;
 }
+
 .level-6{
   background: #494343;
   border: 2px solid #494343;
 }
+
 .level-6:hover{
   color: #494343;
 }
+
 .level-7{
   background: var(--color-accent);
   border: 2px solid var(--color-accent);
 }
+
 .level-7:hover{
   color: var(--color-accent);
 }

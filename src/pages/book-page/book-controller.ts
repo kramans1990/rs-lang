@@ -1,5 +1,5 @@
 import '../../styles/cards.css';
-import '../../styles/levelBtns.css';
+import '../../styles/level-buttons.css';
 import '../../styles/main.css';
 import '../../styles/pagination.css';
 
@@ -8,10 +8,14 @@ import { Word } from '../../types/Word';
 import { BookPageView } from './book-view';
 import Card from '../../types/CardView';
 import BookModel from './book-model';
-
-const NUMBER_OF_LEVELS = 7; // 6 + 1(все сложные слова)
-const RENDER_GROUP_NUMBER = 0;
-const RENDER_PAGE_NUMBER = 0;
+import {
+  numberOfLevels,
+  renderGroupNumber,
+  renderPageNumber,
+  btnDiffText,
+  btnLevelText,
+} from '../../utils/constants';
+import { disableAudioBtns, enableAudioBtns } from '../../functions/functions';
 
 class BookController extends ApplicationContoller {
   view: HTMLDivElement;
@@ -31,7 +35,7 @@ class BookController extends ApplicationContoller {
     this.pageView = new BookPageView();
     this.bookModel = new BookModel();
     this.setView();
-    this.renderCards(RENDER_GROUP_NUMBER, RENDER_PAGE_NUMBER);
+    this.renderCards(renderGroupNumber, renderPageNumber);
     this.renderLevelsBtns = this.renderLevelsBtns.bind(this); // обойти правило линта про this
     this.renderLevelsBtns();
   }
@@ -55,21 +59,24 @@ class BookController extends ApplicationContoller {
   }
 
   renderLevelsBtns() {
-    for (let i = 1; i <= NUMBER_OF_LEVELS; i += 1) {
+    for (let i = 1; i <= numberOfLevels; i += 1) {
       const btn = BookPageView.createElementByParams('div', 'level');
       btn.classList.add(`level-${i}`);
       btn.dataset.level = `${i}`;
 
-      if (i === NUMBER_OF_LEVELS) {
-        btn.innerText = 'сложные';
+      if (i === numberOfLevels) {
+        btn.innerText = btnDiffText;
       } else {
-        btn.innerHTML = `уровень  <span> ${i}</span>`;
+        btn.innerHTML = btnLevelText;
+        const levelNumber = BookPageView.createElementByParams('span', 'level_number');
+        levelNumber.innerHTML = `${i}`;
+        btn.append(levelNumber);
       }
       btn.addEventListener('click', (e: Event) => {
         if (e.target) {
           const group = Number((e.target as HTMLDivElement).dataset.level) - 1;
           this.cardsList.innerHTML = '';
-          this.renderCards(group, RENDER_PAGE_NUMBER);
+          this.renderCards(group, renderPageNumber);
         }
       });
       this.levels.append(btn);
@@ -91,6 +98,7 @@ class BookController extends ApplicationContoller {
       // case doneBtn: console.log(e.target);
       //   break;
       case (e.target as HTMLDivElement).classList.contains('audio-icon'): {
+        disableAudioBtns();
         const cardId = (e.target as HTMLElement).closest('.card')?.id;
         if (cardId) {
           BookController.playAudio(cardId);
@@ -107,9 +115,13 @@ class BookController extends ApplicationContoller {
     if (tracks) {
       try {
         tracks[0].play();
-        for (let i = 0; i < tracks.length - 1; i += 1) {
+        for (let i = 0; i < tracks.length; i += 1) {
           tracks[i].onended = () => {
             tracks[i + 1].play();
+          };
+
+          tracks[tracks.length - 1].onended = () => {
+            enableAudioBtns();
           };
         }
       } catch {

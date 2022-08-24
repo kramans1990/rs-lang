@@ -18,6 +18,19 @@ function getDataFromLocalStorage(name: string): ISignIn | null {
   return localStorage.getItem(name) !== null ? JSON.parse(localStorage.getItem(name) || '') : null;
 }
 
+function disableAudioBtns() {
+  const audioBtns = document.querySelectorAll('.audio-icon');
+  audioBtns.forEach((btn) => {
+    btn.classList.add('disabled');
+  });
+}
+
+function enableAudioBtns() {
+  const audioBtns = document.querySelectorAll('.audio-icon');
+  audioBtns.forEach((btn) => {
+    btn.classList.remove('disabled');
+  });
+}
 /* prettier-ignore */
 
 export {
@@ -25,4 +38,6 @@ export {
   isValidPassword,
   saveDataToLocalStorage,
   getDataFromLocalStorage,
+  disableAudioBtns,
+  enableAudioBtns,
 };

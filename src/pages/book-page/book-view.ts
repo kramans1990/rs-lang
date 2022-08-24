@@ -1,4 +1,5 @@
 import ApplicationView from '../application-view';
+import { sprintGameName, audioGameName, extraGameName } from '../../utils/constants';
 
 export class BookPageView extends ApplicationView {
   view: HTMLDivElement;
@@ -43,6 +44,7 @@ export class BookPageView extends ApplicationView {
   setBackgrounds() {
     this.body.style.backgroundImage = 'none';
     this.header.style.backgroundImage = 'url("../assets/bg_main.jpg")';
+    this.header.style.backgroundColor = 'black';
     this.header.style.minHeight = '80px';
     this.footer.classList.add('footer_all-pages');
   }
@@ -50,13 +52,13 @@ export class BookPageView extends ApplicationView {
   createGameButtons() {
     const sprintGameLink = BookPageView.createElementByParams('div', 'btn') as HTMLDivElement; // sprint-game__link
     sprintGameLink.classList.add('btn_colored');
-    sprintGameLink.innerText = 'Спринт';
+    sprintGameLink.innerText = sprintGameName;
     const audioGameLink = BookPageView.createElementByParams('div', 'btn') as HTMLDivElement; // audio-game__link
     audioGameLink.classList.add('btn_colored');
-    audioGameLink.innerText = 'Аудиовызов';
+    audioGameLink.innerText = audioGameName;
     const extraGameLink = BookPageView.createElementByParams('div', 'btn') as HTMLDivElement; // extra-game__link
     extraGameLink.classList.add('btn_colored');
-    extraGameLink.innerText = 'Экстра';
+    extraGameLink.innerText = extraGameName;
 
     let gameButtons = document.querySelector('.game__buttons');
     if (!gameButtons) {

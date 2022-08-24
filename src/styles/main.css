@@ -1,7 +1,15 @@
+
 @font-face {
   font-family: Raleway;
   src: url("../assets/fonts/static/Raleway-Regular.ttf") format('truetype');
   font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: Raleway;
+  src: url("../assets/fonts/static/Raleway-Bold.ttf") format('truetype');
+  font-weight: bold;
   font-style: normal;
 }
 
@@ -14,13 +22,6 @@
   --color-dark: #494343;
 
   font-size: 10px;
-}
-
-@font-face {
-  font-family: Raleway;
-  src: url("../assets/fonts/static/Raleway-Bold.ttf") format('truetype');
-  font-weight: bold;
-  font-style: normal;
 }
 
 * {
@@ -63,6 +64,33 @@ main {
   background: transparent;
 }
 
+.sign-in:active {
+  scale: 96%;
+}
+
+.main-page {
+  display: flex;
+  flex-direction: column;
+  /* justify-content: space-around; */
+  margin-left: 80px;
+  max-width: 60%;
+}
+
+.main-page__title {
+  font-weight: 900;
+  font-size: 5rem;
+  line-height: 7rem;
+  color: #ffffff;
+}
+
+.main-page__text p {
+  /* margin-top: 16px; */
+  font-weight: 500;
+  font-size: 1.8rem;
+  line-height: 2.6rem;
+  color: #ffffff;
+}
+
 .intro{
   display: flex;
   flex-direction: column;
@@ -102,24 +130,27 @@ main {
   width: 200px;
 }
 
-.rss {
-  width: 100px;
-  height: 30px;
-  background: no-repeat center url("../assets/svg/rs_school_js.svg");
-  background-size: contain;
-  filter: invert(1);
+.buttons {
+  display: flex;
+  gap: 40px;
+  margin-top: 100px;
 }
 
-.gh, 
-.vertical-bar,
-.year {
-  font-size: 30px;
+.btn_intro {
+  width: 200px;
+  height: 50px;
+}
+
+.btn_colored {
+  background-color: var(--color-main);
   color: #ffffff;
 }
 
-.gh-logo {
-  width: 50px;
-  height: 50px;
+.btn_bordered {
+  background: #ffffff;
+  border: 3px solid var(--color-main);
+  letter-spacing: 2px;
+  color: #ec990e;
 }
 
 .btn{
@@ -138,21 +169,9 @@ main {
   text-decoration: underline;
   border-top-left-radius: 20px;
 }
+
 .btn:active{
   scale: 96%;
-}
-
-.btn_colored{
-  background-color: var(--color-main);
-  color: #FFFFFF;
-}
-
-.btn_bordered{
-  background: #FFFFFF;
-  border: 3px solid var(--color-main);
-  letter-spacing: 2px;
-
-  color: #EC990E;
 }
 
 .footer{
@@ -180,6 +199,27 @@ main {
   padding-top: 50px;
   background-color: transparent;
 }
+
+.rss {
+  width: 100px;
+  height: 30px;
+  background: no-repeat center url("../assets/svg/rs_school_js.svg");
+  background-size: contain;
+  filter: invert(1);
+}
+
+.gh, 
+.vertical-bar,
+.year {
+  font-size: 30px;
+  color: #ffffff;
+}
+
+.gh-logo {
+  width: 50px;
+  height: 50px;
+}
+
 .game__buttons{
   display: flex;
   justify-content: start;
@@ -237,6 +277,7 @@ main {
 .team__member:last-of-type a{
   border-right: none;
 }
+
 .footer__year{
   font-weight: 400;
   font-size: 30px;

@@ -54,13 +54,28 @@ class Api {
   }
 
   async getWords(group: number, page: number): Promise<Word[]> {
-    const cards: Word[] = await (await fetch(`${this.words}?group=${group}&page=${page}`)).json();
-    return cards;
+    try {
+      const responce = await fetch(`${this.words}?group=${group}&page=${page}`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+      const cards = await responce.json();
+      return cards;
+    } catch {
+      throw new Error();
+    }
   }
 
   async getOneWord(id: number): Promise<Word> {
-    const card: Word = await (await fetch(`${this.words}/${id}`)).json();
-    return card;
+    try {
+      const responce = await fetch(`${this.words}/${id}`);
+      const card = await responce.json();
+      return card;
+    } catch {
+      throw new Error();
+    }
   }
 }
 

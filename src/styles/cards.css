@@ -37,10 +37,12 @@
   text-align: center;
   color: #000000;
 }
+
 .word__english{
   font-weight: 800;
   color: var(--color-gray-medium);
 }
+
 .audio-icon{
   width: 37px;
   height: 27px;
@@ -53,13 +55,17 @@
 
 .audio-icon:hover{
   background-color: var(--color-main);
+}
 
+.audio-icon.disabled{
+  pointer-events: none;
 }
 
 .card__buttons{
   display: flex;
   gap: 20px;justify-content: space-around;
 }
+
 .card__btn{
   display: inline;
   width: 120px;
@@ -92,6 +98,7 @@
   font-size: 1.4rem;
   line-height: 2rem;
 }
+
 .phase__definition{
   color: #000000;
 }
@@ -99,6 +106,7 @@
 .phase__definition i{
   font-weight: 700;
 }
+
 .phase__definition_english{
   font-weight: 500;
 }

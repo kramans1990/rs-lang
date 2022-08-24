@@ -24,6 +24,15 @@ const rsLang = 'RS Lang';
 const learnButtonText = 'Учиться';
 const playButtonText = 'Играть';
 
+const numberOfLevels = 7; // 6 + 1(все сложные слова)
+const renderGroupNumber = 0;
+const renderPageNumber = 0;
+const btnDiffText = 'сложные';
+const btnLevelText = 'уровень';
+const sprintGameName = 'Спринт';
+const audioGameName = 'Аудиовызов';
+const extraGameName = 'Экстра';
+
 export {
   signUpButtonText,
   signInButtonText,
@@ -42,4 +51,12 @@ export {
   rsLang,
   learnButtonText,
   playButtonText,
+  numberOfLevels,
+  renderGroupNumber,
+  renderPageNumber,
+  btnDiffText,
+  btnLevelText,
+  sprintGameName,
+  audioGameName,
+  extraGameName,
 };

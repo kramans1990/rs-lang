@@ -34,7 +34,7 @@ class Card extends Api {
               </div>
           </div>
           <div class="card__buttons">
-              <button class="btn card__btn diff__btn">Сложное</button>
+              <button class="btn card__btn hard__btn">Сложное</button>
               <button class="btn card__btn done__btn">Изучено</button>
           </div>
           <div class="phases">

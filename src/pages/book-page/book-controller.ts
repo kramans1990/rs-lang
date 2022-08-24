@@ -86,21 +86,17 @@ class BookController extends ApplicationContoller {
   }
 
   static setEventListenersForCard(e: Event) {
-    switch (true) {
-      // case diffBtn: console.log(e.target);
-      //   break;
-      // case doneBtn: console.log(e.target);
-      //   break;
-      case (e.target as HTMLDivElement).classList.contains('audio-icon'): {
-        disableAudioBtns();
-        const cardId = (e.target as HTMLElement).closest('.card')?.id;
-        if (cardId) {
-          BookController.playAudio(cardId);
-        }
-        break;
+    const eTargetClassList = (e.target as HTMLDivElement).classList;
+
+    // if (eTargetClassList.contains('hard__btn')) {}
+    // if (eTargetClassList.contains('done__btn')) {}
+
+    if (eTargetClassList.contains('audio-icon')) {
+      disableAudioBtns();
+      const cardId = (e.target as HTMLElement).closest('.card')?.id;
+      if (cardId) {
+        BookController.playAudio(cardId);
       }
-      default:
-        break;
     }
   }
 

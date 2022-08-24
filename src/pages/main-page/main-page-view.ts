@@ -1,5 +1,5 @@
 import ApplicationView from '../application-view';
-import '../../styles/main.css';
+import '../../styles/main-page.css';
 
 /* prettier-ignore */
 

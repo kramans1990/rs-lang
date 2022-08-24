@@ -50,13 +50,13 @@ export class BookPageView extends ApplicationView {
   }
 
   createGameButtons() {
-    const sprintGameLink = BookPageView.createElementByParams('div', 'btn') as HTMLDivElement; // sprint-game__link
+    const sprintGameLink = BookPageView.createElementByParams('div', 'btn') as HTMLDivElement;
     sprintGameLink.classList.add('btn_colored');
     sprintGameLink.innerText = sprintGameName;
-    const audioGameLink = BookPageView.createElementByParams('div', 'btn') as HTMLDivElement; // audio-game__link
+    const audioGameLink = BookPageView.createElementByParams('div', 'btn') as HTMLDivElement;
     audioGameLink.classList.add('btn_colored');
     audioGameLink.innerText = audioGameName;
-    const extraGameLink = BookPageView.createElementByParams('div', 'btn') as HTMLDivElement; // extra-game__link
+    const extraGameLink = BookPageView.createElementByParams('div', 'btn') as HTMLDivElement;
     extraGameLink.classList.add('btn_colored');
     extraGameLink.innerText = extraGameName;
 

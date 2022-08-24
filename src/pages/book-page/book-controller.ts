@@ -72,24 +72,18 @@ class BookController extends ApplicationContoller {
         levelNumber.innerHTML = `${i}`;
         btn.append(levelNumber);
       }
-      btn.addEventListener('click', (e: Event) => {
-        if (e.target) {
-          const group = Number((e.target as HTMLDivElement).dataset.level) - 1;
-          this.cardsList.innerHTML = '';
-          this.renderCards(group, renderPageNumber);
-        }
-      });
+      btn.addEventListener('click', (e): void => this.levelBtnHandler(e));
       this.levels.append(btn);
     }
   }
 
-  // levelBtnHandler(e: MouseEvent) {
-  //   if (e.target) {
-  //     const group = Number((e.target as HTMLDivElement).dataset.level) - 1;
-  //     this.cardsList.innerHTML = '';
-  //     this.renderCards(group, RENDER_PAGE_NUMBER);
-  //   }
-  // }
+  levelBtnHandler(e: MouseEvent) {
+    if (e.target) {
+      const group = Number((e.target as HTMLDivElement).dataset.level) - 1;
+      this.cardsList.innerHTML = '';
+      this.renderCards(group, renderPageNumber);
+    }
+  }
 
   static setEventListenersForCard(e: Event) {
     switch (true) {
@@ -116,13 +110,16 @@ class BookController extends ApplicationContoller {
       try {
         tracks[0].play();
         for (let i = 0; i < tracks.length; i += 1) {
-          tracks[i].onended = () => {
-            tracks[i + 1].play();
-          };
-
-          tracks[tracks.length - 1].onended = () => {
-            enableAudioBtns();
-          };
+          if (i === tracks.length - 1) {
+            tracks[tracks.length - 1].onended = () => {
+              enableAudioBtns();
+            };
+            break;
+          } else {
+            tracks[i].onended = () => {
+              tracks[i + 1].play();
+            };
+          }
         }
       } catch {
         throw Error('Воспроизведение отклонено.');

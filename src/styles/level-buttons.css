@@ -1,6 +1,4 @@
-/* ========== levels =========== */
-
-.levels{
+.levels {
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -11,7 +9,7 @@
   /* font-size: 2rem; */
 }
 
-.level{
+.level {
   height: 40px;
   font-weight: 400;
   font-size: 20px;
@@ -27,79 +25,79 @@
   transition: all 0.3s;
 }
 
-.level:hover{
+.level:hover {
   background: #ffffff;
 }
 
-.level:active{
+.level:active {
   padding: 20px 15px;
   height: 100%;
 }
 
-.level span{
+.level span {
   font-weight: 600;
   font-size: 30px;
 }
 
-.level-1{
+.level-1 {
   background: #CDC1A2;
   border: 2px solid #CDC1A2;
 }
 
-.level-1:hover{
+.level-1:hover {
   color: #CDC1A2;
 }
 
-.level-2{
+.level-2 {
   background: var(--color-gray-medium);
   border: 2px solid var(--color-gray-medium);
 }
 
-.level-2:hover{
+.level-2:hover {
   color: var(--color-gray-medium);
 }
 
-.level-3{
+.level-3 {
   background: #FFCB05;
   border: 2px solid #FFCB05;
 }
 
-.level-3:hover{
+.level-3:hover {
   color: #FFCB05;
 }
 
-.level-4{
+.level-4 {
   background: var(--color-main);
   border: 2px solid var(--color-main);
 }
 
-.level-4:hover{
+.level-4:hover {
   color: var(--color-main);
 }
 
-.level-5{
+.level-5 {
   background: #725747;
   border: 2px solid #725747;
 }
 
-.level-5:hover{
+.level-5:hover {
   color: #725747;
 }
 
-.level-6{
+.level-6 {
   background: #494343;
   border: 2px solid #494343;
 }
 
-.level-6:hover{
+.level-6:hover {
   color: #494343;
 }
 
-.level-7{
+.level-7 {
   background: var(--color-accent);
   border: 2px solid var(--color-accent);
 }
 
-.level-7:hover{
+.level-7:hover {
   color: var(--color-accent);
 }

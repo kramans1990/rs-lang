@@ -1,12 +1,11 @@
-/* ========== cards =========== */
-.cards_list{
+.cards_list {
   display: flex;
   flex-wrap: wrap;
   justify-content: space-between;
   row-gap: 20px;
 }
 
-.card{
+.card {
   width: 285px;
   height: 510px;
   border: 1px solid var(--color-gray-light);
@@ -14,20 +13,20 @@
   overflow: hidden;
 }
 
-.card__img{
+.card__img {
   height: 190px;
   width: 100%;
   object-fit: cover;
 }
 
-.card__text{
+.card__text {
   display: flex;
   flex-direction: column;
   gap: 15px;
   padding: 10px 8px;
 }
 
-.word{
+.word {
   display: flex;
   justify-content: space-around;
   align-items: center;
@@ -38,12 +37,12 @@
   color: #000000;
 }
 
-.word__english{
+.word__english {
   font-weight: 800;
   color: var(--color-gray-medium);
 }
 
-.audio-icon{
+.audio-icon {
   width: 37px;
   height: 27px;
   cursor: pointer;
@@ -57,20 +56,20 @@
   transition: all 0.3s;
 }
 
-.audio-icon:hover{
+.audio-icon:hover {
   background-color: var(--color-main);
 }
 
-.audio-icon.disabled{
+.audio-icon.disabled {
   pointer-events: none;
 }
 
-.card__buttons{
+.card__buttons {
   display: flex;
   gap: 20px;justify-content: space-around;
 }
 
-.card__btn{
+.card__btn {
   display: inline;
   width: 120px;
   height: 33px;
@@ -85,17 +84,17 @@
   color: var(--color-gray-light);
 }
 
-.diff__btn:hover{
+.diff__btn:hover {
   border: 2px solid var(--color-accent);
   color: var(--color-accent);
 }
 
-.done__btn:hover{
+.done__btn:hover {
   border: 2px solid var(--color-main);
   color: var(--color-main);
 }
 
-.phases{
+.phases {
   display: flex;
   flex-direction: column;
   gap: 10px;
@@ -103,32 +102,32 @@
   line-height: 2rem;
 }
 
-.phase__definition{
+.phase__definition {
   color: #000000;
 }
 
-.phase__definition i{
+.phase__definition i {
   font-weight: 700;
 }
 
-.phase__definition_english{
+.phase__definition_english {
   font-weight: 500;
 }
 
-.phase__definition_russian{
+.phase__definition_russian {
   font-weight: 300;
 }
 
-.phase__example{
+.phase__example {
   color: #919191;
 }
 
-.phase__example_english{
+.phase__example_english {
   font-style: italic;
   font-weight: 500;
 }
 
-.phase__example_russian{
+.phase__example_russian {
   font-style: italic;
   font-weight: 300;
 }

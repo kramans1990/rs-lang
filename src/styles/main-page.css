@@ -1,0 +1,72 @@
+.sign-in:active {
+  scale: 96%;
+}
+
+.main-page {
+  display: flex;
+  flex-direction: column;
+  /* justify-content: space-around; */
+  margin-left: 80px;
+  max-width: 60%;
+}
+
+.main-page__title {
+  font-weight: 900;
+  font-size: 5rem;
+  line-height: 7rem;
+  color: #ffffff;
+}
+
+.main-page__text p {
+  /* margin-top: 16px; */
+  font-weight: 500;
+  font-size: 1rem;
+  line-height: 1.5rem;
+  /* font-size: 1.8rem;
+  line-height: 2.6rem; */
+  color: #ffffff;
+}
+
+.buttons {
+  display: flex;
+  gap: 40px;
+  margin-top: 100px;
+}
+
+.btn_intro {
+  width: 200px;
+  height: 50px;
+}
+
+.btn {
+  font-weight: 900;
+  font-size: 1.3rem;
+  line-height: 1.5rem;
+  text-align: center;
+  letter-spacing: 2px;
+  border: none;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.btn:hover {
+  text-decoration: underline;
+  border-top-left-radius: 20px;
+}
+
+.btn:active {
+  scale: 96%;
+}
+
+.btn_colored {
+  background-color: var(--color-main);
+  color: #ffffff;
+}
+
+.btn_bordered {
+  background: #ffffff;
+  border: 3px solid var(--color-main);
+  letter-spacing: 2px;
+  color: #ec990e;
+}

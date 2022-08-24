@@ -36,7 +36,6 @@ class BookController extends ApplicationContoller {
     this.bookModel = new BookModel();
     this.setView();
     this.renderCards(renderGroupNumber, renderPageNumber);
-    this.renderLevelsBtns = this.renderLevelsBtns.bind(this); // обойти правило линта про this
     this.renderLevelsBtns();
   }
 

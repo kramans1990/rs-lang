@@ -48,8 +48,12 @@
   height: 27px;
   cursor: pointer;
   background-color: var(--color-gray-light);
-  mask: url('../assets/audio.svg')  no-repeat;
+  mask-image: url('../assets/audio.svg');
+  mask-repeat: no-repeat;
   mask-size: contain;
+  -webkit-mask-image: url('../assets/audio.svg');
+  -webkit-mask-repeat: no-repeat;
+  -webkit-mask-size: contain;
   transition: all 0.3s;
 }
 

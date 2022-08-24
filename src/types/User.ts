@@ -1,4 +1,4 @@
-export class User {
+class User {
   name: string;
 
   email: string;
@@ -11,4 +11,5 @@ export class User {
     this.password = password;
   }
 }
+
 export default User;

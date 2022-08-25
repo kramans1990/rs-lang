@@ -8,7 +8,7 @@ export class BookPageView extends ApplicationView {
 
   levels: HTMLDivElement;
 
-  pagination: HTMLDivElement;
+  pagination: HTMLUListElement;
 
   main: HTMLElement;
 
@@ -23,7 +23,7 @@ export class BookPageView extends ApplicationView {
     this.view = document.createElement('div');
     this.levels = BookPageView.createElementByParams('div', 'levels') as HTMLDivElement;
     this.cardsList = BookPageView.createElementByParams('div', 'cards_list') as HTMLDivElement;
-    this.pagination = BookPageView.createElementByParams('div', 'pagination') as HTMLDivElement;
+    this.pagination = BookPageView.createElementByParams('div', 'pagination') as HTMLUListElement;
     this.view.append(this.levels, this.cardsList, this.pagination);
 
     this.body = document.querySelector('body') as HTMLBodyElement;

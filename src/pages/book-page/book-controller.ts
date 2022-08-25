@@ -14,6 +14,7 @@ import {
   renderPageNumber,
   btnDiffText,
   btnLevelText,
+  numberOfPagesInLevel,
 } from '../../utils/constants';
 import { disableAudioBtns, enableAudioBtns } from '../../functions/functions';
 
@@ -28,7 +29,9 @@ class BookController extends ApplicationContoller {
 
   cardsList: HTMLDivElement;
 
-  pagination: HTMLDivElement;
+  pagination: HTMLUListElement;
+
+  currentPage: number;
 
   constructor() {
     super();
@@ -37,6 +40,8 @@ class BookController extends ApplicationContoller {
     this.setView();
     this.renderCards(renderGroupNumber, renderPageNumber);
     this.renderLevelsBtns();
+    this.currentPage = 1;
+    this.renderPaginationBlock(this.currentPage);
   }
 
   setView(): void {
@@ -45,10 +50,11 @@ class BookController extends ApplicationContoller {
     this.levels = this.pageView.levels;
     this.cardsList = this.pageView.cardsList;
     this.pagination = this.pageView.pagination;
-    this.pagination.innerText = 'Здесь будeт пагинация !!!!!!!!!!!!!!!!';
+    this.currentPage = 1;
   }
 
   async renderCards(group: number, page: number) {
+    this.cardsList.innerHTML = '';
     const words = await this.bookModel.getWords(group, page);
     words.forEach((wordInfo: Word) => {
       const card = new Card(wordInfo);
@@ -81,6 +87,7 @@ class BookController extends ApplicationContoller {
       const group = Number((e.target as HTMLDivElement).dataset.level) - 1;
       this.cardsList.innerHTML = '';
       this.renderCards(group, renderPageNumber);
+      this.renderPaginationBlock(group);
     }
   }
 
@@ -119,6 +126,30 @@ class BookController extends ApplicationContoller {
       } catch {
         throw Error('Воспроизведение отклонено.');
       }
+    }
+  }
+
+  async renderPaginationBlock(group: number) {
+    // let pageNumber = 1;
+    this.pagination.innerHTML = '';
+    for (let i = 1; i <= numberOfPagesInLevel; i += 1) {
+      const page = BookPageView.createElementByParams('p', 'pagination-element');
+
+      if (i === this.currentPage) {
+        page.classList.add('active');
+      }
+
+      page.innerText = `${i}`;
+      page.addEventListener('click', (e) => {
+        this.renderCards(group, i);
+
+        const pageItems = document.querySelectorAll('.pagination-element');
+        pageItems.forEach((item) => {
+          item.classList.remove('active');
+        });
+        (e.target as HTMLLIElement).classList.add('active');
+      });
+      this.pagination.append(page);
     }
   }
 }

@@ -41,8 +41,11 @@ class App {
     window.addEventListener('load', (): void => {
       this.renderMainPage();
     });
-    document.querySelector('.main-page-link')?.addEventListener('click', (): void => {
+    document.querySelector('.main-page-link')?.addEventListener('click', (e): void => {
       this.renderMainPage();
+      const mainWrapper = document.querySelector('.main_wrapper') as HTMLDivElement;
+      mainWrapper.style.backgroundColor = 'transparent';
+      this.changeActivClass(e);
     });
     //   document.querySelector('.words-page-link')?.addEventListener('click', (): void => {
     //     this.page = new WordsPage();

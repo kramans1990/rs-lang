@@ -29,6 +29,14 @@ class App {
     App.setController(controller);
   }
 
+  changeActivClass(e: Event) {
+    const menuItems = document.querySelectorAll('.nav-list__item');
+    menuItems.forEach((item) => {
+      item.classList.remove('active');
+    });
+    (e.target as HTMLLIElement).classList.add('active');
+  }
+
   addEventListeners() {
     window.addEventListener('load', (): void => {
       this.renderMainPage();
@@ -42,7 +50,7 @@ class App {
     document.querySelector('.book-page-link')?.addEventListener('click', (e): void => {
       const controller: ApplicationContoller = new BookController();
       App.setController(controller);
-      (e.target as HTMLLIElement).classList.add('active');
+      this.changeActivClass(e);
     });
     //   document.querySelector('.stat-page')?.addEventListener('click', (): void => {
     //   document.querySelector('.book-page-link')?.addEventListener('click', (): void => {

@@ -60,14 +60,35 @@ class App {
     removeDataFromLocalStorage('rs-lang-user');
   }
 
-  static renderMainPage(): void {
-    const controller: ApplicationContoller = new MainPageController();
-    App.setController(controller);
+  static changeActiveClassForNavItemByEvent(e: Event): void {
+    App.changeActiveClassForNavItemByElement(e.target as HTMLElement | null);
   }
 
-  static renderAuthPage(): void {
+  static changeActiveClassForNavItemByElement(elem: HTMLElement | null): void {
+    const menuItems = document.querySelectorAll('.nav-list__item') as NodeListOf<HTMLLIElement>;
+    menuItems.forEach((item: HTMLLIElement): void => {
+      item.classList.remove('active');
+    });
+    elem?.classList.add('active');
+  }
+
+  static renderMainPage(e?: Event): void {
+    const controller: ApplicationContoller = new MainPageController();
+    App.setController(controller);
+    App.makeMainTransparentAgain();
+    if (e) {
+      App.changeActiveClassForNavItemByEvent(e);
+      return;
+    }
+    const mainButton = document.querySelector('.main-page-link') as HTMLElement;
+    App.changeActiveClassForNavItemByElement(mainButton);
+  }
+
+  static renderAuthPage(e: Event): void {
     const controller: ApplicationContoller = new AuthController();
     App.setController(controller);
+    App.changeActiveClassForNavItemByEvent(e);
+    App.makeMainTransparentAgain();
   }
 
   static renderRegPage(): void {
@@ -75,12 +96,9 @@ class App {
     App.setController(controller);
   }
 
-  changeActiveClassForNavItem(e: Event): void {
-    const menuItems = document.querySelectorAll('.nav-list__item') as NodeListOf<HTMLLIElement>;
-    menuItems.forEach((item: HTMLLIElement): void => {
-      item.classList.remove('active');
-    });
-    (e.target as HTMLLIElement).classList.add('active');
+  static makeMainTransparentAgain(): void {
+    const mainWrapper = document.querySelector('.main_wrapper') as HTMLDivElement;
+    mainWrapper.style.backgroundColor = 'transparent';
   }
 
   addEventListeners() {
@@ -92,18 +110,19 @@ class App {
       }
     });
     document.querySelector('.main-page-link')?.addEventListener('click', App.renderMainPage);
-    document.querySelector('.main-page-link')?.addEventListener('click', (e): void => {
-      const mainWrapper = document.querySelector('.main_wrapper') as HTMLDivElement;
-      mainWrapper.style.backgroundColor = 'transparent';
-      this.changeActiveClassForNavItem(e);
-    });
+    // document.querySelector('.main-page-link')?.addEventListener('click', (e: Event): void => {
+    //   const mainWrapper = document.querySelector('.main_wrapper') as HTMLDivElement;
+    //   mainWrapper.style.backgroundColor = 'transparent';
+    //   App.changeActiveClassForNavItemByEvent(e);
+    // });
+
     //   document.querySelector('.words-page-link')?.addEventListener('click', (): void => {
     //     this.page = new WordsPage();
     //   });
-    document.querySelector('.book-page-link')?.addEventListener('click', (e): void => {
+    document.querySelector('.book-page-link')?.addEventListener('click', (e: Event): void => {
       const controller: ApplicationContoller = new BookController();
       App.setController(controller);
-      this.changeActiveClassForNavItem(e);
+      App.changeActiveClassForNavItemByEvent(e);
     });
     document.querySelector('.sign-in-page-link')?.addEventListener('click', App.renderAuthPage);
     //   document.querySelector('.words-page-link')?.addEventListener('click', (): void => {

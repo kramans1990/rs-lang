@@ -27,11 +27,15 @@ const playButtonText = 'Играть';
 const numberOfLevels = 7; // 6 + 1(все сложные слова)
 const renderGroupNumber = 0;
 const renderPageNumber = 0;
+const numberOfPagesInLevel = 30;
 const btnDiffText = 'сложные';
 const btnLevelText = 'уровень ';
 const sprintGameName = 'Спринт';
 const audioGameName = 'Аудиовызов';
 const extraGameName = 'Экстра';
+const iconSprintSrc = '../../assets/svg/icon_sprint.svg';
+const iconAudioGameSrc = '../../assets/svg/icon_audio_game.svg';
+const iconExtraGameSrc = '../../assets/svg/icon_audio_game.svg';
 
 export {
   signUpButtonText,
@@ -59,4 +63,8 @@ export {
   sprintGameName,
   audioGameName,
   extraGameName,
+  numberOfPagesInLevel,
+  iconSprintSrc,
+  iconAudioGameSrc,
+  iconExtraGameSrc,
 };

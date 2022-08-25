@@ -68,6 +68,21 @@ class Api {
     }
   }
 
+  async getWordsForLevel(group: number): Promise<Word[]> {
+    try {
+      const responce = await fetch(`${this.words}?group=${group}`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+      const cards = await responce.json();
+      return cards;
+    } catch {
+      throw new Error();
+    }
+  }
+
   async getOneWord(id: number): Promise<Word> {
     try {
       const responce = await fetch(`${this.words}/${id}`);

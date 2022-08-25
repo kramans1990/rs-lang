@@ -12,8 +12,15 @@ import {
   numberOfLevels,
   renderGroupNumber,
   renderPageNumber,
-  btnDiffText,
+  btnDiffText as btnHardText,
   btnLevelText,
+  numberOfPagesInLevel,
+  sprintGameName,
+  audioGameName,
+  extraGameName,
+  iconSprintSrc,
+  iconAudioGameSrc,
+  iconExtraGameSrc,
 } from '../../utils/constants';
 import { disableAudioBtns, enableAudioBtns } from '../../functions/functions';
 
@@ -30,13 +37,17 @@ class BookController extends ApplicationContoller {
 
   pagination: HTMLDivElement;
 
+  currentPage: number;
+
+  gameButtons: HTMLDivElement;
+
   constructor() {
     super();
     this.pageView = new BookPageView();
     this.bookModel = new BookModel();
+    this.currentPage = 1;
+
     this.setView();
-    this.renderCards(renderGroupNumber, renderPageNumber);
-    this.renderLevelsBtns();
   }
 
   setView(): void {
@@ -45,10 +56,16 @@ class BookController extends ApplicationContoller {
     this.levels = this.pageView.levels;
     this.cardsList = this.pageView.cardsList;
     this.pagination = this.pageView.pagination;
-    this.pagination.innerText = 'Здесь будeт пагинация !!!!!!!!!!!!!!!!';
+    this.gameButtons = this.pageView.gameButtons;
+    this.currentPage = 1;
+    this.renderLevelsBtns();
+    this.renderCards(renderGroupNumber, renderPageNumber);
+    this.renderPaginationBlock(this.currentPage);
+    this.renderGameButtons();
   }
 
   async renderCards(group: number, page: number) {
+    this.cardsList.innerHTML = '';
     const words = await this.bookModel.getWords(group, page);
     words.forEach((wordInfo: Word) => {
       const card = new Card(wordInfo);
@@ -63,12 +80,16 @@ class BookController extends ApplicationContoller {
       btn.classList.add(`level-${i}`);
       btn.dataset.level = `${i}`;
 
+      if (i === this.currentPage) {
+        btn.classList.add('active');
+      }
+
       if (i === numberOfLevels) {
-        btn.innerText = btnDiffText;
+        btn.innerText = btnHardText;
       } else {
         btn.innerHTML = btnLevelText;
         const levelNumber = BookPageView.createElementByParams('span', 'level_number');
-        levelNumber.innerHTML = `${i}`;
+        levelNumber.innerHTML = `&nbsp${i}`;
         btn.append(levelNumber);
       }
       btn.addEventListener('click', (e): void => this.levelBtnHandler(e));
@@ -78,9 +99,16 @@ class BookController extends ApplicationContoller {
 
   levelBtnHandler(e: MouseEvent) {
     if (e.target) {
+      const levelButtons = document.querySelectorAll('.level');
+      levelButtons.forEach((button) => {
+        button.classList.remove('active');
+      });
+      (e.target as HTMLDivElement).classList.add('active');
+
       const group = Number((e.target as HTMLDivElement).dataset.level) - 1;
       this.cardsList.innerHTML = '';
       this.renderCards(group, renderPageNumber);
+      this.renderPaginationBlock(group);
     }
   }
 
@@ -121,5 +149,59 @@ class BookController extends ApplicationContoller {
       }
     }
   }
+
+  async renderPaginationBlock(group: number) {
+    this.pagination.innerHTML = '';
+    for (let i = 1; i <= numberOfPagesInLevel; i += 1) {
+      const page = BookPageView.createElementByParams('p', 'pagination-element');
+
+      if (i === this.currentPage) {
+        page.classList.add('active');
+      }
+
+      page.innerText = `${i}`;
+      page.addEventListener('click', (e) => {
+        this.renderCards(group, i);
+
+        const pageItems = document.querySelectorAll('.pagination-element');
+        pageItems.forEach((item) => {
+          item.classList.remove('active');
+        });
+        (e.target as HTMLLIElement).classList.add('active');
+      });
+      this.pagination.append(page);
+    }
+  }
+
+  renderGameButtons() {
+    const sprintGameLink = BookPageView.createElementByParams('div', 'btn') as HTMLDivElement;
+    sprintGameLink.classList.add('btn_colored');
+    sprintGameLink.innerText = sprintGameName;
+    const iconSprint = BookPageView.createElementByParams('img', 'game-icon') as HTMLImageElement;
+    iconSprint.setAttribute('src', iconSprintSrc);
+    sprintGameLink.prepend(iconSprint);
+    const audioGameLink = BookPageView.createElementByParams('div', 'btn') as HTMLDivElement;
+    audioGameLink.classList.add('btn_colored');
+    audioGameLink.innerText = audioGameName;
+    const iconAudioGame = BookPageView.createElementByParams(
+      'img',
+      'game-icon',
+    ) as HTMLImageElement;
+    iconAudioGame.setAttribute('src', iconAudioGameSrc);
+    audioGameLink.prepend(iconAudioGame);
+    const extraGameLink = BookPageView.createElementByParams('div', 'btn') as HTMLDivElement;
+    extraGameLink.classList.add('btn_colored');
+    extraGameLink.innerText = extraGameName;
+    const iconExtraGame = BookPageView.createElementByParams(
+      'img',
+      'game-icon',
+    ) as HTMLImageElement;
+    iconExtraGame.setAttribute('src', iconExtraGameSrc);
+
+    extraGameLink.prepend(iconExtraGame);
+
+    this.gameButtons.append(extraGameLink, audioGameLink, sprintGameLink);
+  }
 }
+
 export default BookController;

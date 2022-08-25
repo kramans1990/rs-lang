@@ -5,30 +5,52 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link href="https://fonts.googleapis.com/css2?family=Raleway:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,300;1,400;1,500;1,600;1,700&display=swap" rel="stylesheet"> 
+  <link rel="shortcut icon" href="./assets/favicon.png" type="image/x-icon">
 
-  <title>Document</title>
+  <title>RS Lang</title>
 </head>
 <body>
-  <header>
-    <a class="main-page-link" href="#">Главная</a>
-    <a class="words-page-link" href="#">Слова</a>
-    <a class="book-page-link"  href="#">Учебник</a>
-    <a class="game-page-link" href="#">Игры</a>
-    <a class="stat-page-link" href="#">Статистика</a>
-    <a class="team-page-link"  href="#">Команда</a>
-    <a class="sign-in-page-link" href="#">Вход</a>
-    <a class="sign-up-page-link" href="#">Регистрация</a>
+  <header class="header container">
+    <a href="./" class="header__logo">
+        <img src="./assets/svg/rs_lang_logo.svg" alt="logo">
+    </a>
+    <nav class="header_nav">
+        <ul class="nav-list">
+            <li class="nav-list__item active main-page-link" id="words-page" href="#">Главная</li>
+            <li class="nav-list__item words-page-link" id="words-page"  href="#">Слова</li>
+            <li class="nav-list__item book-page-link" id="book-page"  href="#">Учебник</li>
+            <li class="nav-list__item game-page-link" id="game-page" href="#">Игры</li>
+            <li class="nav-list__item stat-page-link" id="stat-page" href="#">Статистика</li>
+            <li class="nav-list__item team-page-link" id="team-page"  href="#">Команда</li>
+            <li class="nav-list__item sign-in sign-in-page-link" id="auth-page" href="#">Вход</li>
+            <li class="nav-list__item sign-in sign-up-page-link" id="auth-page" href="#">Регистрация</li>
+        </ul>
+    </nav>
   </header>
-  <main class="main"></main>
+  <div class="main_wrapper">
+    <main class="main container"></main>
+  </div>
   <footer>
-    <a class="rss" href="https://rs.school/js-stage0/"></a>
-    <div class="githubs">
-      <p class="gh-logo"></p>
-      <a class="gh" href="https://github.com/kramans1990"><span>Roman Saksonov</span></a><span class="vertical-bar">&nbsp|&nbsp</span>
-      <a class="gh" href="https://github.com/TatianaRusak"><span>Tatiana Rusak</span></a><span class="vertical-bar">&nbsp|&nbsp</span>
-      <a class="gh" href="https://github.com/vl-fom"><span>Vladislav Fomenko</span></a>
+    <div class="footer__wrapper container">
+      <a class="rss" href="https://rs.school/js-stage0/"></a>
+  
+      <div class="footer__team">
+        <img src="./assets/svg/github-logo.svg" alt="github_logo" class="gh_logo">
+        <ul class="team__list">
+            <li class="team__member">
+                <a href="https://github.com/kramans1990">Raman Saksonau</a>
+            </li>
+            <li class="team__member">
+                <a href="https://github.com/TatianaRusak">Tatsiana Rusak</a>
+            </li>
+            <li class="team__member">
+                <a href="https://github.com/vl-fom">Vladislav Fomenko</a>
+            </li>
+        </ul>
+      </div>
+  
+      <div class="footer__year">2022</div>
     </div>
-    <span class="year">2022</span>
   </footer>
 </body>
 </html>

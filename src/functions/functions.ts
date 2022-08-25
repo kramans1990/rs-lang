@@ -35,6 +35,7 @@ function enableAudioBtns() {
     btn.classList.remove('disabled');
   });
 }
+
 /* prettier-ignore */
 
 export {

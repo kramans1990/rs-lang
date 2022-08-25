@@ -15,6 +15,12 @@ import {
   btnDiffText,
   btnLevelText,
   numberOfPagesInLevel,
+  sprintGameName,
+  audioGameName,
+  extraGameName,
+  iconSprintSrc,
+  iconAudioGameSrc,
+  iconExtraGameSrc,
 } from '../../utils/constants';
 import { disableAudioBtns, enableAudioBtns } from '../../functions/functions';
 
@@ -29,19 +35,19 @@ class BookController extends ApplicationContoller {
 
   cardsList: HTMLDivElement;
 
-  pagination: HTMLUListElement;
+  pagination: HTMLDivElement;
 
   currentPage: number;
+
+  gameButtons: HTMLDivElement;
 
   constructor() {
     super();
     this.pageView = new BookPageView();
     this.bookModel = new BookModel();
-    this.setView();
-    this.renderCards(renderGroupNumber, renderPageNumber);
-    this.renderLevelsBtns();
     this.currentPage = 1;
-    this.renderPaginationBlock(this.currentPage);
+
+    this.setView();
   }
 
   setView(): void {
@@ -50,7 +56,12 @@ class BookController extends ApplicationContoller {
     this.levels = this.pageView.levels;
     this.cardsList = this.pageView.cardsList;
     this.pagination = this.pageView.pagination;
+    this.gameButtons = this.pageView.gameButtons;
     this.currentPage = 1;
+    this.renderLevelsBtns();
+    this.renderCards(renderGroupNumber, renderPageNumber);
+    this.renderPaginationBlock(this.currentPage);
+    this.renderGameButtons();
   }
 
   async renderCards(group: number, page: number) {
@@ -158,5 +169,35 @@ class BookController extends ApplicationContoller {
       this.pagination.append(page);
     }
   }
+
+  renderGameButtons() {
+    const sprintGameLink = BookPageView.createElementByParams('div', 'btn') as HTMLDivElement;
+    sprintGameLink.classList.add('btn_colored');
+    sprintGameLink.innerText = sprintGameName;
+    const iconSprint = BookPageView.createElementByParams('img', 'game-icon') as HTMLImageElement;
+    iconSprint.src = iconSprintSrc;
+    sprintGameLink.prepend(iconSprint);
+    const audioGameLink = BookPageView.createElementByParams('div', 'btn') as HTMLDivElement;
+    audioGameLink.classList.add('btn_colored');
+    audioGameLink.innerText = audioGameName;
+    const iconAudioGame = BookPageView.createElementByParams(
+      'img',
+      'game-icon',
+    ) as HTMLImageElement;
+    iconAudioGame.src = iconAudioGameSrc;
+    audioGameLink.prepend(iconAudioGame);
+    const extraGameLink = BookPageView.createElementByParams('div', 'btn') as HTMLDivElement;
+    extraGameLink.classList.add('btn_colored');
+    extraGameLink.innerText = extraGameName;
+    const iconExtraGame = BookPageView.createElementByParams(
+      'img',
+      'game-icon',
+    ) as HTMLImageElement;
+    iconExtraGame.src = iconExtraGameSrc;
+    extraGameLink.prepend(iconExtraGame);
+
+    this.gameButtons.append(extraGameLink, audioGameLink, sprintGameLink);
+  }
 }
+
 export default BookController;

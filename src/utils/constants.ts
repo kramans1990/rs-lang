@@ -33,6 +33,8 @@ const btnLevelText = 'уровень ';
 const sprintGameName = 'Спринт';
 const audioGameName = 'Аудиовызов';
 const extraGameName = 'Экстра';
+const hardButtonText = 'Сложное';
+const doneButtonText = 'Изучено';
 
 export {
   signUpButtonText,
@@ -61,4 +63,6 @@ export {
   audioGameName,
   extraGameName,
   logOutText,
+  hardButtonText,
+  doneButtonText,
 };

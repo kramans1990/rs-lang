@@ -12,7 +12,7 @@ import {
   numberOfLevels,
   renderGroupNumber,
   renderPageNumber,
-  btnDiffText,
+  btnDiffText as btnHardText,
   btnLevelText,
   numberOfPagesInLevel,
   sprintGameName,
@@ -80,12 +80,16 @@ class BookController extends ApplicationContoller {
       btn.classList.add(`level-${i}`);
       btn.dataset.level = `${i}`;
 
+      if (i === this.currentPage) {
+        btn.classList.add('active');
+      }
+
       if (i === numberOfLevels) {
-        btn.innerText = btnDiffText;
+        btn.innerText = btnHardText;
       } else {
         btn.innerHTML = btnLevelText;
         const levelNumber = BookPageView.createElementByParams('span', 'level_number');
-        levelNumber.innerHTML = `${i}`;
+        levelNumber.innerHTML = `&nbsp${i}`;
         btn.append(levelNumber);
       }
       btn.addEventListener('click', (e): void => this.levelBtnHandler(e));
@@ -147,7 +151,6 @@ class BookController extends ApplicationContoller {
   }
 
   async renderPaginationBlock(group: number) {
-    // let pageNumber = 1;
     this.pagination.innerHTML = '';
     for (let i = 1; i <= numberOfPagesInLevel; i += 1) {
       const page = BookPageView.createElementByParams('p', 'pagination-element');
@@ -175,7 +178,7 @@ class BookController extends ApplicationContoller {
     sprintGameLink.classList.add('btn_colored');
     sprintGameLink.innerText = sprintGameName;
     const iconSprint = BookPageView.createElementByParams('img', 'game-icon') as HTMLImageElement;
-    iconSprint.src = iconSprintSrc;
+    iconSprint.setAttribute('src', iconSprintSrc);
     sprintGameLink.prepend(iconSprint);
     const audioGameLink = BookPageView.createElementByParams('div', 'btn') as HTMLDivElement;
     audioGameLink.classList.add('btn_colored');
@@ -184,7 +187,7 @@ class BookController extends ApplicationContoller {
       'img',
       'game-icon',
     ) as HTMLImageElement;
-    iconAudioGame.src = iconAudioGameSrc;
+    iconAudioGame.setAttribute('src', iconAudioGameSrc);
     audioGameLink.prepend(iconAudioGame);
     const extraGameLink = BookPageView.createElementByParams('div', 'btn') as HTMLDivElement;
     extraGameLink.classList.add('btn_colored');
@@ -193,7 +196,8 @@ class BookController extends ApplicationContoller {
       'img',
       'game-icon',
     ) as HTMLImageElement;
-    iconExtraGame.src = iconExtraGameSrc;
+    iconExtraGame.setAttribute('src', iconExtraGameSrc);
+
     extraGameLink.prepend(iconExtraGame);
 
     this.gameButtons.append(extraGameLink, audioGameLink, sprintGameLink);

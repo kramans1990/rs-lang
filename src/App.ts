@@ -29,7 +29,7 @@ class App {
     App.setController(controller);
   }
 
-  changeActivClass(e: Event) {
+  changeActiveClassForNavItem(e: Event) {
     const menuItems = document.querySelectorAll('.nav-list__item');
     menuItems.forEach((item) => {
       item.classList.remove('active');
@@ -45,7 +45,7 @@ class App {
       this.renderMainPage();
       const mainWrapper = document.querySelector('.main_wrapper') as HTMLDivElement;
       mainWrapper.style.backgroundColor = 'transparent';
-      this.changeActivClass(e);
+      this.changeActiveClassForNavItem(e);
     });
     //   document.querySelector('.words-page-link')?.addEventListener('click', (): void => {
     //     this.page = new WordsPage();
@@ -53,7 +53,7 @@ class App {
     document.querySelector('.book-page-link')?.addEventListener('click', (e): void => {
       const controller: ApplicationContoller = new BookController();
       App.setController(controller);
-      this.changeActivClass(e);
+      this.changeActiveClassForNavItem(e);
     });
     //   document.querySelector('.stat-page')?.addEventListener('click', (): void => {
     //   document.querySelector('.book-page-link')?.addEventListener('click', (): void => {

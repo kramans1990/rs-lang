@@ -48,17 +48,6 @@ body {
   background-position: center;
 }
 
-header {
-  height: 60px;
-  margin: 0 auto;
-  width: 100%;
-  background: transparent;
-}
-
-header a {
-  color: #ffffff;
-}
-
 main {
   background: transparent;
 }

@@ -39,9 +39,10 @@ class App {
     //   document.querySelector('.words-page-link')?.addEventListener('click', (): void => {
     //     this.page = new WordsPage();
     //   });
-    document.querySelector('.book-page-link')?.addEventListener('click', (): void => {
+    document.querySelector('.book-page-link')?.addEventListener('click', (e): void => {
       const controller: ApplicationContoller = new BookController();
       App.setController(controller);
+      (e.target as HTMLLIElement).classList.add('active');
     });
     //   document.querySelector('.stat-page')?.addEventListener('click', (): void => {
     //   document.querySelector('.book-page-link')?.addEventListener('click', (): void => {

@@ -84,6 +84,12 @@ class BookController extends ApplicationContoller {
 
   levelBtnHandler(e: MouseEvent) {
     if (e.target) {
+      const levelButtons = document.querySelectorAll('.level');
+      levelButtons.forEach((button) => {
+        button.classList.remove('active');
+      });
+      (e.target as HTMLDivElement).classList.add('active');
+
       const group = Number((e.target as HTMLDivElement).dataset.level) - 1;
       this.cardsList.innerHTML = '';
       this.renderCards(group, renderPageNumber);

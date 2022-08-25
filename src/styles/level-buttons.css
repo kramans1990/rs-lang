@@ -10,19 +10,22 @@
 }
 
 .level {
-  height: 40px;
+  width: 12%;
+  display: flex;
+  justify-content: center;
+  height: 50px;
   font-weight: 400;
-  font-size: 20px;
-  line-height: 25px;
+  font-size: 2rem;
+  line-height: 2.5rem;
   display: flex;
   align-items: center;
   text-align: center;
   text-transform: uppercase;
-  color: #FFFFFF;
+  color: #ffffff;
   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-  padding: 8px 15px;
   cursor: pointer;
   transition: all 0.3s;
+  user-select: none;
 }
 
 .level:hover {
@@ -34,18 +37,27 @@
   height: 100%;
 }
 
-.level span {
+.level.active {
+  padding: 20px 15px;
+  height: 100%;
+  background-color: #ffffff;
+  pointer-events: none;
+}
+
+.level_number {
+  font-family: "Arial", sans-serif;
   font-weight: 600;
   font-size: 30px;
 }
 
 .level-1 {
-  background: #CDC1A2;
-  border: 2px solid #CDC1A2;
+  background: #cdc1a2;
+  border: 2px solid #cdc1a2;
 }
 
-.level-1:hover {
-  color: #CDC1A2;
+.level-1:hover,
+.level-1.active {
+  color: #cdc1a2;
 }
 
 .level-2 {
@@ -53,17 +65,19 @@
   border: 2px solid var(--color-gray-medium);
 }
 
-.level-2:hover {
+.level-2:hover,
+.level-2.active {
   color: var(--color-gray-medium);
 }
 
 .level-3 {
-  background: #FFCB05;
-  border: 2px solid #FFCB05;
+  background: #ffcb05;
+  border: 2px solid #ffcb05;
 }
 
-.level-3:hover {
-  color: #FFCB05;
+.level-3:hover,
+.level-3.active {
+  color: #ffcb05;
 }
 
 .level-4 {
@@ -71,7 +85,8 @@
   border: 2px solid var(--color-main);
 }
 
-.level-4:hover {
+.level-4:hover,
+.level-4.active {
   color: var(--color-main);
 }
 
@@ -80,7 +95,8 @@
   border: 2px solid #725747;
 }
 
-.level-5:hover {
+.level-5:hover,
+.level-5.active {
   color: #725747;
 }
 
@@ -89,7 +105,8 @@
   border: 2px solid #494343;
 }
 
-.level-6:hover {
+.level-6:hover,
+.level-6.active {
   color: #494343;
 }
 
@@ -98,6 +115,7 @@
   border: 2px solid var(--color-accent);
 }
 
-.level-7:hover {
+.level-7:hover,
+.level-7.active {
   color: var(--color-accent);
 }

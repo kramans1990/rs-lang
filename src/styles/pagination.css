@@ -18,6 +18,12 @@
   line-height: 2.5rem;
   text-align: center;
   color: var(--color-gray-light);
+  user-select: none;
+  transition: all 0.2s;
+}
+
+.pagination-element:hover {
+  color: #725747;
 }
 
 .pagination-element.active {
@@ -26,6 +32,8 @@
   font-size: 3rem;
   text-decoration-line: underline;
   color: #725747;
+  pointer-events: none;
+  cursor: auto;
 }
 
 .pagination-element.done {

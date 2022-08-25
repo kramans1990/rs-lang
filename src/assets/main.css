@@ -176,9 +176,6 @@ header {
 
 .footer {
     margin-top: auto;
-}
-
-.footer_main {
     display: flex;
     flex-direction: column;
     background-color: rgba(43, 31, 31, 0.5);
@@ -192,13 +189,6 @@ header {
     align-items: center;
 }
 
-.footer_all-pages {
-    min-height: 200px;
-    background-image: url("../assets/bg_footer_2.png");
-    background-size: cover;
-    padding-top: 50px;
-    background-color: transparent;
-}
 .game__buttons {
     display: flex;
     justify-content: start;
@@ -212,7 +202,7 @@ header {
     padding: 8px 0;
     line-height: 3.7rem;
     box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-    user-select: none
+    user-select: none;
 }
 
 .rs-logo {

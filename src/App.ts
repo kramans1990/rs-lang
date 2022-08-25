@@ -75,7 +75,15 @@ class App {
     App.setController(controller);
   }
 
-  addEventListeners(): void {
+  changeActiveClassForNavItem(e: Event): void {
+    const menuItems = document.querySelectorAll('.nav-list__item') as NodeListOf<HTMLLIElement>;
+    menuItems.forEach((item: HTMLLIElement): void => {
+      item.classList.remove('active');
+    });
+    (e.target as HTMLLIElement).classList.add('active');
+  }
+
+  addEventListeners() {
     window.addEventListener('load', (): void => {
       App.renderMainPage();
       if (getDataFromLocalStorage('rs-lang-user')) {
@@ -84,9 +92,18 @@ class App {
       }
     });
     document.querySelector('.main-page-link')?.addEventListener('click', App.renderMainPage);
-    document.querySelector('.book-page-link')?.addEventListener('click', (): void => {
+    document.querySelector('.main-page-link')?.addEventListener('click', (e): void => {
+      const mainWrapper = document.querySelector('.main_wrapper') as HTMLDivElement;
+      mainWrapper.style.backgroundColor = 'transparent';
+      this.changeActiveClassForNavItem(e);
+    });
+    //   document.querySelector('.words-page-link')?.addEventListener('click', (): void => {
+    //     this.page = new WordsPage();
+    //   });
+    document.querySelector('.book-page-link')?.addEventListener('click', (e): void => {
       const controller: ApplicationContoller = new BookController();
       App.setController(controller);
+      this.changeActiveClassForNavItem(e);
     });
     document.querySelector('.sign-in-page-link')?.addEventListener('click', App.renderAuthPage);
     //   document.querySelector('.words-page-link')?.addEventListener('click', (): void => {

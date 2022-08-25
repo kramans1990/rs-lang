@@ -1,5 +1,6 @@
 const signInButtonText = 'Войти';
 const upperSignInButtonText = 'ВОЙТИ';
+const logOutText = 'Выйти';
 const signInTitle = 'Следи за статистикой в своем аккаунте';
 const signUpTitle = 'Создай свой аккаунт';
 
@@ -59,4 +60,5 @@ export {
   sprintGameName,
   audioGameName,
   extraGameName,
+  logOutText,
 };

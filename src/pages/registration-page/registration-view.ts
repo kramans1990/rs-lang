@@ -10,6 +10,9 @@ import {
   upperSignUpButtonText,
 } from '../../utils/constants';
 
+/* eslint-disable import/no-cycle */
+import App from '../../App';
+
 class RegistrationView extends ApplicationView {
   view: HTMLDivElement;
 
@@ -50,6 +53,7 @@ class RegistrationView extends ApplicationView {
     const haveAccountButton = document.createElement('button');
     haveAccountButton.classList.add('have-account-button');
     haveAccountButton.innerText = signInButtonText;
+    haveAccountButton.addEventListener('click', App.renderAuthPage);
     haveAccount.append(haveAccountSpan, haveAccountButton);
     this.view.append(title, nameInput, emailInput, passwordInput, signUpButton, haveAccount);
   }

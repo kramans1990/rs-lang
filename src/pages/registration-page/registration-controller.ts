@@ -1,17 +1,17 @@
-import { isValidEmail, isValidPassword, saveDataToLocalStorage } from '../../functions/functions';
+import { isValidEmail, isValidPassword } from '../../functions/functions';
 import { invalidEmail, invalidPassword } from '../../utils/constants';
 import { ISignIn, IUser } from '../../types/interfaces';
-import RegistrationView from './registration-view';
-import Api from '../../Api';
 import ApplicationContoller from '../application-controller';
+import RegModel from './registration-model';
+
 /* eslint-disable import/no-cycle */
+import RegistrationView from './registration-view';
 import App from '../../App';
-import AuthController from '../auth-page/auth-controller';
 
 class RegistrationController extends ApplicationContoller {
   regPageView: RegistrationView;
 
-  api: Api;
+  regModel: RegModel;
 
   constructor() {
     super();
@@ -19,16 +19,13 @@ class RegistrationController extends ApplicationContoller {
   }
 
   setView(): void {
-    this.api = new Api();
+    this.regModel = new RegModel();
     this.pageView = new RegistrationView();
-    // this.view = this.regPageView.view;
     this.addListeners();
   }
 
-  /* eslint-disable no-alert */
-
   async signUpUser(user: IUser): Promise<void> {
-    await this.api
+    await this.regModel
       .createUser(user)
       .then((result: Response): string | IUser => {
         if (result.ok) {
@@ -36,33 +33,22 @@ class RegistrationController extends ApplicationContoller {
         }
         return `${result.status} ${result.statusText}`;
       })
-      .then(async (data: string | IUser): Promise<string | IUser> => {
+      .then(async (data: string | IUser): Promise<void> => {
         if (typeof data === 'object') {
-          this.api.signInUser(user).then((result: Response): string | ISignIn => {
-            if (result.ok) {
-              return result.json() as unknown as ISignIn;
-            }
-            return `${result.status} ${result.statusText}`;
-          });
+          await this.regModel
+            .signInUser(user)
+            .then((result: Response): string | ISignIn => {
+              if (result.ok) {
+                return result.json() as unknown as ISignIn;
+              }
+              return `${result.status} ${result.statusText}`;
+            })
+            .then((userData: string | ISignIn): void => App.signIn(userData));
         }
-        return data;
-      })
-      .then((data: string | IUser): void => {
-        if (typeof data === 'object') {
-          const userData = data;
-          saveDataToLocalStorage('rs-lang-user', JSON.stringify(userData));
-          // const wordsPageButton = document.querySelector<HTMLButtonElement>('.words-page');
-          // const click = new MouseEvent('click');
-          // wordsPageButton?.dispatchEvent(click);
-          App.setController(new AuthController());
-          // TODO: скрывать кнопку входа
-          // заменить алерт на что-то человеческое
-
-          return;
-        }
-        alert(data);
       });
   }
+
+  /* eslint-disable no-alert */
 
   addListeners(): void {
     this.pageView.view

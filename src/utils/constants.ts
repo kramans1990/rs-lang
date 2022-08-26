@@ -31,7 +31,7 @@ const numberOfLevels = 7; // 6 + 1(все сложные слова)
 const renderGroupNumber = 0;
 const renderPageNumber = 0;
 const numberOfPagesInLevel = 30;
-const btnDiffText = 'сложные';
+const btnHardText = 'сложные';
 const btnLevelText = 'уровень ';
 const sprintGameName = 'Спринт';
 const audioGameName = 'Аудиовызов';
@@ -64,7 +64,7 @@ export {
   numberOfLevels,
   renderGroupNumber,
   renderPageNumber,
-  btnDiffText,
+  btnHardText,
   btnLevelText,
   sprintGameName,
   audioGameName,

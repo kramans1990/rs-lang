@@ -12,7 +12,7 @@ import {
   numberOfLevels,
   renderGroupNumber,
   renderPageNumber,
-  btnDiffText as btnHardText,
+  btnHardText,
   btnLevelText,
   numberOfPagesInLevel,
   sprintGameName,

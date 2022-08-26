@@ -18,6 +18,10 @@ function getDataFromLocalStorage(name: string): ISignIn | null {
   return localStorage.getItem(name) !== null ? JSON.parse(localStorage.getItem(name) || '') : null;
 }
 
+function removeDataFromLocalStorage(name: string): void {
+  localStorage.removeItem(name);
+}
+
 function disableAudioBtns() {
   const audioBtns = document.querySelectorAll('.audio-icon');
   audioBtns.forEach((btn) => {
@@ -31,6 +35,7 @@ function enableAudioBtns() {
     btn.classList.remove('disabled');
   });
 }
+
 /* prettier-ignore */
 
 export {
@@ -40,4 +45,5 @@ export {
   getDataFromLocalStorage,
   disableAudioBtns,
   enableAudioBtns,
+  removeDataFromLocalStorage,
 };

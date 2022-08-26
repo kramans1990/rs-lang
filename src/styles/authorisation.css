@@ -12,7 +12,14 @@
 .sign-in-button,
 .sign-up-button {
   font-size: 21px;
-  text-align: 25px;
+}
+
+.auth-title,
+.reg-title,
+.have-not-yet-account-span,
+.have-account-span {
+  margin-bottom: 1em;
+  color: #ffffff;
 }
 
 .auth-title {

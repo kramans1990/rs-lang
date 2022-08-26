@@ -6,13 +6,13 @@ import '../../styles/pagination.css';
 import ApplicationContoller from '../application-controller';
 import { Word } from '../../types/Word';
 import { BookPageView } from './book-view';
-import Card from '../../types/CardView';
+import CardView from './card-view';
 import BookModel from './book-model';
 import {
   numberOfLevels,
   renderGroupNumber,
   renderPageNumber,
-  btnDiffText as btnHardText,
+  btnHardText,
   btnLevelText,
   numberOfPagesInLevel,
   sprintGameName,
@@ -68,7 +68,7 @@ class BookController extends ApplicationContoller {
     this.cardsList.innerHTML = '';
     const words = await this.bookModel.getWords(group, page);
     words.forEach((wordInfo: Word) => {
-      const card = new Card(wordInfo);
+      const card = new CardView(wordInfo);
       this.cardsList.append(card.view);
       card.view.addEventListener('click', BookController.setEventListenersForCard);
     });

@@ -1,5 +1,8 @@
+const baseUrl = 'https://rs-lang-team112.herokuapp.com';
+
 const signInButtonText = 'Войти';
 const upperSignInButtonText = 'ВОЙТИ';
+const logOutText = 'Выйти';
 const signInTitle = 'Следи за статистикой в своем аккаунте';
 const signUpTitle = 'Создай свой аккаунт';
 
@@ -28,16 +31,19 @@ const numberOfLevels = 7; // 6 + 1(все сложные слова)
 const renderGroupNumber = 0;
 const renderPageNumber = 0;
 const numberOfPagesInLevel = 30;
-const btnDiffText = 'сложные';
+const btnHardText = 'сложные';
 const btnLevelText = 'уровень ';
 const sprintGameName = 'Спринт';
 const audioGameName = 'Аудиовызов';
 const extraGameName = 'Экстра';
-const iconSprintSrc = '../../assets/svg/icon_sprint.svg';
-const iconAudioGameSrc = '../../assets/svg/icon_audio_game.svg';
-const iconExtraGameSrc = '../../assets/svg/icon_audio_game.svg';
+const hardButtonText = 'Сложное';
+const doneButtonText = 'Изучено';
+const iconSprintSrc = './assets/svg/icon_sprint.svg';
+const iconAudioGameSrc = './assets/svg/icon_audio_game.svg';
+const iconExtraGameSrc = './assets/svg/icon_audio_game.svg';
 
 export {
+  baseUrl,
   signUpButtonText,
   signInButtonText,
   signInTitle,
@@ -58,11 +64,14 @@ export {
   numberOfLevels,
   renderGroupNumber,
   renderPageNumber,
-  btnDiffText,
+  btnHardText,
   btnLevelText,
   sprintGameName,
   audioGameName,
   extraGameName,
+  logOutText,
+  hardButtonText,
+  doneButtonText,
   numberOfPagesInLevel,
   iconSprintSrc,
   iconAudioGameSrc,

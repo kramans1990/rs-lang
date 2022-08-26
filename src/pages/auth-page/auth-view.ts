@@ -1,3 +1,5 @@
+/* eslint-disable import/no-cycle */
+import App from '../../App';
 import '../../styles/authorisation.css';
 import {
   email,
@@ -42,6 +44,7 @@ class AuthView extends ApplicationView {
     const haveNotYetAccountButton = document.createElement('button');
     haveNotYetAccountButton.classList.add('have-not-yet-account-button');
     haveNotYetAccountButton.innerText = signUpButtonText;
+    haveNotYetAccountButton.addEventListener('click', App.renderRegPage);
     haveNotYetAccount.append(haveNotYetAccountSpan, haveNotYetAccountButton);
     this.view.append(title, emailInput, passwordInput, signInButton, haveNotYetAccount);
   }

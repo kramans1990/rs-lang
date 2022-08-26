@@ -1,11 +1,12 @@
+/* eslint-disable import/no-cycle */
 import AuthView from './auth-view';
-import Api from '../../Api';
+import AuthModel from './auth-model';
 import { ISignIn, IUser } from '../../types/interfaces';
-import { saveDataToLocalStorage } from '../../functions/functions';
 import ApplicationContoller from '../application-controller';
+import App from '../../App';
 
 class AuthController extends ApplicationContoller {
-  api: Api;
+  authModel: AuthModel;
 
   constructor() {
     super();
@@ -13,7 +14,7 @@ class AuthController extends ApplicationContoller {
   }
 
   setView(): void {
-    this.api = new Api();
+    this.authModel = new AuthModel();
     this.pageView = new AuthView();
     this.addListeners();
   }
@@ -21,7 +22,7 @@ class AuthController extends ApplicationContoller {
   /* eslint-disable no-alert */
 
   async signInUser(user: IUser): Promise<void> {
-    await this.api
+    await this.authModel
       .signInUser(user)
       .then((result: Response): string | ISignIn => {
         if (result.ok) {
@@ -29,19 +30,7 @@ class AuthController extends ApplicationContoller {
         }
         return `${result.status} ${result.statusText}`;
       })
-      .then((data: string | ISignIn): void => {
-        if (typeof data === 'object') {
-          const userData = data;
-          saveDataToLocalStorage('rs-lang-user', JSON.stringify(userData));
-          const mainPageButton = document.querySelector<HTMLButtonElement>('.main-page-link');
-          const click = new MouseEvent('click');
-          mainPageButton?.dispatchEvent(click);
-          // TODO: скрывать кнопку входа
-          // заменить алерт на что-то человеческое
-          return;
-        }
-        alert(data);
-      });
+      .then((data: string | ISignIn): void => App.signIn(data));
   }
 
   addListeners(): void {

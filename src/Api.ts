@@ -7,10 +7,13 @@ class Api {
 
   signIn: string;
 
+  words: string;
+
   constructor() {
     this.baseUrl = 'https://rs-lang-team112.herokuapp.com';
     this.users = `${this.baseUrl}/users`;
     this.signIn = `${this.baseUrl}/signin`;
+    this.words = `${this.baseUrl}/words`;
   }
 
   async createUser(user: IUser): Promise<Response> {

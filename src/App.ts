@@ -1,5 +1,6 @@
 /* eslint-disable import/no-cycle */
 import ApplicationContoller from './pages/application-controller';
+import AudioController from './pages/audio-call-page/audio-call-controller';
 import AuthController from './pages/auth-page/auth-controller';
 import RegistrationController from './pages/registration-page/registration-controller';
 
@@ -32,9 +33,10 @@ class App {
     //   document.querySelector('.stat-page')?.addEventListener('click', (): void => {
     //     this.page = new StatPage();
     //   });
-    //   document.querySelector('.game-page')?.addEventListener('click', (): void => {
-    //     this.page = new GamePage();
-    //   });
+    document.querySelector('.game-page')?.addEventListener('click', (): void => {
+      const controller: ApplicationContoller = new AudioController();
+      App.setController(controller);
+    });
     document.querySelector('.sign-in-page')?.addEventListener('click', (): void => {
       const controller: ApplicationContoller = new AuthController();
       App.setController(controller);

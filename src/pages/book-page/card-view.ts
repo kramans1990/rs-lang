@@ -1,14 +1,13 @@
-import { Word } from './Word';
-import Api from '../Api';
-import { doneButtonText, hardButtonText } from '../utils/constants';
+import { Word } from '../../types/Word';
+import { baseUrl, doneButtonText, hardButtonText } from '../../utils/constants';
 
-class Card extends Api {
+class CardView {
   view: HTMLDivElement;
 
-  static baseUrl: string;
+  baseUrl: string;
 
   constructor(wordInfo: Word) {
-    super();
+    this.baseUrl = baseUrl;
     this.view = document.createElement('div');
     this.view.classList.add('card');
     this.view.id = wordInfo.id;
@@ -106,4 +105,4 @@ class Card extends Api {
   }
 }
 
-export default Card;
+export default CardView;

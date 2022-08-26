@@ -1,3 +1,5 @@
+const baseUrl = 'https://rs-lang-team112.herokuapp.com';
+
 const signInButtonText = 'Войти';
 const upperSignInButtonText = 'ВОЙТИ';
 const logOutText = 'Выйти';
@@ -41,6 +43,7 @@ const iconAudioGameSrc = './assets/svg/icon_audio_game.svg';
 const iconExtraGameSrc = './assets/svg/icon_audio_game.svg';
 
 export {
+  baseUrl,
   signUpButtonText,
   signInButtonText,
   signInTitle,

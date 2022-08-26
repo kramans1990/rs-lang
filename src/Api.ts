@@ -1,5 +1,6 @@
 import { IUser } from './types/interfaces';
 import { Word } from './types/Word';
+import { baseUrl } from './utils/constants';
 
 class Api {
   baseUrl: string;
@@ -11,7 +12,7 @@ class Api {
   words: string;
 
   constructor() {
-    this.baseUrl = 'https://rs-lang-team112.herokuapp.com';
+    this.baseUrl = baseUrl;
     this.users = `${this.baseUrl}/users`;
     this.signIn = `${this.baseUrl}/signin`;
     this.words = `${this.baseUrl}/words`;

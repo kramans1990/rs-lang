@@ -36,7 +36,7 @@ class Card extends Api {
     const wordText = document.createElement('p');
     const word = document.createElement('span');
     word.classList.add('word__english');
-    word.innerText = wordInfo.word;
+    word.innerText = `${wordInfo.word} `;
     const wordTranscription = document.createElement('span');
     wordTranscription.classList.add('word__transcription');
     wordTranscription.innerText = wordInfo.transcription;

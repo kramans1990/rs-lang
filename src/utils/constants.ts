@@ -36,9 +36,9 @@ const audioGameName = 'Аудиовызов';
 const extraGameName = 'Экстра';
 const hardButtonText = 'Сложное';
 const doneButtonText = 'Изучено';
-const iconSprintSrc = '../../assets/svg/icon_sprint.svg';
-const iconAudioGameSrc = '../../assets/svg/icon_audio_game.svg';
-const iconExtraGameSrc = '../../assets/svg/icon_audio_game.svg';
+const iconSprintSrc = './assets/svg/icon_sprint.svg';
+const iconAudioGameSrc = './assets/svg/icon_audio_game.svg';
+const iconExtraGameSrc = './assets/svg/icon_audio_game.svg';
 
 export {
   signUpButtonText,

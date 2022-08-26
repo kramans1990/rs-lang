@@ -1,85 +1,299 @@
 @font-face {
   font-family: Raleway;
-  src: url("../assets/fonts/static/Raleway-Regular.ttf") format('truetype');
+  src: url("../assets/fonts/static/Raleway-Regular.ttf") format("truetype");
   font-weight: normal;
   font-style: normal;
 }
 
+@font-face {
+  font-family: Raleway;
+  src: url("../assets/fonts/static/Raleway-Bold.ttf") format("truetype");
+  font-weight: bold;
+  font-style: normal;
+}
+
+:root {
+  --color-main: #ec990e;
+  --color-medium: #f2b857;
+  --color-accent: #ae312b;
+  --color-gray-light: #c7bcab;
+  --color-gray-medium: #b59565;
+  --color-dark: #494343;
+
+  font-size: 10px;
+}
+
 * {
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+  font-family: "Raleway", sans-serif;
+  font-style: normal;
   box-sizing: border-box;
 }
 
 html {
   height: 100%;
+  overflow: auto;
+  width: 100vw;
+  overflow-x: hidden;
 }
 
 body {
-  margin: 0;
+  margin: 0 auto;
+  width: 100%;
   min-height: 100%;
   display: grid;
   grid-template-rows: auto 1fr auto;
-  font-family: Raleway;
+  background-image: url("../assets/img/bg_main.jpg");
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+}
+
+.container {
+  width: 80%;
+  margin: 0 auto;
 }
 
 header {
-  height: 60px;
-  margin: 0 auto;
-  width: 100%;
-  background-image: linear-gradient(315deg, #d7e4f5 0%, #bacae6 74%);
-}
-
-main {
-  background-color: #ffffff;  
-}
-
-footer {
   display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 80px;
+  width: 100%;
+  margin: 0 auto;
+}
+
+.header__logo img {
+  width: 130px;
+  height: auto;
+}
+
+.nav-list {
+  display: flex;
+  justify-content: flex-end;
+  flex-direction: row;
+  align-items: flex-end;
+  list-style-type: none;
+  gap: 30px;
+}
+
+.nav-list__item {
+  padding-bottom: 6px;
+  font-weight: 800;
+  font-size: 1.8rem;
+  line-height: 1.8rem;
+  letter-spacing: 1.275px;
+  color: #ffffff;
+  text-transform: uppercase;
+  border-bottom: solid 3px var(--color-gray-light);
+  cursor: pointer;
+  transition: all 0.3s;
+  user-select: none;
+}
+
+.nav-list__item.active {
+  color: #c7bcab;
+  border-bottom: solid 3px var(--color-main);
+  pointer-events: none;
+}
+
+.nav-list__item:hover {
+  border-bottom: solid 3px var(--color-main);
+}
+
+.nav-list__item:last-of-type {
+  border-bottom: none;
+}
+
+.sign-in {
+  padding: 6px 30px;
+  background-color: var(--color-main);
+}
+
+.sign-in:hover {
+  border-top-left-radius: 8px;
+}
+
+.sign-in:active {
+  scale: 96%;
+}
+
+.intro {
+  display: flex;
+  flex-direction: column;
+  /* justify-content: space-around; */
+  /* margin-top: 80px; */
+  max-width: 60%;
+}
+
+.h1 {
+  font-weight: 900;
+  font-size: 6rem;
+  line-height: 10rem;
+  color: #ffffff;
   flex-direction: row;
   justify-content: space-around;
   align-items: center;
   height: 60px;
-  background: linear-gradient(315deg, #ff4e00 0%, #ec9f05 74%); 
   margin: 0 auto;
   width: 100%;
-  font-size: 1em;
 }
 
-footer a {
+.intro__text p {
+  /* margin-top: 16px; */
+  font-weight: 500;
+  font-size: 1.8rem;
+  line-height: 2.6rem;
   color: #ffffff;
-  transition: 0.5s;
-  user-select: none;
-  text-decoration: none;
-  cursor: pointer;
 }
 
-.githubs {
+.footer {
+  margin-top: auto;
+}
+
+.footer_main {
+  display: flex;
+  flex-direction: column;
+  background-color: rgba(43, 31, 31, 0.5);
+}
+
+footer {
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
+.footer__wrapper {
+  height: 50px;
   display: flex;
   flex-direction: row;
-  height: 60px;
+  justify-content: space-between;
   align-items: center;
 }
 
 .rss {
   width: 100px;
-  height: 30px;
-  background: no-repeat center url("../assets/rs_school_js.svg");
+  height: 40px;
+  background: no-repeat center url("../assets/svg/rs_school_js.svg");
   background-size: contain;
   filter: invert(1);
 }
 
-.gh, 
-.vertical-bar,
-.year {
+.footer__team {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  gap: 0;
+  align-items: center;
+}
+
+.team__list {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  list-style-type: none;
+  color: #ffffff;
+  gap: 0;
+}
+
+.team__member a {
+  padding: 0 16px;
+  font-weight: 500;
+  font-size: 1.6rem;
+  line-height: 2.8rem;
+  color: #ffffff;
+  border-right: solid 1px #ffffff;
+  text-decoration: none;
+}
+
+.team__member a:hover {
+  text-decoration: underline;
+}
+
+.team__member:last-of-type a {
+  border-right: none;
+}
+
+.footer__year {
+  font-weight: 400;
   font-size: 30px;
+  line-height: 0px;
   color: #ffffff;
 }
 
 .gh-logo {
   width: 50px;
   height: 50px;
-  background: center url("../assets/GitHub-Mark/PNG/GitHub-Mark-32px.png") no-repeat;
 }
 
-.year {
+.game__buttons {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 38px;
+  gap: 50px;
+}
+
+.game__buttons .btn {
+  display: flex;
+  justify-content: center;
+  height: 52px;
+  padding: 8px 30px;
+  line-height: 3.7rem;
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
   user-select: none;
+}
+
+.game-icon {
+  height: 100%;
+  margin-right: 15px;
+}
+
+.rs-logo {
+  width: 90px;
+  height: auto;
+}
+
+.gh_logo {
+  width: 32px;
+  height: 32px;
+}
+.footer__team {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  gap: 0;
+  align-items: center;
+}
+.team__list {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  list-style-type: none;
+  color: #ffffff;
+  gap: 0;
+}
+
+.team__member a {
+  padding: 0 16px;
+  font-weight: 500;
+  font-size: 1.6rem;
+  line-height: 2.8rem;
+  color: #ffffff;
+  border-right: solid 1px #ffffff;
+  text-decoration: none;
+}
+
+.team__member a:hover {
+  text-decoration: underline;
+}
+
+.team__member:last-of-type a {
+  border-right: none;
+}
+
+.footer__year {
+  font-weight: 400;
+  font-size: 30px;
+  line-height: 0px;
+  color: #ffffff;
 }

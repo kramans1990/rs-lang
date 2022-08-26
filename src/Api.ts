@@ -1,4 +1,5 @@
 import { IUser } from './types/interfaces';
+import { Word } from './types/Word';
 
 class Api {
   baseUrl: string;
@@ -50,6 +51,46 @@ class Api {
       method: 'DELETE',
     });
     return response;
+  }
+
+  async getWords(group: number, page: number): Promise<Word[]> {
+    try {
+      const responce = await fetch(`${this.words}?group=${group}&page=${page}`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+      const cards = await responce.json();
+      return cards;
+    } catch {
+      throw new Error();
+    }
+  }
+
+  async getWordsForLevel(group: number): Promise<Word[]> {
+    try {
+      const responce = await fetch(`${this.words}?group=${group}`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+      const cards = await responce.json();
+      return cards;
+    } catch {
+      throw new Error();
+    }
+  }
+
+  async getOneWord(id: number): Promise<Word> {
+    try {
+      const responce = await fetch(`${this.words}/${id}`);
+      const card = await responce.json();
+      return card;
+    } catch {
+      throw new Error();
+    }
   }
 }
 

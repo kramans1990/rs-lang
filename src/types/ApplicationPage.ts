@@ -1,4 +1,4 @@
-export abstract class ApplicationPage {
+abstract class ApplicationPage {
   view: HTMLDivElement;
 
   constructor() {
@@ -7,4 +7,5 @@ export abstract class ApplicationPage {
 
   abstract setView(): void;
 }
+
 export default ApplicationPage;

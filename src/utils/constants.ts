@@ -14,6 +14,29 @@ const haveAccountText = 'Уже есть аккаунт?';
 const invalidEmail = 'Invalid email';
 const invalidPassword = 'Password should contain digits, letters or both';
 
+/* prettier-ignore */
+
+const mainPageText = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco.';
+
+/* prettier-ignore */
+
+const rsLang = 'RS Lang';
+const learnButtonText = 'Учиться';
+const playButtonText = 'Играть';
+
+const numberOfLevels = 7; // 6 + 1(все сложные слова)
+const renderGroupNumber = 0;
+const renderPageNumber = 0;
+const numberOfPagesInLevel = 30;
+const btnDiffText = 'сложные';
+const btnLevelText = 'уровень ';
+const sprintGameName = 'Спринт';
+const audioGameName = 'Аудиовызов';
+const extraGameName = 'Экстра';
+const iconSprintSrc = '../../assets/svg/icon_sprint.svg';
+const iconAudioGameSrc = '../../assets/svg/icon_audio_game.svg';
+const iconExtraGameSrc = '../../assets/svg/icon_audio_game.svg';
+
 export {
   signUpButtonText,
   signInButtonText,
@@ -28,4 +51,20 @@ export {
   name,
   upperSignUpButtonText,
   upperSignInButtonText,
+  mainPageText,
+  rsLang,
+  learnButtonText,
+  playButtonText,
+  numberOfLevels,
+  renderGroupNumber,
+  renderPageNumber,
+  btnDiffText,
+  btnLevelText,
+  sprintGameName,
+  audioGameName,
+  extraGameName,
+  numberOfPagesInLevel,
+  iconSprintSrc,
+  iconAudioGameSrc,
+  iconExtraGameSrc,
 };

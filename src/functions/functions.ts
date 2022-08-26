@@ -1,6 +1,6 @@
 /* eslint-disable no-useless-escape */
 
-import { ISignIn } from '../types/interfaces';
+import { ISignIn, IPageInfo } from '../types/interfaces';
 
 function isValidEmail(email: string): boolean {
   return !!email.match(/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/g); // validation for email
@@ -14,7 +14,7 @@ function saveDataToLocalStorage(name: string, data: string): void {
   localStorage.setItem(name, data);
 }
 
-function getDataFromLocalStorage(name: string): ISignIn | null {
+function getDataFromLocalStorage(name: string): (ISignIn | IPageInfo) | null {
   return localStorage.getItem(name) !== null ? JSON.parse(localStorage.getItem(name) || '') : null;
 }
 

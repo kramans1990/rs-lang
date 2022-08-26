@@ -4,7 +4,7 @@ import ApplicationContoller from './pages/application-controller';
 import AuthController from './pages/auth-page/auth-controller';
 import RegistrationController from './pages/registration-page/registration-controller';
 import BookController from './pages/book-page/book-controller';
-import { ISignIn } from './types/interfaces';
+import { ISignIn, IPageInfo } from './types/interfaces';
 import {
   getDataFromLocalStorage,
   removeDataFromLocalStorage,
@@ -19,6 +19,8 @@ class App {
 
   static controller: ApplicationContoller;
 
+  static pageInfo: IPageInfo;
+
   static setController(controller: ApplicationContoller) {
     App.controller = controller;
     App.main = document.querySelector('.main');
@@ -31,6 +33,9 @@ class App {
   /* eslint-disable class-methods-use-this */
   start(): void {
     this.addEventListeners();
+    window.onbeforeunload = () => {
+      saveDataToLocalStorage('pageInfo', JSON.stringify(App.pageInfo));
+    };
   }
 
   /* eslint-disable no-alert */
@@ -84,11 +89,23 @@ class App {
     App.changeActiveClassForNavItemByElement(mainButton);
   }
 
-  static renderAuthPage(e: Event): void {
+  static renderBookPage(e?: Event) {
+    const controller: ApplicationContoller = new BookController();
+    App.setController(controller);
+    if (e) {
+      App.changeActiveClassForNavItemByEvent(e);
+    }
+    App.pageInfo = { pageName: 'bookPage' };
+  }
+
+  static renderAuthPage(e?: Event): void {
     const controller: ApplicationContoller = new AuthController();
     App.setController(controller);
-    App.changeActiveClassForNavItemByEvent(e);
+    if (e) {
+      App.changeActiveClassForNavItemByEvent(e);
+    }
     App.makeMainTransparentAgain();
+    App.pageInfo = { pageName: 'authPage' };
   }
 
   static renderRegPage(): void {
@@ -103,12 +120,34 @@ class App {
 
   addEventListeners() {
     window.addEventListener('load', (): void => {
-      App.renderMainPage();
+      if (getDataFromLocalStorage('pageInfo')) {
+        const pageInfo = getDataFromLocalStorage('pageInfo') as IPageInfo;
+        const { pageName } = pageInfo;
+
+        switch (pageName) {
+          case 'bookPage':
+            App.renderBookPage();
+            App.changeActiveClassForNavItemByElement(
+              document.querySelector('.book-page-link') as HTMLElement,
+            );
+            break;
+          case 'authPage':
+            App.renderAuthPage();
+            App.changeActiveClassForNavItemByElement(
+              document.querySelector('.sign-in-page-link') as HTMLElement,
+            );
+            break;
+          default:
+            App.renderMainPage();
+            break;
+        }
+      }
       if (getDataFromLocalStorage('rs-lang-user')) {
         const user = getDataFromLocalStorage('rs-lang-user') as ISignIn;
         App.signIn(user);
       }
     });
+
     document.querySelector('.main-page-link')?.addEventListener('click', App.renderMainPage);
     // document.querySelector('.main-page-link')?.addEventListener('click', (e: Event): void => {
     //   const mainWrapper = document.querySelector('.main_wrapper') as HTMLDivElement;
@@ -119,11 +158,8 @@ class App {
     //   document.querySelector('.words-page-link')?.addEventListener('click', (): void => {
     //     this.page = new WordsPage();
     //   });
-    document.querySelector('.book-page-link')?.addEventListener('click', (e: Event): void => {
-      const controller: ApplicationContoller = new BookController();
-      App.setController(controller);
-      App.changeActiveClassForNavItemByEvent(e);
-    });
+    document.querySelector('.book-page-link')?.addEventListener('click', App.renderBookPage);
+
     document.querySelector('.sign-in-page-link')?.addEventListener('click', App.renderAuthPage);
     //   document.querySelector('.words-page-link')?.addEventListener('click', (): void => {
     //     this.page = new WordsPage();

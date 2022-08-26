@@ -1,12 +1,11 @@
 import AudioQuestion from './audio-question-component';
-import AudioQustion from './audio-question-component';
 import AudioView from './audio-view';
 import Word from './Word';
 
 class AudioModel {
   pageView: AudioView;
 
-  audioTests: Array<AudioQustion>;
+  audioTests: Array<AudioQuestion>;
 
   difficulty: { level: number; name: string };
 
@@ -63,13 +62,13 @@ class AudioModel {
   }
 
   playAgain() {
-    // this.currentQuestion = -1;
     for (let i = 0; i < this.audioTests.length; i += 1) {
-     // this.audioTests[i].isAnswered = false;
+      this.audioTests[i].isAnswered = null;
       this.audioTests[i].isCorrect = false;
-      this.audioTests = this.audioTests.sort(() => 0.5 - Math.random());
+      this.audioTests[i].options = this.audioTests[i].options.sort(() => 0.5 - Math.random());
       this.audioTests[i].renderAudioTestView();
     }
+    this.audioTests = this.audioTests.sort(() => 0.5 - Math.random());
     this.Question = 0;
     this.gameStatus = 'Game';
   }
@@ -97,9 +96,9 @@ class AudioModel {
   // сформировать список вопросов и начать игру
   createQuiz(words: Array<Word>, countQuestions: number) {
     if (words.length < 6) {
-      alert('Недостаточно слов для игры');
+      this.gameStatus = 'Select Level';
     } else {
-      const tests: Array<AudioQustion> = new Array<AudioQustion>();
+      const tests: Array<AudioQuestion> = new Array<AudioQuestion>();
       const count = words.length < countQuestions ? words.length : countQuestions;
       let id = 0;
       while (tests.length < count) {
@@ -112,7 +111,7 @@ class AudioModel {
           options = options.filter((item, index, arr) => arr.indexOf(item) === index);
         }
         options = options.sort(() => 0.5 - Math.random());
-        const test: AudioQustion = new AudioQustion(options, correctAnswer, id);
+        const test: AudioQuestion = new AudioQuestion(options, correctAnswer, id);
         test.renderAudioTestView();
         id += 1;
         tests.push(test);
@@ -125,21 +124,19 @@ class AudioModel {
 
   handleAnswer(answer: string) {
     const audioTest = this.audioTests[this.currentQuestion];
-   // console.log(audioTest.correctAnswer.wordTranslate , answer ,audioTest.isAnswered);
-    //if (!audioTest.isAnswered) {
+
+    if (!audioTest.isAnswered) {
       const result: boolean = audioTest.correctAnswer.wordTranslate === answer;
+
       audioTest.isCorrect = result;
-      //  this.wrongAnswers = result ? this.wrongAnswers : (this.wrongAnswers +1 );
-      //  this.corrrectAnswers = result ? (this.corrrectAnswers +1) :  this.corrrectAnswers;
+
       this.pageView.renderAnswerResult(result, answer, audioTest.correctAnswer);
-  //  }
-    // else{
-   // audioTest.isAnswered = true;
-    // }
+    }
+    audioTest.isAnswered = 'Yes';
   }
 
-  updateGameProgress() {
-    // обновление статистики
-  }
+  // updateGameProgress() {
+  //   // обновление статистики
+  // }
 }
 export default AudioModel;

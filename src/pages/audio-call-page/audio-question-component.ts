@@ -12,7 +12,7 @@ class AudioQuestion {
 
   isCorrect = false;
 
-  //isAnswered = false;
+  isAnswered: string | null;
 
   id: number;
 
@@ -24,6 +24,7 @@ class AudioQuestion {
 
   constructor(options: Array<Word>, correctAnswer: Word, id: number) {
     this.audioTestView = document.createElement('div');
+    this.isAnswered = null;
     this.options = options;
     this.id = id;
     this.correctAnswer = correctAnswer;
@@ -39,20 +40,6 @@ class AudioQuestion {
     const audio: HTMLAudioElement = document.createElement('audio');
     audio.src = `${this.api.baseUrl}/${correctAnswer.audio}`;
     divaudio.appendChild(audio);
-
-    const divaudioresult = document.createElement('div');
-    divaudioresult.className = 'audio-icon';
-    const audioresult: HTMLAudioElement = document.createElement('audio');
-   // audioresult.src = `${this.api.baseUrl}/${correctAnswer.audio}`;
-    divaudioresult.appendChild(audioresult);
-
-    const word: HTMLSpanElement = document.createElement('span');
-    const wordTranslation: HTMLSpanElement = document.createElement('span');
-    const dash: HTMLSpanElement = document.createElement('span');
-    dash.innerText = '—';
-    word.innerText = correctAnswer.word;
-    wordTranslation.innerText = correctAnswer.wordTranslate;
-    divAnswer.append(divaudioresult, word, dash, wordTranslation);
     this.audioAnswer = divaudio;
     return divAnswer;
   }
@@ -68,7 +55,7 @@ class AudioQuestion {
     quesionContainer.className = 'quesion-container';
 
     const nextButton = document.createElement('button');
-    nextButton.innerText = 'Пропустить';
+    nextButton.innerText = 'Пропустить (Space)';
     nextButton.id = 'next-question-button';
     nextButton.className = 'next-question-button';
     quesionContainer.appendChild(divPlay);
@@ -77,7 +64,19 @@ class AudioQuestion {
     for (let i = 0; i < this.options.length; i += 1) {
       const button = document.createElement('button');
       button.className = 'game-button option';
-      button.textContent = this.options[i].wordTranslate;
+      // button.textContent = this.options[i].wordTranslate;
+
+      const divOptiongrid = document.createElement('div');
+      divOptiongrid.className = 'div-option-grid';
+      const spanNumber = document.createElement('span');
+      spanNumber.textContent = (i + 1).toString();
+      const spanValue = document.createElement('span');
+      spanValue.className = 'span-value';
+      spanValue.textContent = this.options[i].wordTranslate;
+
+      divOptiongrid.append(spanNumber, spanValue);
+      button.appendChild(divOptiongrid);
+
       quesionContainer.append(button);
     }
     quesionContainer.appendChild(nextButton);

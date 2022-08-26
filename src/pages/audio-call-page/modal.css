@@ -20,7 +20,7 @@
 
 .modal-close:hover,
 .modal-close:focus {
-    color: rgb(254, 0, 0);
+    color: var(--color-accent);
     text-decoration: none;
     cursor: pointer;
 }
@@ -33,19 +33,19 @@
 .div-result-flex>span {
     font-size: 24px;
     text-align: center;
-    font-family: Arial, Helvetica, sans-serif;
+    /* font-family: Arial, Helvetica, sans-serif; */
     margin-bottom: 5px;
 }
 
 .game-span-correct {
-
-    color: #1dc425;
-
+    color: var(--color-green-common);
+    
+    font-weight: bold;
 }
 
 .game-span-wrong {
-
-    color: red;
+    color: var(--color-accent);
+    font-weight: bold;
 }
 
 .answer-container-correct>div>span,
@@ -69,7 +69,7 @@
     width: 37px;
     height: 27px;
     cursor: pointer;
-    background-color: rgb(176, 108, 5);
+    background-color: var(--color-gray-medium);
     mask-image: url('../../assets/svg/audio.svg');
     mask-repeat: no-repeat;
     mask-size: contain;
@@ -80,7 +80,7 @@
 }
 
 .audio-icon:hover {
-    background-color: rgb(105, 65, 5);;
+    background-color: var(--color-brown);
 }
 
 .audio-icon.disabled {

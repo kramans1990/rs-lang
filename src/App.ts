@@ -64,7 +64,7 @@ class App {
     //     this.page = new StatPage();
     //   });
 
-    document.querySelector('.game-page')?.addEventListener('click', (): void => {
+    document.querySelector('.game-page-link')?.addEventListener('click', (): void => {
       const controller: ApplicationContoller = new AudioController();
       App.setController(controller);
     });

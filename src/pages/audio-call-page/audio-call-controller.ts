@@ -1,3 +1,4 @@
+/* eslint-disable import/no-cycle */
 import AudioModel from './audio-model';
 import AudioView from './audio-view';
 import Api from '../../Api';
@@ -11,21 +12,23 @@ class AudioController extends ApplicationContoller {
   pageView: AudioView;
 
   api: Api = new Api();
-  
-  wordsPerPage: number = 20;
-  initialbarProgress = 3;  
-  pagesPerGame = 5;
+
+  wordsPerPage = 20;
+
+  initialbarProgress = 3;
+
+  pagesPerGame = 3;
 
   constructor(words?: Array<Word>) {
     super();
-    
-    if (!words) {     
+
+    if (!words) {
       this.pageView = new AudioView();
       this.model = new AudioModel(this.pageView);
       this.addListeners();
       this.addKeyBoardListener();
     }
-    if(words){
+    if (words) {
       /// переход со сттраницы учебника
     }
   }
@@ -43,46 +46,56 @@ class AudioController extends ApplicationContoller {
     }
     this.pageView.view.addEventListener('click', (e) => {
       const target = e.target as HTMLElement;
-      if (target.className === 'game-button option') {
-        this.model.updateGameProgress();
-      }
-      if (target.id === 'next-question-button') {      
+      // if (target.className === 'game-button option') {
+      //   this.model.updateGameProgress();//обновление статистики
+      // }
+      if (target.id === 'next-question-button') {
         this.model.nextQuestion();
-      }    
-        if (target.className === 'audio-icon') {
+      }
+      if (target.className === 'audio-icon') {
         const audio = target.firstChild as HTMLAudioElement;
         // let a = new Audio(audio.src);
-        audio.play();       
+        audio.play();
       }
-      if(target.id === 'play-again'){
-         this.model.playAgain();
+      if (target.id === 'play-again') {
+        this.model.playAgain();
       }
-      if(target.className ==='game-button option'){
-       // let parent = target.parentNode as HTMLDivElement;
-        this.model.handleAnswer(target.innerText);      
+      if (target.className === 'game-button option') {
+        this.model.handleAnswer((target.querySelector('.span-value') as HTMLSpanElement).innerText);
       }
-      if(target.className ==='modal-close'){         
-         this.model.closeResult();         
+      if (target.className === 'modal-close') {
+        this.model.closeResult();
       }
     });
     this.pageView.view.querySelector('#new-game')?.addEventListener('click', () => {
       this.model.gameStatus = 'Select Level';
-    });    
+    });
   }
-  addKeyBoardListener(){
-   document.addEventListener('keydown', (e) =>{   
-      if(App.controller  instanceof AudioController){
-             this.pageView.handlePressKey(e.key);
-      }
-  });
+
+  addKeyBoardListener() {
+    document.addEventListener('keydown', (e) => this.keyPress(e));
   }
+
+  keyPress(e: KeyboardEvent) {
+    if (App.controller instanceof AudioController) {
+      this.pageView.handlePressKey(e.key);
+    }
+  }
+
   async getAllWords(group: number): Promise<void> {
     this.pageView.showProgressBar();
     this.model.gameStatus = 'Loading';
     let progress = this.initialbarProgress;
     let words = new Array<Word>();
+
+    let randomPages: Array<number> = new Array<number>();
+    while (randomPages.length < this.pagesPerGame) {
+      randomPages.push(Math.floor(Math.random() * this.pagesPerGame + 1));
+      randomPages = randomPages.filter((item, index, arr) => index === arr.indexOf(item));
+    }
+
     for (let i = 0; i <= this.pagesPerGame; i += 1) {
-      progress = (i/this.pagesPerGame)*100;
+      progress = (i / this.pagesPerGame) * 100;
       this.model.loadingStatus = progress;
       /* eslint-disable no-await-in-loop */
       const value: Array<Word> = await this.getwords(group, i);
@@ -95,7 +108,6 @@ class AudioController extends ApplicationContoller {
   /* eslint-disable implicit-arrow-linebreak */
   getwords = (group: number, page: number): Promise<Array<Word>> =>
     new Promise((res, rej) => {
-      
       fetch(`${this.api.words}?group=${group}&page=${page}`, {
         method: 'GET',
         headers: {
@@ -110,6 +122,5 @@ class AudioController extends ApplicationContoller {
           rej(err);
         });
     });
-    
 }
 export default AudioController;

@@ -6,9 +6,10 @@
 }
 
 .card {
+  position: relative;
   width: 285px;
   height: 510px;
-  border: 1px solid var(--color-gray-light);
+  border: 3px solid var(--color-gray-light);
   border-radius: 30px 0px 0px 0px;
   overflow: hidden;
 }
@@ -17,6 +18,26 @@
   height: 190px;
   width: 100%;
   object-fit: cover;
+}
+
+.word-stat {
+  position: absolute;
+  width: 70px;
+  height: 34px;
+  right: -3px;
+  top: -3px;
+  background: #ffffff;
+  border: 1px solid var(--color-gray-light);
+  font-weight: 400;
+  font-size: 2.1rem;
+  text-align: center;
+  line-height: 3rem;
+  color: var(--color-gray-medium);
+}
+
+.word-stat span {
+  font-weight: 600;
+  color: #725747;
 }
 
 .card__text {
@@ -47,10 +68,10 @@
   height: 27px;
   cursor: pointer;
   background-color: var(--color-gray-light);
-  mask-image: url('../assets/audio.svg');
+  mask-image: url("../assets/audio.svg");
   mask-repeat: no-repeat;
   mask-size: contain;
-  -webkit-mask-image: url('../assets/audio.svg');
+  -webkit-mask-image: url("../assets/audio.svg");
   -webkit-mask-repeat: no-repeat;
   -webkit-mask-size: contain;
   transition: all 0.3s;
@@ -66,7 +87,8 @@
 
 .card__buttons {
   display: flex;
-  gap: 20px;justify-content: space-around;
+  gap: 20px;
+  justify-content: space-around;
 }
 
 .card__btn {
@@ -74,7 +96,7 @@
   width: 120px;
   height: 33px;
   padding: 10px 22px;
-  background: #FFFFFF;
+  background: #ffffff;
   border: 2px solid var(--color-gray-light);
   font-weight: 600;
   font-size: 1rem;
@@ -94,7 +116,7 @@
   color: var(--color-main);
 }
 
-.phases {
+.phrases {
   display: flex;
   flex-direction: column;
   gap: 10px;
@@ -102,32 +124,78 @@
   line-height: 2rem;
 }
 
-.phase__definition {
+.phrase__definition {
   color: #000000;
 }
 
-.phase__definition i {
+.phrase__definition i {
   font-weight: 700;
 }
 
-.phase__definition_english {
+.phrase__definition_english {
   font-weight: 500;
 }
 
-.phase__definition_russian {
+.phrase__definition_russian {
   font-weight: 300;
 }
 
-.phase__example {
+.phrase__example {
   color: #919191;
 }
 
-.phase__example_english {
+.phrase__example_english {
   font-style: italic;
   font-weight: 500;
 }
 
-.phase__example_russian {
+.phrase__example_russian {
   font-style: italic;
   font-weight: 300;
+}
+
+/* ------------- hard cards-----------------------*/
+.card.hard {
+  border: 3px solid var(--color-accent);
+}
+
+.hard .word-stat {
+  border: 3px solid var(--color-accent);
+  line-height: 2.6rem;
+}
+
+.hard .word-stat span {
+  color: var(--color-accent);
+}
+
+.hard .word__english {
+  color: var(--color-accent);
+}
+
+.hard .hard__btn {
+  border: 2px solid var(--color-accent);
+  color: var(--color-accent);
+}
+
+/* ------------- done cards-----------------------*/
+.card.done {
+  border: 3px solid var(--color-main);
+}
+
+.done .word-stat {
+  border: 3px solid var(--color-main);
+  line-height: 2.6rem;
+}
+
+.done .word-stat span {
+  color: var(--color-main);
+}
+
+.done .word__english {
+  color: var(--color-main);
+}
+
+.done .done__btn {
+  border: 2px solid var(--color-main);
+  color: var(--color-main);
 }

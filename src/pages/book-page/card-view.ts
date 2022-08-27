@@ -20,13 +20,16 @@ class CardView {
     wordImg.setAttribute('src', `${this.baseUrl}/${wordInfo.image}`);
     wordImg.setAttribute('alt', 'card photo');
     wordImg.classList.add('card__img');
+    const statFrame = document.createElement('div');
+    statFrame.classList.add('word-stat');
+    statFrame.innerHTML = '<span>3</span> | 17';
     const cardText = document.createElement('div');
     cardText.classList.add('card__text');
     const wordBlock = this.createWordBlock(wordInfo);
     const cardButtons = this.createCardButtons();
     const phrasesBlock = this.createPhrasesBlock(wordInfo);
     cardText.append(wordBlock, cardButtons, phrasesBlock);
-    this.view.append(wordImg, cardText);
+    this.view.append(wordImg, statFrame, cardText);
   }
 
   createWordBlock(wordInfo: Word): HTMLDivElement {
@@ -57,32 +60,76 @@ class CardView {
     const hardButton = document.createElement('button');
     hardButton.classList.add('btn', 'card__btn', 'hard__btn');
     hardButton.innerText = hardButtonText;
+    hardButton.addEventListener('click', this.hardBtnHandler);
     const doneButton = document.createElement('button');
     doneButton.classList.add('btn', 'card__btn', 'done__btn');
     doneButton.innerText = doneButtonText;
+    doneButton.addEventListener('click', this.doneBtnHandler);
     cardButtons.append(hardButton, doneButton);
     return cardButtons;
   }
 
+  hardBtnHandler(e?: Event) {
+    if (e) {
+      const hardButton = e.target as HTMLDivElement;
+      const card = (e.target as HTMLDivElement).closest('.card');
+
+      switch (hardButton.textContent?.toLowerCase()) {
+        case 'сложное':
+          card?.classList.remove('done');
+          card?.classList.add('hard');
+          hardButton.innerText = 'несложное';
+          break;
+        case 'несложное':
+          card?.classList.remove('hard');
+          hardButton.innerText = 'сложное';
+          break;
+        default:
+          break;
+      }
+    }
+  }
+
+  doneBtnHandler(e?: Event) {
+    if (e) {
+      const doneButton = e.target as HTMLDivElement;
+      const card = (e.target as HTMLDivElement).closest('.card');
+
+      switch (doneButton.textContent?.toLowerCase()) {
+        case 'изучено':
+          card?.classList.remove('hard');
+          card?.classList.add('done');
+          doneButton.innerText = 'поучить';
+          break;
+        case 'поучить':
+          card?.classList.remove('done');
+          doneButton.innerText = 'изучено';
+          break;
+        default:
+          break;
+      }
+    }
+  }
+
   createPhrasesBlock(wordInfo: Word): HTMLDivElement {
     const phrasesBlock = document.createElement('div');
-    phrasesBlock.classList.add('phases');
+    phrasesBlock.classList.add('phrases');
     const phraseDefinition = document.createElement('div');
-    phraseDefinition.classList.add('phase__definition');
+    phraseDefinition.classList.add('phrase__definition');
     const phraseDefinitionEnglish = document.createElement('p');
-    phraseDefinitionEnglish.classList.add('phase__definition_english');
+    phraseDefinitionEnglish.classList.add('phrase__definition_english');
     phraseDefinitionEnglish.innerHTML = wordInfo.textMeaning;
     const phraseDefinitionRussian = document.createElement('p');
-    phraseDefinitionRussian.classList.add('phase__definition_russian');
+    phraseDefinitionRussian.classList.add('phrase__definition_russian');
     phraseDefinitionRussian.innerHTML = wordInfo.textMeaningTranslate;
     phraseDefinition.append(phraseDefinitionEnglish, phraseDefinitionRussian);
     const phraseExample = document.createElement('div');
-    phraseExample.classList.add('phase__example');
+    phraseExample.classList.add('phrase__example');
     const phraseExampleEnglish = document.createElement('p');
-    phraseExampleEnglish.classList.add('phase__example_english');
+    phraseExampleEnglish.classList.add('phrase__example_english');
     phraseExampleEnglish.innerHTML = wordInfo.textExample;
     const phraseExampleRussian = document.createElement('p');
-    phraseExampleRussian.classList.add('phase__example_russian');
+    phraseExampleRussian.classList.add('phrase__example_russian');
     phraseExampleRussian.innerHTML = wordInfo.textExampleTranslate;
     phraseExample.append(phraseExampleEnglish, phraseExampleRussian);
     phrasesBlock.append(phraseDefinition, phraseExample);

@@ -50,12 +50,12 @@
   border: none;
   text-transform: uppercase;
   cursor: pointer;
-  transition: all 0.2s;
+  transition: all 0.3s;
 }
 
 .btn:hover {
   text-decoration: underline;
-  border-top-left-radius: 20px;
+  border-radius: 8px;
 }
 
 .btn:active {

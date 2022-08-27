@@ -34,7 +34,10 @@ class App {
   start(): void {
     this.addEventListeners();
     window.onbeforeunload = () => {
-      saveDataToLocalStorage('pageInfo', JSON.stringify(App.pageInfo));
+      const { pageName } = App.pageInfo;
+      if (pageName !== 'bookPage') {
+        saveDataToLocalStorage('pageInfo', JSON.stringify(App.pageInfo));
+      }
     };
   }
 

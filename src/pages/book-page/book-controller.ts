@@ -4,14 +4,13 @@ import '../../styles/main.css';
 import '../../styles/pagination.css';
 
 import ApplicationContoller from '../application-controller';
+import { IPageInfo } from '../../types/interfaces';
 import { Word } from '../../types/Word';
 import { BookPageView } from './book-view';
 import CardView from './card-view';
 import BookModel from './book-model';
 import {
   numberOfLevels,
-  renderGroupNumber,
-  renderPageNumber,
   btnHardText,
   btnLevelText,
   numberOfPagesInLevel,
@@ -22,7 +21,12 @@ import {
   iconAudioGameSrc,
   iconExtraGameSrc,
 } from '../../utils/constants';
-import { disableAudioBtns, enableAudioBtns } from '../../functions/functions';
+import {
+  disableAudioBtns,
+  enableAudioBtns,
+  getDataFromLocalStorage,
+  saveDataToLocalStorage,
+} from '../../functions/functions';
 
 class BookController extends ApplicationContoller {
   view: HTMLDivElement;
@@ -39,13 +43,24 @@ class BookController extends ApplicationContoller {
 
   currentPage: number;
 
+  currentLevel: number;
+
   gameButtons: HTMLDivElement;
+
+  bookPageInfo: IPageInfo;
+
+  isBookPageActive: boolean;
 
   constructor() {
     super();
     this.pageView = new BookPageView();
     this.bookModel = new BookModel();
-    this.currentPage = 1;
+    this.currentLevel = 0;
+    this.currentPage = 0;
+
+    if (getDataFromLocalStorage('pageInfo')) {
+      this.getPageInfoFromLocalStorage();
+    }
 
     this.setView();
   }
@@ -57,9 +72,8 @@ class BookController extends ApplicationContoller {
     this.cardsList = this.pageView.cardsList;
     this.pagination = this.pageView.pagination;
     this.gameButtons = this.pageView.gameButtons;
-    this.currentPage = 1;
     this.renderLevelsBtns();
-    this.renderCards(renderGroupNumber, renderPageNumber);
+    this.renderCards(this.currentLevel, this.currentPage);
     this.renderPaginationBlock(this.currentPage);
     this.renderGameButtons();
   }
@@ -80,7 +94,7 @@ class BookController extends ApplicationContoller {
       btn.classList.add(`level-${i}`);
       btn.dataset.level = `${i}`;
 
-      if (i === this.currentPage) {
+      if (i === this.currentLevel + 1) {
         btn.classList.add('active');
       }
 
@@ -106,10 +120,21 @@ class BookController extends ApplicationContoller {
       (e.target as HTMLDivElement).classList.add('active');
 
       const group = Number((e.target as HTMLDivElement).dataset.level) - 1;
+      this.currentLevel = group;
+      this.currentPage = 0;
       this.cardsList.innerHTML = '';
-      this.renderCards(group, renderPageNumber);
+      this.renderCards(group, this.currentPage);
       this.renderPaginationBlock(group);
     }
+
+    saveDataToLocalStorage(
+      'pageInfo',
+      JSON.stringify({
+        pageName: 'bookPage',
+        level: this.currentLevel,
+        pageNumber: this.currentPage,
+      }),
+    );
   }
 
   static setEventListenersForCard(e: Event) {
@@ -152,25 +177,35 @@ class BookController extends ApplicationContoller {
 
   async renderPaginationBlock(group: number) {
     this.pagination.innerHTML = '';
-    for (let i = 1; i <= numberOfPagesInLevel; i += 1) {
+    for (let i = 0; i < numberOfPagesInLevel; i += 1) {
       const page = BookPageView.createElementByParams('p', 'pagination-element');
 
       if (i === this.currentPage) {
         page.classList.add('active');
       }
 
-      page.innerText = `${i}`;
-      page.addEventListener('click', (e) => {
-        this.renderCards(group, i);
-
-        const pageItems = document.querySelectorAll('.pagination-element');
-        pageItems.forEach((item) => {
-          item.classList.remove('active');
-        });
-        (e.target as HTMLLIElement).classList.add('active');
-      });
+      page.innerText = `${i + 1}`;
+      page.addEventListener('click', (e) => this.pageBtnHandler(e, group, i));
       this.pagination.append(page);
     }
+  }
+
+  pageBtnHandler(e: Event, group: number, page: number) {
+    this.currentPage = page;
+    this.renderCards(group, page);
+    const pageItems = document.querySelectorAll('.pagination-element');
+    pageItems.forEach((item) => {
+      item.classList.remove('active');
+    });
+    (e.target as HTMLLIElement).classList.add('active');
+    saveDataToLocalStorage(
+      'pageInfo',
+      JSON.stringify({
+        pageName: 'bookPage',
+        level: this.currentLevel,
+        pageNumber: this.currentPage,
+      }),
+    );
   }
 
   renderGameButtons() {
@@ -201,6 +236,15 @@ class BookController extends ApplicationContoller {
     extraGameLink.prepend(iconExtraGame);
 
     this.gameButtons.append(extraGameLink, audioGameLink, sprintGameLink);
+  }
+
+  getPageInfoFromLocalStorage() {
+    const pageInfo = getDataFromLocalStorage('pageInfo') as IPageInfo;
+    const { level, pageNumber } = pageInfo;
+    if (level && pageNumber) {
+      this.currentLevel = +level;
+      this.currentPage = +pageNumber;
+    }
   }
 }
 

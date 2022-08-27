@@ -28,8 +28,6 @@ const learnButtonText = 'Учиться';
 const playButtonText = 'Играть';
 
 const numberOfLevels = 7; // 6 + 1(все сложные слова)
-const renderGroupNumber = 0;
-const renderPageNumber = 0;
 const numberOfPagesInLevel = 30;
 const btnHardText = 'сложные';
 const btnLevelText = 'уровень ';
@@ -62,8 +60,6 @@ export {
   learnButtonText,
   playButtonText,
   numberOfLevels,
-  renderGroupNumber,
-  renderPageNumber,
   btnHardText,
   btnLevelText,
   sprintGameName,

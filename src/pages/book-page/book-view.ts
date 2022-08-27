@@ -17,6 +17,8 @@ export class BookPageView extends ApplicationView {
 
   mainWrapper: HTMLDivElement;
 
+  footer: HTMLElement;
+
   constructor() {
     super();
     this.view = document.createElement('div');
@@ -31,6 +33,8 @@ export class BookPageView extends ApplicationView {
     this.main = document.querySelector('.main') as HTMLElement;
     this.mainWrapper = document.querySelector('.main_wrapper') as HTMLDivElement;
     this.mainWrapper.style.backgroundColor = '#ffffff';
+    this.footer = document.querySelector('footer') as HTMLBodyElement;
+    this.footer.classList.add('secondary');
   }
 
   static createElementByParams(tag: string, className: string) {

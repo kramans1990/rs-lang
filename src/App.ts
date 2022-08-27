@@ -1,6 +1,7 @@
 /* eslint-disable import/no-cycle */
 import MainPageController from './pages/main-page/main-page-controler';
 import ApplicationContoller from './pages/application-controller';
+import AudioController from './pages/audio-call-page/audio-call-controller';
 import AuthController from './pages/auth-page/auth-controller';
 import RegistrationController from './pages/registration-page/registration-controller';
 import BookController from './pages/book-page/book-controller';
@@ -135,9 +136,26 @@ class App {
     //   document.querySelector('.stat-page-link')?.addEventListener('click', (): void => {
     //     this.page = new StatPage();
     //   });
-    //   document.querySelector('.game-page-link')?.addEventListener('click', (): void => {
-    //     this.page = new GamePage();
-    //   });
+
+
+    document.querySelector('.game-page-link')?.addEventListener('click', (): void => {
+      const controller: ApplicationContoller = new AudioController();
+      App.setController(controller);
+    });
+
+    document.querySelector('.sign-in-page-link')?.addEventListener('click', (): void => {
+      const controller: ApplicationContoller = new AuthController();
+      App.setController(controller);
+    });
+    document.querySelector('.sign-up-page-link')?.addEventListener('click', (): void => {
+      const controller: ApplicationContoller = new RegistrationController();
+      App.setController(controller);
+    });
+
+//     //   document.querySelector('.game-page-link')?.addEventListener('click', (): void => {
+//     //     this.page = new GamePage();
+//     //   });
+
   }
 }
 export default App;

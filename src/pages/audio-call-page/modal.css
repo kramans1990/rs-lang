@@ -1,0 +1,88 @@
+
+
+.modal-content {
+    background-color: rgba(116, 115, 115, 0.46);
+    margin: auto;
+    padding: 5px 40px 5px 40px;
+    border: 1px solid rgb(255, 255, 255);
+    width: 60vw;
+    border-radius: 15px;
+    margin-bottom : 10px;
+}
+
+.modal-close {
+    color: rgba(0, 0, 0, 0.46);
+    float: right;
+    font-size: 40px;
+    font-weight: bold;
+    
+}
+
+.modal-close:hover,
+.modal-close:focus {
+    color: var(--color-accent);
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.div-result-flex {
+    display: flex;
+    flex-direction: column;
+}
+
+.div-result-flex>span {
+    font-size: 24px;
+    text-align: center;
+    /* font-family: Arial, Helvetica, sans-serif; */
+    margin-bottom: 5px;
+}
+
+.game-span-correct {
+    color: var(--color-green-common);
+    
+    font-weight: bold;
+}
+
+.game-span-wrong {
+    color: var(--color-accent);
+    font-weight: bold;
+}
+
+.answer-container-correct>div>span,
+.answer-container-wrong>div>span {
+    margin-left: 20px;
+    font-size: 22px;
+    font-weight: bold;
+    align-self: center;
+    margin-top: 30px;
+}
+
+.answer-container-correct>div>div,
+.answer-container-wrong>div>div {
+    display: inline-block;
+    width: 30px;
+    height: 20px;
+
+}
+
+.audio-icon {
+    width: 37px;
+    height: 27px;
+    cursor: pointer;
+    background-color: var(--color-gray-medium);
+    mask-image: url('../../assets/svg/audio.svg');
+    mask-repeat: no-repeat;
+    mask-size: contain;
+    -webkit-mask-image: url('../../assets/svg/audio.svg');
+    -webkit-mask-repeat: no-repeat;
+    -webkit-mask-size: contain;
+    transition: all 0.3s;
+}
+
+.audio-icon:hover {
+    background-color: var(--color-brown);
+}
+
+.audio-icon.disabled {
+    pointer-events: none;
+}

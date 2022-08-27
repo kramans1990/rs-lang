@@ -63,6 +63,15 @@ class BookController extends ApplicationContoller {
     }
 
     this.setView();
+
+    saveDataToLocalStorage(
+      'pageInfo',
+      JSON.stringify({
+        pageName: 'bookPage',
+        level: this.currentLevel,
+        pageNumber: this.currentPage,
+      }),
+    );
   }
 
   setView(): void {
@@ -241,10 +250,11 @@ class BookController extends ApplicationContoller {
   getPageInfoFromLocalStorage() {
     const pageInfo = getDataFromLocalStorage('pageInfo') as IPageInfo;
     const { level, pageNumber } = pageInfo;
-    if (level && pageNumber) {
-      this.currentLevel = +level;
-      this.currentPage = +pageNumber;
+    if (typeof level === 'number' && typeof pageNumber === 'number') {
+      this.currentLevel = level;
+      this.currentPage = pageNumber;
     }
+    console.log(this.currentLevel, this.currentPage);
   }
 }
 

@@ -1,11 +1,11 @@
-abstract class ApplicationPage {
-  view: HTMLDivElement;
+// abstract class ApplicationPage {
+//   view: HTMLDivElement;
 
-  constructor() {
-    this.setView();
-  }
+//   constructor() {
+//     this.setView();
+//   }
 
-  abstract setView(): void;
-}
+//   abstract setView(): void;
+// }
 
-export default ApplicationPage;
+// export default ApplicationPage;

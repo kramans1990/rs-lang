@@ -91,6 +91,7 @@ class App {
 
   static renderBookPage() {
     const controller: ApplicationContoller = new BookController();
+
     App.setController(controller);
     const mainButton = document.querySelector('.book-page-link') as HTMLElement;
     App.changeActiveClassForNavItemByElement(mainButton);

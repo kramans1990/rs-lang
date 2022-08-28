@@ -7,6 +7,7 @@ import ApplicationContoller from '../application-controller';
 import { IPageInfo } from '../../types/interfaces';
 import { Word } from '../../types/Word';
 import { BookPageView } from './book-view';
+// eslint-disable-next-line import/no-cycle
 import CardView from './card-view';
 import BookModel from './book-model';
 import {
@@ -48,8 +49,6 @@ class BookController extends ApplicationContoller {
   gameButtons: HTMLDivElement;
 
   bookPageInfo: IPageInfo;
-
-  isBookPageActive: boolean;
 
   constructor() {
     super();
@@ -254,7 +253,6 @@ class BookController extends ApplicationContoller {
       this.currentLevel = level;
       this.currentPage = pageNumber;
     }
-    console.log(this.currentLevel, this.currentPage);
   }
 }
 

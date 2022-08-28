@@ -1,18 +1,30 @@
 import { Word } from '../../types/Word';
 import { baseUrl, doneButtonText, hardButtonText } from '../../utils/constants';
+// eslint-disable-next-line import/no-cycle
+import App from '../../App';
 
 class CardView {
   view: HTMLDivElement;
 
   baseUrl: string;
 
+  loadingProgress: number;
+
+  static isAuthUser: boolean;
+
   constructor(wordInfo: Word) {
     this.baseUrl = baseUrl;
     this.view = document.createElement('div');
     this.view.classList.add('card');
     this.view.id = wordInfo.id;
+    this.loadingProgress = 20;
 
     this.createCard(wordInfo);
+  }
+
+  set loadingStatus(loading: number) {
+    this.loadingProgress = loading;
+    this.updateProgressBar(this.loadingProgress);
   }
 
   createCard(wordInfo: Word) {
@@ -21,15 +33,24 @@ class CardView {
     wordImg.setAttribute('alt', 'card photo');
     wordImg.classList.add('card__img');
     const statFrame = document.createElement('div');
-    statFrame.classList.add('word-stat');
+    statFrame.classList.add('card__stat');
     statFrame.innerHTML = '<span>3</span> | 17';
+
     const cardText = document.createElement('div');
     cardText.classList.add('card__text');
     const wordBlock = this.createWordBlock(wordInfo);
     const cardButtons = this.createCardButtons();
+    const progressBar = this.createWordProgressBar();
+
+    if (!App.user) {
+      progressBar.style.display = 'none';
+      statFrame.style.display = 'none';
+      cardButtons.style.display = 'none';
+    }
+
     const phrasesBlock = this.createPhrasesBlock(wordInfo);
     cardText.append(wordBlock, cardButtons, phrasesBlock);
-    this.view.append(wordImg, statFrame, cardText);
+    this.view.append(wordImg, statFrame, progressBar, cardText);
   }
 
   createWordBlock(wordInfo: Word): HTMLDivElement {
@@ -50,6 +71,23 @@ class CardView {
     const audioIcon = this.createAudioBlock(wordInfo);
     wordBlock.append(wordText, audioIcon);
     return wordBlock;
+  }
+
+  /* eslint-disable class-methods-use-this */
+
+  createWordProgressBar() {
+    const progressBar = document.createElement('div');
+    const innerdiv = document.createElement('div');
+    innerdiv.className = 'progress-loading';
+    progressBar.className = 'card__progress-bar';
+    progressBar.id = 'card__progress-bar';
+    progressBar.appendChild(innerdiv);
+    return progressBar;
+  }
+
+  updateProgressBar(loading: number) {
+    const div = this.view.querySelector('.progress-loading') as HTMLDivElement;
+    div.style.width = `${loading}%`;
   }
 
   /* eslint-disable class-methods-use-this */

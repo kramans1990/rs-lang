@@ -21,7 +21,7 @@
   object-fit: cover;
 }
 
-.word-stat {
+.card__stat {
   position: absolute;
   width: 70px;
   height: 34px;
@@ -36,7 +36,7 @@
   color: var(--color-gray-medium);
 }
 
-.word-stat span {
+.card__stat span {
   font-weight: 600;
   color: #725747;
 }
@@ -160,12 +160,12 @@
   border: 3px solid var(--color-accent);
 }
 
-.hard .word-stat {
+.hard .card__stat {
   border: 3px solid var(--color-accent);
   line-height: 2.6rem;
 }
 
-.hard .word-stat span {
+.hard .card__stat span {
   color: var(--color-accent);
 }
 
@@ -183,12 +183,12 @@
   border: 3px solid var(--color-main);
 }
 
-.done .word-stat {
+.done .card__stat {
   border: 3px solid var(--color-main);
   line-height: 2.6rem;
 }
 
-.done .word-stat span {
+.done .card__stat span {
   color: var(--color-main);
 }
 
@@ -199,4 +199,25 @@
 .done .done__btn {
   border: 2px solid var(--color-main);
   color: var(--color-main);
+}
+
+/* ------------- word progress bar -----------------------*/
+.card__progress-bar {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 170px;
+  height: 6px;
+  border: 1px solid white;
+  border-radius: 4px;
+  box-sizing: unset;
+  background: #dfd4d4;
+  transform: translateX(22px) translateY(12px);
+}
+
+.progress-loading {
+  height: 100%;
+  width: 25%;
+  background-color: var(--color-main);
+  border-radius: 4px;
 }

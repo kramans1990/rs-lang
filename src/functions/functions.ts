@@ -14,7 +14,7 @@ function saveDataToLocalStorage(name: string, data: string): void {
   localStorage.setItem(name, data);
 }
 
-function getDataFromLocalStorage(name: string): (ISignIn | IPageInfo) | null {
+function getDataFromLocalStorage(name: string): ISignIn | IPageInfo | null {
   return localStorage.getItem(name) !== null ? JSON.parse(localStorage.getItem(name) || '') : null;
 }
 

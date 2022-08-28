@@ -162,7 +162,6 @@ class App {
     //     this.page = new StatPage();
     //   });
 
-
     document.querySelector('.game-page-link')?.addEventListener('click', (): void => {
       const controller: ApplicationContoller = new AudioController();
       App.setController(controller);
@@ -177,10 +176,9 @@ class App {
       App.setController(controller);
     });
 
-//     //   document.querySelector('.game-page-link')?.addEventListener('click', (): void => {
-//     //     this.page = new GamePage();
-//     //   });
-
+    //   document.querySelector('.game-page-link')?.addEventListener('click', (): void => {
+    //     this.page = new GamePage();
+    //   });
   }
 }
 export default App;

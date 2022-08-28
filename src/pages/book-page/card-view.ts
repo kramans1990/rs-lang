@@ -71,18 +71,21 @@ class CardView {
 
   hardBtnHandler(e?: Event) {
     if (e) {
-      const hardButton = e.target as HTMLDivElement;
       const card = (e.target as HTMLDivElement).closest('.card');
+      const hardButton = e.target as HTMLDivElement;
+      const doneButton = hardButton.nextSibling as HTMLDivElement;
 
       switch (hardButton.textContent?.toLowerCase()) {
         case 'сложное':
           card?.classList.remove('done');
           card?.classList.add('hard');
           hardButton.innerText = 'несложное';
+          doneButton.innerText = 'изучено';
           break;
         case 'несложное':
           card?.classList.remove('hard');
           hardButton.innerText = 'сложное';
+          doneButton.innerText = 'изучено';
           break;
         default:
           break;
@@ -92,18 +95,21 @@ class CardView {
 
   doneBtnHandler(e?: Event) {
     if (e) {
-      const doneButton = e.target as HTMLDivElement;
       const card = (e.target as HTMLDivElement).closest('.card');
+      const doneButton = e.target as HTMLDivElement;
+      const hardButton = doneButton.previousSibling as HTMLDivElement;
 
       switch (doneButton.textContent?.toLowerCase()) {
         case 'изучено':
           card?.classList.remove('hard');
           card?.classList.add('done');
           doneButton.innerText = 'поучить';
+          hardButton.innerText = 'сложное';
           break;
         case 'поучить':
           card?.classList.remove('done');
           doneButton.innerText = 'изучено';
+          hardButton.innerText = 'сложное';
           break;
         default:
           break;

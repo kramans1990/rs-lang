@@ -1,5 +1,6 @@
 import ApplicationView from '../application-view';
 import '../../styles/main-page.css';
+import '../../styles/burger.css';
 
 /* prettier-ignore */
 

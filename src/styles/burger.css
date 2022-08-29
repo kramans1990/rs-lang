@@ -1,0 +1,62 @@
+.burger {
+  /* display: none; */
+  position: relative;
+  margin-left: 22px;
+  transition: all 0.5s;
+  z-index: 5;
+}
+
+@media (max-width: 768px) {
+  .burger {
+    display: inline-block;
+    width: 40px;
+    height: 28px;
+  }
+}
+
+.burger-line {
+  content: "";
+  display: inline-block;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background-color: #ffffff;
+  height: 3px;
+  width: 100%;
+  transition: all 0.5s;
+}
+
+.burger:before {
+  content: "";
+  position: absolute;
+  top: 0;
+  background: #ffffff;
+  height: 3px;
+  width: 100%;
+  transition: all 0.5s;
+}
+
+.burger:after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  background: #ffffff;
+  height: 3px;
+  width: 100%;
+  transition: all 0.5s;
+}
+
+@media (max-width: 768px) {
+  .burger.open .burger-line {
+    display: none;
+  }
+
+  .burger.open:before {
+    transform: rotate(45deg) translateY(17px) translateX(7px);
+  }
+
+  .burger.open:after {
+    transform: rotate(-45deg) translateY(-12px) translateX(1px);
+  }
+}

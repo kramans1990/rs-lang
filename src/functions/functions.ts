@@ -36,6 +36,21 @@ function enableAudioBtns() {
   });
 }
 
+function toggleMenuOpened() {
+  document.querySelector('.burger')?.classList.toggle('open');
+  document.querySelector('.header_nav')?.classList.toggle('open');
+  document.querySelector('.sub-nav')?.classList.remove('open');
+}
+
+function clickMenuHandle(e: Event) {
+  if (e.target === document.querySelector('.game-page-link')) {
+    document.querySelector('.sub-nav')?.classList.toggle('open');
+  } else {
+    document.querySelector('.burger')?.classList.remove('open');
+    document.querySelector('.header_nav')?.classList.remove('open');
+    document.querySelector('.sub-nav')?.classList.remove('open');
+  }
+}
 /* prettier-ignore */
 
 export {
@@ -46,4 +61,6 @@ export {
   disableAudioBtns,
   enableAudioBtns,
   removeDataFromLocalStorage,
+  toggleMenuOpened,
+  clickMenuHandle,
 };

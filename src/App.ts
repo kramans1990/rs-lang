@@ -10,6 +10,8 @@ import {
   getDataFromLocalStorage,
   removeDataFromLocalStorage,
   saveDataToLocalStorage,
+  toggleMenuOpened,
+  clickMenuHandle,
 } from './functions/functions';
 import { logOutText, signInButtonText } from './utils/constants';
 
@@ -170,18 +172,15 @@ class App {
       }
     });
     document.querySelector('.header__logo')?.addEventListener('click', App.renderMainPage);
-
-    // App.renderMainPage();
     document.querySelector('.main-page-link')?.addEventListener('click', App.renderMainPage);
     document.querySelector('.book-page-link')?.addEventListener('click', App.renderBookPage);
-
     document.querySelector('.sign-in-page-link')?.addEventListener('click', App.renderAuthPage);
     //   document.querySelector('.stat-page-link')?.addEventListener('click', (): void => {
     //     this.page = new StatPage();
     //   });
 
     document.querySelector('.audio-page-link')?.addEventListener('click', App.renderAudiocallPage);
-
+    // document.querySelector('.sprint-page-link')?.addEventListener('click', App.renderSprintPage);
     document.querySelector('.sign-in-page-link')?.addEventListener('click', (): void => {
       const controller: ApplicationContoller = new AuthController();
       App.setController(controller);
@@ -191,9 +190,8 @@ class App {
       App.setController(controller);
     });
 
-    //   document.querySelector('.game-page-link')?.addEventListener('click', (): void => {
-    //     this.page = new GamePage();
-    //   });
+    document.querySelector('.burger')?.addEventListener('click', toggleMenuOpened);
+    document.querySelector('.nav-list')?.addEventListener('click', clickMenuHandle);
   }
 }
 export default App;

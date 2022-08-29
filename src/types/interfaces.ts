@@ -11,3 +11,9 @@ export interface IUser {
   password: string;
   name?: string;
 }
+
+export interface IPageInfo {
+  pageName: string;
+  level?: number;
+  pageNumber?: number;
+}

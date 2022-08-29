@@ -1,3 +1,4 @@
+/* eslint-disable import/no-cycle */
 import '../../styles/cards.css';
 import '../../styles/level-buttons.css';
 import '../../styles/main.css';

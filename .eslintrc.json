@@ -31,7 +31,5 @@
     "@typescript-eslint/no-explicit-any": "error", 
     "no-underscore-dangle": "off",
     "max-lines-per-function": ["error", { "max": 60 }]
-    // "eslint linebreak-style": ["error", "unix"]
-    // "eslint linebreak-style": ["error", "windows"]
   }
 }

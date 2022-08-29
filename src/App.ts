@@ -5,7 +5,7 @@ import AudioController from './pages/audio-call-page/audio-call-controller';
 import AuthController from './pages/auth-page/auth-controller';
 import RegistrationController from './pages/registration-page/registration-controller';
 import BookController from './pages/book-page/book-controller';
-import { ISignIn, IPageInfo } from './types/interfaces';
+import { ISignIn } from './types/interfaces';
 import {
   getDataFromLocalStorage,
   removeDataFromLocalStorage,
@@ -20,8 +20,6 @@ class App {
 
   static controller: ApplicationContoller;
 
-  static pageInfo: IPageInfo;
-
   static setController(controller: ApplicationContoller) {
     App.controller = controller;
     App.main = document.querySelector('.main');
@@ -34,12 +32,6 @@ class App {
   /* eslint-disable class-methods-use-this */
   start(): void {
     this.addEventListeners();
-    window.onbeforeunload = () => {
-      const { pageName } = App.pageInfo;
-      if (pageName !== 'bookPage') {
-        saveDataToLocalStorage('pageInfo', JSON.stringify(App.pageInfo));
-      }
-    };
   }
 
   /* eslint-disable no-alert */
@@ -81,34 +73,23 @@ class App {
     elem?.classList.add('active');
   }
 
-  static renderMainPage(): void {
+  static renderMainPage(e?: Event): void {
     const controller: ApplicationContoller = new MainPageController();
     App.setController(controller);
-    App.pageInfo = { pageName: 'mainPage' };
     App.makeMainTransparentAgain();
+    if (e) {
+      App.changeActiveClassForNavItemByEvent(e);
+      return;
+    }
     const mainButton = document.querySelector('.main-page-link') as HTMLElement;
     App.changeActiveClassForNavItemByElement(mainButton);
   }
 
-  static renderBookPage() {
-    const controller: ApplicationContoller = new BookController();
-
-    App.setController(controller);
-    const mainButton = document.querySelector('.book-page-link') as HTMLElement;
-    App.changeActiveClassForNavItemByElement(mainButton);
-    App.pageInfo = { pageName: 'bookPage' };
-  }
-
-  static renderAuthPage(): void {
+  static renderAuthPage(e: Event): void {
     const controller: ApplicationContoller = new AuthController();
     App.setController(controller);
-    // if (e) {
-    //   App.changeActiveClassForNavItemByEvent(e);
-    // }
-    const mainButton = document.querySelector('.sign-in-page-link') as HTMLElement;
-    App.changeActiveClassForNavItemByElement(mainButton);
+    App.changeActiveClassForNavItemByEvent(e);
     App.makeMainTransparentAgain();
-    App.pageInfo = { pageName: 'authPage' };
   }
 
   static renderRegPage(): void {
@@ -123,40 +104,34 @@ class App {
 
   addEventListeners() {
     window.addEventListener('load', (): void => {
-      if (getDataFromLocalStorage('pageInfo')) {
-        const pageInfo = getDataFromLocalStorage('pageInfo') as IPageInfo;
-        const { pageName } = pageInfo;
-        switch (pageName) {
-          case 'mainPage':
-            App.renderMainPage();
-            break;
-          case 'bookPage':
-            App.renderBookPage();
-            break;
-          case 'authPage':
-            App.renderAuthPage();
-            break;
-          default:
-            App.renderMainPage();
-            break;
-        }
-      } else {
-        App.renderMainPage();
-      }
+      App.renderMainPage();
       if (getDataFromLocalStorage('rs-lang-user')) {
         const user = getDataFromLocalStorage('rs-lang-user') as ISignIn;
         App.signIn(user);
       }
     });
-    document.querySelector('.header__logo')?.addEventListener('click', App.renderMainPage);
-
-    // App.renderMainPage();
     document.querySelector('.main-page-link')?.addEventListener('click', App.renderMainPage);
-    document.querySelector('.book-page-link')?.addEventListener('click', App.renderBookPage);
+    // document.querySelector('.main-page-link')?.addEventListener('click', (e: Event): void => {
+    //   const mainWrapper = document.querySelector('.main_wrapper') as HTMLDivElement;
+    //   mainWrapper.style.backgroundColor = 'transparent';
+    //   App.changeActiveClassForNavItemByEvent(e);
+    // });
 
+    //   document.querySelector('.words-page-link')?.addEventListener('click', (): void => {
+    //     this.page = new WordsPage();
+    //   });
+    document.querySelector('.book-page-link')?.addEventListener('click', (e: Event): void => {
+      const controller: ApplicationContoller = new BookController();
+      App.setController(controller);
+      App.changeActiveClassForNavItemByEvent(e);
+    });
     document.querySelector('.sign-in-page-link')?.addEventListener('click', App.renderAuthPage);
     //   document.querySelector('.words-page-link')?.addEventListener('click', (): void => {
     //     this.page = new WordsPage();
+    //   });
+    //   document.querySelector('.stat-page')?.addEventListener('click', (): void => {
+    //   document.querySelector('.book-page-link')?.addEventListener('click', (): void => {
+    //     this.page = new BookPage();
     //   });
     //   document.querySelector('.stat-page-link')?.addEventListener('click', (): void => {
     //     this.page = new StatPage();
@@ -176,9 +151,9 @@ class App {
       App.setController(controller);
     });
 
-    //   document.querySelector('.game-page-link')?.addEventListener('click', (): void => {
-    //     this.page = new GamePage();
-    //   });
+    //     //   document.querySelector('.game-page-link')?.addEventListener('click', (): void => {
+    //     //     this.page = new GamePage();
+    //     //   });
   }
 }
 export default App;

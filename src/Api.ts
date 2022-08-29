@@ -1,5 +1,6 @@
 import { IUser } from './types/interfaces';
 import { Word } from './types/Word';
+import UserWord from './types/userword';
 import { baseUrl } from './utils/constants';
 
 class Api {
@@ -89,6 +90,120 @@ class Api {
       const responce = await fetch(`${this.words}/${id}`);
       const card = await responce.json();
       return card;
+    } catch {
+      throw new Error();
+    }
+  }
+
+  async getUserWords(id: string, token: string): Promise<Array<UserWord>> {
+    try {
+      const responce = await fetch(`${this.baseUrl}/users/${id}/words`, {
+        method: 'GET',
+        headers: {
+          authorization: `Bearer ${token}`,
+        },
+      });
+      const userword = await responce.json();
+      return userword;
+    } catch {
+      throw new Error();
+    }
+  }
+
+  async createUserWord(id: string, token: string, userWord: UserWord): Promise<Array<UserWord>> {
+    try {
+      const responce = await fetch(`${this.baseUrl}/users/${id}/words/${userWord.word.id}`, {
+        method: 'POST',
+        body: JSON.stringify({
+          difficulty: userWord.difficulty,
+          optional: {
+            progress: userWord.optional.progress,
+            successfulAttempts: userWord.optional.successfulAttempts,
+            unsuccessfulAttempts: userWord.optional.unsuccessfulAttempts,
+          },
+        }),
+        headers: {
+          'Content-Type': 'application/json',
+          authorization: `Bearer ${token}`,
+        },
+      });
+      const createdUserword = await responce.json();
+      return createdUserword;
+    } catch {
+      throw new Error();
+    }
+  }
+
+  async updateUserWord(id: string, token: string, userWord: UserWord): Promise<Array<UserWord>> {
+    try {
+      const responce = await fetch(`${this.baseUrl}/users/${id}/words/${userWord.word.id}`, {
+        method: 'PUT',
+        body: JSON.stringify({
+          difficulty: userWord.difficulty,
+          optional: {
+            progress: userWord.optional.progress,
+            successfulAttempts: userWord.optional.successfulAttempts,
+            unsuccessfulAttempts: userWord.optional.unsuccessfulAttempts,
+          },
+        }),
+        headers: {
+          'Content-Type': 'application/json',
+          authorization: `Bearer ${token}`,
+        },
+      });
+      const createdUserword = await responce.json();
+      return createdUserword;
+    } catch {
+      throw new Error();
+    }
+  }
+
+  async getUserWordsAgregatedAll(
+    id: string,
+    token: string,
+    wordsPerPage: number,
+    page: number,
+    filter: string,
+  ): Promise<Array<UserWord>> {
+    try {
+      const responce = await fetch(
+        `${this.baseUrl}/users/${id}/aggregatedWords?page=${page}
+      &wordsPerPage=${wordsPerPage}&filter=${filter}`,
+        {
+          method: 'GET',
+          headers: {
+            authorization: `Bearer ${token}`,
+          },
+        },
+      );
+      const userword = await responce.json();
+      return userword;
+    } catch {
+      throw new Error();
+    }
+  }
+
+  async getUserWordsAgregatedByGroup(
+    id: string,
+    token: string,
+    group: number,
+    wordsPerPage: number,
+    page: number,
+    filter: string,
+  ): Promise<Array<UserWord>> {
+    try {
+      const responce = await fetch(
+        `${this.baseUrl}/users/${id}/aggregatedWords?group=${group}&page=${page}
+      &wordsPerPage=${wordsPerPage}&filter=${filter}`,
+        {
+          method: 'GET',
+          headers: {
+            authorization: `Bearer ${token}`,
+          },
+        },
+      );
+      const userword = await responce.json();
+      return userword;
     } catch {
       throw new Error();
     }

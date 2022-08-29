@@ -1,6 +1,7 @@
+/* eslint-disable import/no-cycle */
 import './audio.css';
 import './modal.css';
-import Word from './Word';
+import { Word } from '../../types/Word';
 import AudioQuestion from './audio-question-component';
 import Api from '../../Api';
 import * as modalResult from './modal-content';
@@ -53,8 +54,6 @@ class AudioView {
 
     gameContainer.className = 'game-container';
     gameContainer.append(divDifficulty, progressBar, statusContainer);
-    // gameContainer.appendChild(progressBar);
-    // gameContainer.appendChild(statusContainer);
     div.appendChild(gameContainer);
     div.appendChild(modal);
     this.view = div;

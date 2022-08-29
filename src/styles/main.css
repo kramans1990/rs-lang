@@ -19,9 +19,9 @@
   --color-gray-light: #c7bcab;
   --color-gray-medium: #b59565;
   --color-dark: #494343;
-  --color-brown : #725747;
-  --color-yellow-bright :#ffcb05;
-  --color-green-common : #6DA070;
+  --color-brown: #725747;
+  --color-yellow-bright: #ffcb05;
+  --color-green-common: #6da070;
 
   font-size: 10px;
 }
@@ -83,6 +83,7 @@ header {
 }
 
 .nav-list__item {
+  position: relative;
   padding-bottom: 6px;
   font-weight: 800;
   font-size: 1.8rem;
@@ -109,6 +110,44 @@ header {
 .nav-list__item:last-of-type {
   border-bottom: none;
 }
+
+/* --------- sub-nav -------------*/
+
+.sub-nav {
+  z-index: 3;
+  position: absolute;
+  left: 20px;
+  bottom: 0;
+  width: max-content;
+  transform: translateY(50%) translateX(-36%) scaleY(0);
+  background-color: var(--color-main);
+  list-style-type: none;
+  transition: all 0.3s ease-out 0.2s;
+}
+
+.game-page-link:hover .sub-nav {
+  transform: translateY(100%) translateX(-36%) scaleY(100%);
+}
+
+.sub-nav__item {
+  padding: 10px;
+  min-width: max-content;
+  transition: all 0.3s;
+}
+
+.sub-nav__item:hover {
+  background-color: var(--color-medium);
+}
+
+.sub-nav__item img {
+  display: inline;
+  height: 20px;
+  width: auto;
+  margin-right: 5px;
+  transform: translateY(16%);
+}
+
+/* -------------------------------*/
 
 .sign-in {
   padding: 6px 30px;

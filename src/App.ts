@@ -92,12 +92,27 @@ class App {
 
   static renderBookPage() {
     const controller: ApplicationContoller = new BookController();
-
     App.setController(controller);
     const mainButton = document.querySelector('.book-page-link') as HTMLElement;
     App.changeActiveClassForNavItemByElement(mainButton);
     App.pageInfo = { pageName: 'bookPage' };
   }
+
+  static renderAudiocallPage() {
+    const controller: ApplicationContoller = new AudioController();
+    App.setController(controller);
+    const mainButton = document.querySelector('.game-page-link') as HTMLElement;
+    App.changeActiveClassForNavItemByElement(mainButton);
+    App.pageInfo = { pageName: 'audiocallPage' };
+  }
+
+  // static renderSprintPage() {
+  //   const controller: ApplicationContoller = new SprintController();
+  //   App.setController(controller);
+  //   const mainButton = document.querySelector('.game-page-link') as HTMLElement;
+  //   App.changeActiveClassForNavItemByElement(mainButton);
+  //   App.pageInfo = { pageName: 'sprintPage' };
+  // }
 
   static renderAuthPage(): void {
     const controller: ApplicationContoller = new AuthController();
@@ -133,6 +148,12 @@ class App {
           case 'bookPage':
             App.renderBookPage();
             break;
+          case 'audiocallPage':
+            App.renderAudiocallPage();
+            break;
+          // case 'sprintPage':
+          //   App.renderSprintPage();
+          //   break;
           case 'authPage':
             App.renderAuthPage();
             break;
@@ -155,17 +176,11 @@ class App {
     document.querySelector('.book-page-link')?.addEventListener('click', App.renderBookPage);
 
     document.querySelector('.sign-in-page-link')?.addEventListener('click', App.renderAuthPage);
-    //   document.querySelector('.words-page-link')?.addEventListener('click', (): void => {
-    //     this.page = new WordsPage();
-    //   });
     //   document.querySelector('.stat-page-link')?.addEventListener('click', (): void => {
     //     this.page = new StatPage();
     //   });
 
-    document.querySelector('.game-page-link')?.addEventListener('click', (): void => {
-      const controller: ApplicationContoller = new AudioController();
-      App.setController(controller);
-    });
+    document.querySelector('.audio-page-link')?.addEventListener('click', App.renderAudiocallPage);
 
     document.querySelector('.sign-in-page-link')?.addEventListener('click', (): void => {
       const controller: ApplicationContoller = new AuthController();

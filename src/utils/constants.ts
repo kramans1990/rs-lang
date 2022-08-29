@@ -35,7 +35,9 @@ const sprintGameName = 'Спринт';
 const audioGameName = 'Аудиовызов';
 const extraGameName = 'Экстра';
 const hardButtonText = 'Сложное';
+const hardButtonTextOpposite = 'неложное';
 const doneButtonText = 'Изучено';
+const doneButtonTextOpposite = 'Изучено';
 const iconSprintSrc = './assets/svg/icon_sprint.svg';
 const iconAudioGameSrc = './assets/svg/icon_audio_game.svg';
 const iconExtraGameSrc = './assets/svg/icon_audio_game.svg';
@@ -67,7 +69,9 @@ export {
   extraGameName,
   logOutText,
   hardButtonText,
+  hardButtonTextOpposite,
   doneButtonText,
+  doneButtonTextOpposite,
   numberOfPagesInLevel,
   iconSprintSrc,
   iconAudioGameSrc,

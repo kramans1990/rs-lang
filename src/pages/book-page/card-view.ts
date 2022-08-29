@@ -1,5 +1,11 @@
 import { Word } from '../../types/Word';
-import { baseUrl, doneButtonText, hardButtonText } from '../../utils/constants';
+import {
+  baseUrl,
+  doneButtonText,
+  doneButtonTextOpposite,
+  hardButtonText,
+  hardButtonTextOpposite,
+} from '../../utils/constants';
 // eslint-disable-next-line import/no-cycle
 import App from '../../App';
 
@@ -117,13 +123,13 @@ class CardView {
         case 'сложное':
           card?.classList.remove('done');
           card?.classList.add('hard');
-          hardButton.innerText = 'несложное';
-          doneButton.innerText = 'изучено';
+          hardButton.innerText = hardButtonTextOpposite;
+          doneButton.innerText = doneButtonText;
           break;
         case 'несложное':
           card?.classList.remove('hard');
-          hardButton.innerText = 'сложное';
-          doneButton.innerText = 'изучено';
+          hardButton.innerText = hardButtonText;
+          doneButton.innerText = doneButtonText;
           break;
         default:
           break;
@@ -141,13 +147,13 @@ class CardView {
         case 'изучено':
           card?.classList.remove('hard');
           card?.classList.add('done');
-          doneButton.innerText = 'поучить';
-          hardButton.innerText = 'сложное';
+          doneButton.innerText = doneButtonTextOpposite;
+          hardButton.innerText = hardButtonText;
           break;
         case 'поучить':
           card?.classList.remove('done');
-          doneButton.innerText = 'изучено';
-          hardButton.innerText = 'сложное';
+          doneButton.innerText = doneButtonText;
+          hardButton.innerText = hardButtonText;
           break;
         default:
           break;

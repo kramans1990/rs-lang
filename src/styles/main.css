@@ -166,6 +166,15 @@ footer {
   background-color: rgba(0, 0, 0, 0.5);
 }
 
+footer.secondary {
+  /* background-image: url("../assets/bg_main.jpg"); */
+  background-position: bottom;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  background-image: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url("../assets/bg_main.jpg");
+}
+
 .footer__wrapper {
   height: 50px;
   display: flex;

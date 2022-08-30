@@ -15,10 +15,9 @@ export type Word = {
   textExampleTranslate: string;
 };
 
-export type sprintWord = {
+export type SprintWord = {
   word: string;
   correctTranslation: string;
   currentTranslation: string;
   audio: string;
-}
-
+};

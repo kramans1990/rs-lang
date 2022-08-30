@@ -1,4 +1,5 @@
-import Word from './Word';
+/* eslint-disable import/no-cycle */
+import { Word } from '../../types/Word';
 import Api from '../../Api';
 
 class AudioQuestion {

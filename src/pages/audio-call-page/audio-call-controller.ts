@@ -2,9 +2,12 @@
 import AudioModel from './audio-model';
 import AudioView from './audio-view';
 import Api from '../../Api';
-import Word from './Word';
+import { Word } from '../../types/Word';
 import ApplicationContoller from '../application-controller';
 import App from '../../App';
+import UserWord from '../../types/userword';
+// import User from '../../types/User';
+import AudioQuestion from './audio-question-component';
 
 class AudioController extends ApplicationContoller {
   model: AudioModel;
@@ -50,6 +53,7 @@ class AudioController extends ApplicationContoller {
       //   this.model.updateGameProgress();//обновление статистики
       // }
       if (target.id === 'next-question-button') {
+        this.UpdateUserWords(this.model.audioTests[this.model.currentQuestion]);
         this.model.nextQuestion();
       }
       if (target.className === 'audio-icon') {
@@ -122,5 +126,56 @@ class AudioController extends ApplicationContoller {
           rej(err);
         });
     });
+
+  async UpdateUserWords(test: AudioQuestion) {
+    let userWords: Array<UserWord> = new Array<UserWord>();
+    if (App.user?.userId) {
+      const value: Array<UserWord> = await this.api.getUserWords(App.user.userId, App.user.token);
+      userWords = value;
+      const find = userWords.filter((item) => item.wordId === test.correctAnswer.id);
+
+      if (find.length === 0) {
+        let progress = 0;
+        progress = test.isCorrect ? (progress = 20) : 0;
+        const difficulty = 'no-hard';
+        const successfulAttempts = test.isCorrect ? 1 : 0;
+        const unsuccessfulAttempts = test.isCorrect ? 0 : 1;
+        const userWord: UserWord = new UserWord(
+          test.correctAnswer,
+          difficulty,
+          progress,
+          successfulAttempts,
+          unsuccessfulAttempts,
+        );
+
+        this.api.createUserWord(App.user.userId, App.user.token, userWord);
+      } else {
+        const word = find[0];
+        let { progress } = word.optional;
+        progress = test.isCorrect ? (progress += 20) : (progress -= 20);
+        progress = progress >= 100 ? 100 : progress;
+        progress = progress <= 0 ? 0 : progress;
+        const difficulty = progress === 100 ? 'no-hard' : find[0].difficulty;
+        if (test.isCorrect) {
+          word.optional.successfulAttempts += 1;
+        }
+        if (!test.isCorrect) {
+          word.optional.unsuccessfulAttempts += 1;
+        }
+        const { successfulAttempts } = word.optional;
+        const { unsuccessfulAttempts } = word.optional;
+        const userWord: UserWord = new UserWord(
+          test.correctAnswer,
+          difficulty,
+          progress,
+          successfulAttempts,
+          unsuccessfulAttempts,
+        );
+        userWord.word = test.correctAnswer;
+        userWord.wordId = word.wordId;
+        this.api.updateUserWord(App.user.userId, App.user.token, userWord);
+      }
+    }
+  }
 }
 export default AudioController;

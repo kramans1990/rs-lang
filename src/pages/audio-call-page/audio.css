@@ -1,4 +1,5 @@
 .audio-call-container{
+  width: 90%;
   user-select: none;
   row-gap: 20px;
   justify-items: center;
@@ -7,10 +8,15 @@
   flex-direction: column;
   align-items: center;
   background-size: cover;
+ 
 }
-.buttons-container-div{
+.buttons-container{
+  width: 90vw;
   display:flex;
+  flex-wrap: wrap;
+  align-items: center;
   justify-content: center;
+  align-content: space-around;
   user-select: none;
 }
 .div-quiz-container{

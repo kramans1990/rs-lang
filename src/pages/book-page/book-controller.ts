@@ -17,10 +17,8 @@ import {
   numberOfPagesInLevel,
   sprintGameName,
   audioGameName,
-  extraGameName,
   iconSprintSrc,
   iconAudioGameSrc,
-  iconExtraGameSrc,
 } from '../../utils/constants';
 import {
   disableAudioBtns,
@@ -232,18 +230,18 @@ class BookController extends ApplicationContoller {
     ) as HTMLImageElement;
     iconAudioGame.setAttribute('src', iconAudioGameSrc);
     audioGameLink.prepend(iconAudioGame);
-    const extraGameLink = BookPageView.createElementByParams('div', 'btn') as HTMLDivElement;
-    extraGameLink.classList.add('btn_colored');
-    extraGameLink.innerText = extraGameName;
-    const iconExtraGame = BookPageView.createElementByParams(
-      'img',
-      'game-icon',
-    ) as HTMLImageElement;
-    iconExtraGame.setAttribute('src', iconExtraGameSrc);
+    // const extraGameLink = BookPageView.createElementByParams('div', 'btn') as HTMLDivElement;
+    // extraGameLink.classList.add('btn_colored');
+    // extraGameLink.innerText = extraGameName;
+    // const iconExtraGame = BookPageView.createElementByParams(
+    //   'img',
+    //   'game-icon',
+    // ) as HTMLImageElement;
+    // iconExtraGame.setAttribute('src', iconExtraGameSrc);
 
-    extraGameLink.prepend(iconExtraGame);
+    // extraGameLink.prepend(iconExtraGame);
 
-    this.gameButtons.append(extraGameLink, audioGameLink, sprintGameLink);
+    this.gameButtons.append(audioGameLink, sprintGameLink);
   }
 
   getPageInfoFromLocalStorage() {

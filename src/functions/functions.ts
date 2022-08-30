@@ -36,10 +36,11 @@ function enableAudioBtns() {
   });
 }
 
-function toggleMenuOpened() {
+function burgerMenuHandle() {
   document.querySelector('.burger')?.classList.toggle('open');
   document.querySelector('.header_nav')?.classList.toggle('open');
   document.querySelector('.sub-nav')?.classList.remove('open');
+  document.querySelector('body')?.classList.add('not-scroll');
 }
 
 function clickMenuHandle(e: Event) {
@@ -49,6 +50,7 @@ function clickMenuHandle(e: Event) {
     document.querySelector('.burger')?.classList.remove('open');
     document.querySelector('.header_nav')?.classList.remove('open');
     document.querySelector('.sub-nav')?.classList.remove('open');
+    document.querySelector('body')?.classList.remove('not-scroll');
   }
 }
 /* prettier-ignore */
@@ -61,6 +63,6 @@ export {
   disableAudioBtns,
   enableAudioBtns,
   removeDataFromLocalStorage,
-  toggleMenuOpened,
+  burgerMenuHandle,
   clickMenuHandle,
 };

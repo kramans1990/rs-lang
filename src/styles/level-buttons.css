@@ -2,15 +2,31 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  gap: 16;
-  height: 65px;
+  flex-wrap: wrap;
+  gap: 16px;
+  min-height: 65px;
   margin: 55px auto 30px;
   /* background-color:var(--color-accent); */
   /* font-size: 2rem; */
 }
 
+@media (max-width: 1200px) {
+  .levels {
+    justify-content: center;
+    column-gap: 50px;
+    row-gap: 10px;
+  }
+}
+
+@media (max-width: 768px) {
+  .levels {
+    column-gap: 10px;
+  }
+}
+
 .level {
-  width: 12%;
+  flex-grow: 1;
+  padding: 10px 16px;
   display: flex;
   justify-content: center;
   height: 50px;
@@ -26,6 +42,12 @@
   cursor: pointer;
   transition: all 0.3s;
   user-select: none;
+}
+
+@media (max-width: 992px) {
+  .level {
+    font-size: 1.6rem;
+  }
 }
 
 .level:hover {
@@ -113,6 +135,7 @@
 .level-7 {
   background: var(--color-accent);
   border: 2px solid var(--color-accent);
+  flex-grow: 8;
 }
 
 .level-7:hover,

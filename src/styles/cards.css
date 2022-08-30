@@ -5,6 +5,14 @@
   row-gap: 20px;
 }
 
+@media (max-width: 992px) {
+  .cards_list {
+    justify-content: center;
+    row-gap: 20px;
+    column-gap: 40px;
+  }
+}
+
 .card {
   position: relative;
   width: 285px;

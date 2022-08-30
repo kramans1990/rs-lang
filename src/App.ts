@@ -10,7 +10,7 @@ import {
   getDataFromLocalStorage,
   removeDataFromLocalStorage,
   saveDataToLocalStorage,
-  toggleMenuOpened,
+  burgerMenuHandle,
   clickMenuHandle,
 } from './functions/functions';
 import { logOutText, signInButtonText } from './utils/constants';
@@ -190,7 +190,7 @@ class App {
       App.setController(controller);
     });
 
-    document.querySelector('.burger')?.addEventListener('click', toggleMenuOpened);
+    document.querySelector('.burger')?.addEventListener('click', burgerMenuHandle);
     document.querySelector('.nav-list')?.addEventListener('click', clickMenuHandle);
   }
 }

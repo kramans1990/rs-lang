@@ -16,6 +16,15 @@
   padding: 70px 0;
 }
 
+@media (max-width: 768px) {
+  .main-page {
+    margin-left: 34px;
+    max-width: 80%;
+    height: 100%;
+    padding: 40px 0;
+  }
+}
+
 .main-page__title {
   font-weight: 900;
   font-size: 5rem;
@@ -23,11 +32,24 @@
   color: #ffffff;
 }
 
+@media (max-width: 768px) {
+  .main-page__title {
+    font-size: 4rem;
+  }
+}
+
 .main-page__text p {
   font-weight: 500;
   font-size: 1.8rem;
   line-height: 2.6rem;
   color: #ffffff;
+}
+
+@media (max-width: 768px) {
+  .main-page__text p {
+    font-size: 1.6rem;
+    line-height: 2.4rem;
+  }
 }
 
 .buttons {
@@ -39,6 +61,7 @@
 .btn_intro {
   width: 200px;
   height: 50px;
+  padding: 5px 18px;
 }
 
 .btn {

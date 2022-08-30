@@ -2,7 +2,7 @@ import './audio.css';
 import './modal.css';
 import Word from './Word';
 import AudioQuestion from './audio-question-component';
-import Api from '../../Api';
+import Api from '../../../Api';
 import * as modalResult from './modal-content';
 
 class AudioView {

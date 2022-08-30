@@ -1,7 +1,7 @@
 /* eslint-disable import/no-cycle */
 import MainPageController from './pages/main-page/main-page-controler';
 import ApplicationContoller from './pages/application-controller';
-import AudioController from './pages/audio-call-page/audio-call-controller';
+import AudioController from './pages/games/audio-call-page/audio-call-controller';
 import AuthController from './pages/auth-page/auth-controller';
 import RegistrationController from './pages/registration-page/registration-controller';
 import BookController from './pages/book-page/book-controller';
@@ -12,6 +12,7 @@ import {
   saveDataToLocalStorage,
 } from './functions/functions';
 import { logOutText, signInButtonText } from './utils/constants';
+import SprintController from './pages/games/sprint-page/sprint-controller';
 
 class App {
   static main: HTMLElement | null;
@@ -120,6 +121,10 @@ class App {
     //   document.querySelector('.words-page-link')?.addEventListener('click', (): void => {
     //     this.page = new WordsPage();
     //   });
+    document.querySelector('.sprint-link')?.addEventListener('click', (): void => {
+      const controller: ApplicationContoller = new SprintController();
+      App.setController(controller);
+    });
     document.querySelector('.book-page-link')?.addEventListener('click', (e: Event): void => {
       const controller: ApplicationContoller = new BookController();
       App.setController(controller);
@@ -137,7 +142,6 @@ class App {
     //     this.page = new StatPage();
     //   });
 
-
     document.querySelector('.game-page-link')?.addEventListener('click', (): void => {
       const controller: ApplicationContoller = new AudioController();
       App.setController(controller);
@@ -152,10 +156,9 @@ class App {
       App.setController(controller);
     });
 
-//     //   document.querySelector('.game-page-link')?.addEventListener('click', (): void => {
-//     //     this.page = new GamePage();
-//     //   });
-
+    //     //   document.querySelector('.game-page-link')?.addEventListener('click', (): void => {
+    //     //     this.page = new GamePage();
+    //     //   });
   }
 }
 export default App;

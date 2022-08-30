@@ -1,10 +1,10 @@
 /* eslint-disable import/no-cycle */
 import AudioModel from './audio-model';
 import AudioView from './audio-view';
-import Api from '../../Api';
+import Api from '../../../Api';
 import Word from './Word';
-import ApplicationContoller from '../application-controller';
-import App from '../../App';
+import ApplicationContoller from '../../application-controller';
+import App from '../../../App';
 
 class AudioController extends ApplicationContoller {
   model: AudioModel;

@@ -14,3 +14,11 @@ export type Word = {
   textMeaningTranslate: string;
   textExampleTranslate: string;
 };
+
+export type sprintWord = {
+  word: string;
+  correctTranslation: string;
+  currentTranslation: string;
+  audio: string;
+}
+

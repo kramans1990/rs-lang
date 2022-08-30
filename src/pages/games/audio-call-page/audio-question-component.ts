@@ -1,5 +1,5 @@
 import Word from './Word';
-import Api from '../../Api';
+import Api from '../../../Api';
 
 class AudioQuestion {
   options: Array<Word>;

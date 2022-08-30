@@ -42,6 +42,11 @@ const iconSprintSrc = './assets/svg/icon_sprint.svg';
 const iconAudioGameSrc = './assets/svg/icon_audio_game.svg';
 const iconExtraGameSrc = './assets/svg/icon_audio_game.svg';
 
+const sprintTime = 5;
+const startPointsPerCorrectAnswer = 10;
+const correctText = 'Верно';
+const incorrectText = 'Неверно';
+
 export {
   baseUrl,
   signUpButtonText,
@@ -76,4 +81,8 @@ export {
   iconSprintSrc,
   iconAudioGameSrc,
   iconExtraGameSrc,
+  sprintTime,
+  startPointsPerCorrectAnswer,
+  correctText,
+  incorrectText,
 };

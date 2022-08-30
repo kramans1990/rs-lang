@@ -19,9 +19,15 @@
 @media (max-width: 768px) {
   .main-page {
     margin-left: 34px;
-    max-width: 80%;
+    max-width: 72%;
     height: 100%;
     padding: 40px 0;
+  }
+}
+
+@media (max-width: 480px) {
+  .main-page {
+    padding: 20px 0;
   }
 }
 
@@ -35,6 +41,13 @@
 @media (max-width: 768px) {
   .main-page__title {
     font-size: 4rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .main-page__title {
+    font-size: 3rem;
+    line-height: 5rem;
   }
 }
 
@@ -52,10 +65,25 @@
   }
 }
 
+@media (max-width: 480px) {
+  .main-page__text p {
+    font-size: 1.4rem;
+    line-height: 2rem;
+  }
+}
+
 .buttons {
   display: flex;
   gap: 40px;
   margin-top: 100px;
+}
+
+@media (max-width: 480px) {
+  .buttons {
+    gap: 10px;
+    margin-top: 28px;
+    flex-direction: column;
+  }
 }
 
 .btn_intro {
@@ -74,6 +102,12 @@
   text-transform: uppercase;
   cursor: pointer;
   transition: all 0.3s;
+}
+
+@media (max-width: 480px) {
+  .btn {
+    font-size: 1.6rem;
+  }
 }
 
 .btn:hover {

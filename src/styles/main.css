@@ -37,7 +37,7 @@
 
 html {
   height: 100%;
-  overflow: auto;
+  overflow: none;
   width: 100vw;
   overflow-x: hidden;
 }
@@ -50,7 +50,7 @@ body {
   grid-template-rows: auto 1fr auto;
   background-image: url("../assets/img/bg_main.jpg");
   background-repeat: no-repeat;
-  background-size: cover;
+  /* background-size: cover; */
   background-position: center;
 }
 
@@ -60,7 +60,7 @@ body {
 }
 
 .container {
-  width: 80%;
+  width: 84%;
   margin: 0 auto;
 }
 

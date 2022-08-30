@@ -40,7 +40,7 @@ function burgerMenuHandle() {
   document.querySelector('.burger')?.classList.toggle('open');
   document.querySelector('.header_nav')?.classList.toggle('open');
   document.querySelector('.sub-nav')?.classList.remove('open');
-  document.querySelector('body')?.classList.add('not-scroll');
+  document.querySelector('body')?.classList.toggle('not-scroll');
 }
 
 function clickMenuHandle(e: Event) {

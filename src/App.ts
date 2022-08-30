@@ -1,7 +1,7 @@
 /* eslint-disable import/no-cycle */
-import MainPageController from './pages/main-page/main-page-controler';
+import MainPageController from './pages/main-page/main-page-controller';
 import ApplicationContoller from './pages/application-controller';
-import AudioController from './pages/games/audio-call-page/audio-call-controller';
+// import AudioController from './pages/games/audio-call-page/audio-call-controller';
 import AuthController from './pages/auth-page/auth-controller';
 import RegistrationController from './pages/registration-page/registration-controller';
 import BookController from './pages/book-page/book-controller';
@@ -13,6 +13,7 @@ import {
 } from './functions/functions';
 import { logOutText, signInButtonText } from './utils/constants';
 import SprintController from './pages/games/sprint-page/sprint-controller';
+import GamesPageController from './pages/games/games-page-controller';
 
 class App {
   static main: HTMLElement | null;
@@ -167,7 +168,7 @@ class App {
     });
     document.querySelector('.sign-in-page-link')?.addEventListener('click', App.renderAuthPage);
     document.querySelector('.game-page-link')?.addEventListener('click', (): void => {
-      const controller: ApplicationContoller = new AudioController();
+      const controller: ApplicationContoller = new GamesPageController();
       App.setController(controller);
     });
     document.querySelector('.sign-in-page-link')?.addEventListener('click', (): void => {

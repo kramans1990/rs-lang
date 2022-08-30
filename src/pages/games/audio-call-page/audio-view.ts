@@ -4,7 +4,7 @@ import './modal.css';
 import { Word } from '../../../types/Word';
 import AudioQuestion from './audio-question-component';
 import Api from '../../../Api';
-import * as modalResult from './modal-content';
+import { correctResultsText, incorrectResultsText, resultsText } from '../../../utils/constants';
 
 class AudioView {
   view: HTMLDivElement;
@@ -48,9 +48,8 @@ class AudioView {
     progressBar.appendChild(innerdiv);
     const gameContainer = document.createElement('div');
     const statusContainer = document.createElement('div');
-    const modal = document.createElement('div');
+    const modal = this.createModalContent();
     modal.className = 'game-result hidden';
-    modal.innerHTML = modalResult.modalHtml;
 
     gameContainer.className = 'game-container';
     gameContainer.append(divDifficulty, progressBar, statusContainer);
@@ -297,6 +296,37 @@ class AudioView {
     } else {
       this.handleNavKeys(key);
     }
+  }
+  /* eslint-disable class-methods-use-this */
+
+  createModalContent(): HTMLDivElement {
+    const modalContent = document.createElement('div');
+    modalContent.classList.add('modal-content');
+    const modalClose = document.createElement('span');
+    modalClose.innerHTML = '&times;';
+    const resultsBox = document.createElement('div');
+    resultsBox.classList.add('div-result-flex');
+    const resilts = document.createElement('span');
+    resilts.innerText = resultsText;
+    const incorrectAnswers = document.createElement('span');
+    incorrectAnswers.classList.add('game-span-wrong');
+    incorrectAnswers.innerText = incorrectResultsText;
+    const correctAnswers = document.createElement('span');
+    correctAnswers.classList.add('game-span-correct');
+    correctAnswers.innerText = correctResultsText;
+    const incorrectAnswersContainer = document.createElement('div');
+    incorrectAnswersContainer.classList.add('answer-container-wrong');
+    const correctAnswersContainer = document.createElement('div');
+    correctAnswersContainer.classList.add('answer-container-correct');
+    resultsBox.append(
+      resilts,
+      incorrectAnswers,
+      incorrectAnswersContainer,
+      correctAnswers,
+      correctAnswersContainer,
+    );
+    modalContent.append(modalClose, resultsBox);
+    return modalContent;
   }
 }
 export default AudioView;

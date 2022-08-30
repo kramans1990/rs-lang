@@ -31,8 +31,8 @@ const numberOfLevels = 7; // 6 + 1(все сложные слова)
 const numberOfPagesInLevel = 30;
 const btnHardText = 'сложные';
 const btnLevelText = 'уровень ';
-const sprintGameName = 'Спринт';
 const audioGameName = 'Аудиовызов';
+const sprintGameName = 'Спринт';
 const extraGameName = 'Экстра';
 const hardButtonText = 'Сложное';
 const hardButtonTextOpposite = 'несложное';
@@ -41,6 +41,10 @@ const doneButtonTextOpposite = 'поучить';
 const iconSprintSrc = './assets/svg/icon_sprint.svg';
 const iconAudioGameSrc = './assets/svg/icon_audio_game.svg';
 const iconExtraGameSrc = './assets/svg/icon_audio_game.svg';
+
+const correctResultsText = 'Правильные ответы';
+const incorrectResultsText = 'Неправильные ответы:';
+const resultsText = 'Результаты';
 
 const sprintTime = 5;
 const startPointsPerCorrectAnswer = 10;
@@ -85,4 +89,7 @@ export {
   startPointsPerCorrectAnswer,
   correctText,
   incorrectText,
+  correctResultsText,
+  incorrectResultsText,
+  resultsText,
 };

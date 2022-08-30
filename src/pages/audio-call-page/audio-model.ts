@@ -100,7 +100,7 @@ class AudioModel {
       this.gameStatus = 'Select Level';
     } else {
       const tests: Array<AudioQuestion> = new Array<AudioQuestion>();
-      const count = countQuestions;
+      const count = words.length < countQuestions ? words.length : countQuestions;
       let id = 0;
       while (tests.length < count) {
         let correctAnswer = words[Math.floor(Math.random() * words.length)];

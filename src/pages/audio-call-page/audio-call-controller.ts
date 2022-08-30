@@ -18,6 +18,8 @@ class AudioController extends ApplicationContoller {
 
   wordsPerPage = 20;
 
+  countQuestions = 20;
+
   initialbarProgress = 3;
 
   pagesPerGame = 3;
@@ -32,7 +34,7 @@ class AudioController extends ApplicationContoller {
       this.addKeyBoardListener();
     }
     if (words) {
-      /// переход со сттраницы учебника
+      this.model.createQuiz(words, this.countQuestions);
     }
   }
 
@@ -105,7 +107,7 @@ class AudioController extends ApplicationContoller {
       const value: Array<Word> = await this.getwords(group, i);
       words = words.concat(value);
     }
-    this.model.createQuiz(words, 20);
+    this.model.createQuiz(words, this.countQuestions);
   }
 
   /* eslint-disable @typescript-eslint/indent */

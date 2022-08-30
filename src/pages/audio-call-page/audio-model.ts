@@ -100,10 +100,18 @@ class AudioModel {
       this.gameStatus = 'Select Level';
     } else {
       const tests: Array<AudioQuestion> = new Array<AudioQuestion>();
-      const count = words.length < countQuestions ? words.length : countQuestions;
+      const count = countQuestions;
       let id = 0;
       while (tests.length < count) {
-        const correctAnswer = words[Math.floor(Math.random() * words.length)];
+        let correctAnswer = words[Math.floor(Math.random() * words.length)];
+        let find: Array<AudioQuestion> = tests.filter(
+          (p) => p.correctAnswer.id === correctAnswer.id,
+        );
+        /* eslint-disable  @typescript-eslint/no-loop-func */
+        while (find.length > 0) {
+          correctAnswer = words[Math.floor(Math.random() * words.length)];
+          find = tests.filter((p) => p.correctAnswer.id === correctAnswer.id);
+        }
         let options: Array<Word> = new Array<Word>();
         options.push(correctAnswer);
         while (options.length < 6) {

@@ -126,12 +126,16 @@ class BookController extends ApplicationContoller {
 
       if (i === numberOfLevels) {
         btn.innerText = btnHardText;
+        if (!App.user) {
+          btn.style.display = 'none';
+        }
       } else {
         btn.innerHTML = btnLevelText;
         const levelNumber = BookPageView.createElementByParams('span', 'level_number');
         levelNumber.innerHTML = `&nbsp${i}`;
         btn.append(levelNumber);
       }
+
       btn.addEventListener('click', async (e): Promise<void> => this.levelBtnHandler(e));
       this.levels.append(btn);
     }

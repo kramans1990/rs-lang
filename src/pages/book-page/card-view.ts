@@ -4,9 +4,7 @@ import UserWord from '../../types/userword';
 import {
   baseUrl,
   doneButtonText,
-  doneButtonTextOpposite,
   hardButtonText,
-  hardButtonTextOpposite,
   progressForDoneWord,
   progressForNoDoneWord,
 } from '../../utils/constants';
@@ -49,7 +47,7 @@ class CardView {
     const userWord = this.getOneUserWord();
     if (userWord) {
       statFrame.innerHTML = `<span>${userWord.optional.successfulAttempts}</span> | ${userWord.optional.unsuccessfulAttempts}`;
-      if (userWord.optional.progress === 100) {
+      if (userWord.optional.progress === 100 && userWord.difficulty !== 'hard') {
         this.view.classList.add('done');
       }
       if (userWord.difficulty === 'hard') {
@@ -140,25 +138,16 @@ class CardView {
     if (e) {
       const card = (e.target as HTMLDivElement).closest('.card');
       const cardId = card?.id as string;
-      const hardButton = e.target as HTMLDivElement;
-      const doneButton = hardButton.nextSibling as HTMLDivElement;
+      // const hardButton = e.target as HTMLDivElement;
+      // const doneButton = hardButton.nextSibling as HTMLDivElement;
 
-      switch (hardButton.textContent?.toLowerCase()) {
-        case 'сложное':
-          card?.classList.remove('done');
-          card?.classList.add('hard');
-          hardButton.innerText = hardButtonTextOpposite;
-          doneButton.innerText = doneButtonText;
-          this.updateUserWordInfo(cardId, 'hard');
-          break;
-        case 'несложное':
-          card?.classList.remove('hard');
-          hardButton.innerText = hardButtonText;
-          doneButton.innerText = doneButtonText;
-          this.updateUserWordInfo(cardId, 'no-hard');
-          break;
-        default:
-          break;
+      if (card?.classList.contains('hard')) {
+        card?.classList.remove('hard');
+        this.updateUserWordInfo(cardId, 'no-hard');
+      } else {
+        card?.classList.remove('done');
+        card?.classList.add('hard');
+        this.updateUserWordInfo(cardId, 'hard');
       }
     }
   }
@@ -167,27 +156,18 @@ class CardView {
     if (e) {
       const card = (e.target as HTMLDivElement).closest('.card');
       const cardId = card?.id as string;
-      const doneButton = e.target as HTMLDivElement;
-      const hardButton = doneButton.previousSibling as HTMLDivElement;
+      // const doneButton = e.target as HTMLDivElement;
+      // const hardButton = doneButton.previousSibling as HTMLDivElement;
 
-      switch (doneButton.textContent?.toLowerCase()) {
-        case 'изучено':
-          card?.classList.remove('hard');
-          card?.classList.add('done');
-          doneButton.innerText = doneButtonTextOpposite;
-          hardButton.innerText = hardButtonText;
-          this.updateUserWordInfo(cardId, 'no-hard', progressForDoneWord);
-          this.updateProgressBar(progressForDoneWord);
-          break;
-        case 'поучить':
-          card?.classList.remove('done');
-          doneButton.innerText = doneButtonText;
-          hardButton.innerText = hardButtonText;
-          this.updateUserWordInfo(cardId, 'no-hard', progressForNoDoneWord);
-          this.updateProgressBar(progressForNoDoneWord);
-          break;
-        default:
-          break;
+      if (card?.classList.contains('done')) {
+        card?.classList.remove('done');
+        this.updateUserWordInfo(cardId, 'no-hard', progressForNoDoneWord);
+        this.updateProgressBar(progressForNoDoneWord);
+      } else {
+        card?.classList.remove('hard');
+        card?.classList.add('done');
+        this.updateUserWordInfo(cardId, 'no-hard', progressForDoneWord);
+        this.updateProgressBar(progressForDoneWord);
       }
     }
   }

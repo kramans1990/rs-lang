@@ -182,7 +182,7 @@
 }
 
 .hard .hard__btn {
-  border: 2px solid var(--color-accent);
+  border: 3px solid var(--color-accent);
   color: var(--color-accent);
 }
 

@@ -85,7 +85,7 @@ class Api {
     }
   }
 
-  async getOneWord(id: number): Promise<Word> {
+  async getOneWord(id: string): Promise<Word> {
     try {
       const responce = await fetch(`${this.words}/${id}`);
       const card = await responce.json();
@@ -134,7 +134,7 @@ class Api {
     }
   }
 
-  async updateUserWord(id: string, token: string, userWord: UserWord): Promise<Array<UserWord>> {
+  async updateUserWord(id: string, token: string, userWord: UserWord): Promise<UserWord> {
     try {
       const responce = await fetch(`${this.baseUrl}/users/${id}/words/${userWord.word.id}`, {
         method: 'PUT',
@@ -207,10 +207,6 @@ class Api {
     } catch {
       throw new Error();
     }
-  }
-
-  myConsole(a: string) {
-    console.log(a, this.baseUrl);
   }
 }
 

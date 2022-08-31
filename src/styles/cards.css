@@ -225,8 +225,8 @@
 
 .progress-loading {
   height: 100%;
-  width: 25%;
+  width: 0%;
   background-color: var(--color-main);
   border-radius: 4px;
-  transition: all 1s;
+  transition: all 1.5s;
 }

@@ -7,7 +7,8 @@ import {
   doneButtonTextOpposite,
   hardButtonText,
   hardButtonTextOpposite,
-  // progressForDoneWord,
+  progressForDoneWord,
+  progressForNoDoneWord,
 } from '../../utils/constants';
 
 /* eslint-disable import/no-cycle */
@@ -25,7 +26,9 @@ class CardView {
 
   static isAuthUser: boolean;
 
-  // static api: Api;
+  userWords: UserWord[];
+
+  // userWord: UserWord;
 
   constructor(wordInfo: Word) {
     this.api = new Api();
@@ -33,30 +36,34 @@ class CardView {
     this.view = document.createElement('div');
     this.view.classList.add('card');
     this.view.id = wordInfo.id;
-    // this.loadingProgress = 20;
-
     this.createCard(wordInfo);
+    // console.log('this.userWords', this.userWords);
+
+    // console.log(this.userWords);
+
+    // console.log(this.view.id, this.userWord);
   }
 
-  // set loadingStatus(loading: number) {
-  //   this.loadingProgress = loading;
-  //   this.updateProgressBar(this.loadingProgress);
-  // }
-
-  createCard(wordInfo: Word) {
+  async createCard(wordInfo: Word) {
     const wordImg = document.createElement('img');
     wordImg.setAttribute('src', `${this.baseUrl}/${wordInfo.image}`);
     wordImg.setAttribute('alt', 'card photo');
     wordImg.classList.add('card__img');
     const statFrame = document.createElement('div');
     statFrame.classList.add('card__stat');
-    statFrame.innerHTML = '<span>3</span> | 17';
+
+    const userWord = await this.getOneUserWord();
+    if (userWord) {
+      statFrame.innerHTML = `<span>${userWord.optional.successfulAttempts}</span> | ${userWord.optional.unsuccessfulAttempts}`;
+    } else {
+      statFrame.innerHTML = '<span>0</span> | 0';
+    }
 
     const cardText = document.createElement('div');
     cardText.classList.add('card__text');
     const wordBlock = this.createWordBlock(wordInfo);
     const cardButtons = this.createCardButtons();
-    const progressBar = this.createWordProgressBar();
+    const progressBar = await this.createWordProgressBar();
 
     if (!App.user) {
       progressBar.style.display = 'none';
@@ -91,12 +98,18 @@ class CardView {
 
   /* eslint-disable class-methods-use-this */
 
-  createWordProgressBar() {
+  async createWordProgressBar() {
     const progressBar = document.createElement('div');
-    const innerdiv = document.createElement('div');
-    innerdiv.className = 'progress-loading';
     progressBar.className = 'card__progress-bar';
     progressBar.id = 'card__progress-bar';
+    const innerdiv = document.createElement('div');
+    innerdiv.className = 'progress-loading';
+
+    const userWord = await this.getOneUserWord();
+    if (userWord) {
+      innerdiv.style.width = `${userWord.optional.progress}%`;
+    }
+
     progressBar.appendChild(innerdiv);
     return progressBar;
   }
@@ -109,11 +122,15 @@ class CardView {
     const hardButton = document.createElement('button');
     hardButton.classList.add('btn', 'card__btn', 'hard__btn');
     hardButton.innerText = hardButtonText;
-    hardButton.addEventListener('click', this.hardBtnHandler);
+    hardButton.addEventListener('click', (e) => {
+      this.hardBtnHandler(e);
+    });
     const doneButton = document.createElement('button');
     doneButton.classList.add('btn', 'card__btn', 'done__btn');
     doneButton.innerText = doneButtonText;
-    doneButton.addEventListener('click', this.doneBtnHandler);
+    doneButton.addEventListener('click', (e) => {
+      this.doneBtnHandler(e);
+    });
     cardButtons.append(hardButton, doneButton);
     return cardButtons;
   }
@@ -122,6 +139,7 @@ class CardView {
   async hardBtnHandler(e?: Event) {
     if (e) {
       const card = (e.target as HTMLDivElement).closest('.card');
+      const cardId = card?.id as string;
       const hardButton = e.target as HTMLDivElement;
       const doneButton = hardButton.nextSibling as HTMLDivElement;
 
@@ -131,33 +149,24 @@ class CardView {
           card?.classList.add('hard');
           hardButton.innerText = hardButtonTextOpposite;
           doneButton.innerText = doneButtonText;
+          this.updateUserWordInfo(cardId, 'hard');
           break;
         case 'несложное':
           card?.classList.remove('hard');
           hardButton.innerText = hardButtonText;
           doneButton.innerText = doneButtonText;
+          this.updateUserWordInfo(cardId, 'no-hard');
           break;
         default:
           break;
       }
     }
-    // this.makeUserWordHard();
-    // --------------------------------- для поиска апи --------------------------------------------
-    if (App.user?.userId) {
-      const answer = await this.api.getUserWords(App.user?.userId, App.user?.token);
-      console.log(answer);
-    }
-  }
-
-  makeUserWordHard() {
-    // if (App.user?.userId && App.user.token) {
-    // const answer = this.api.getUserWords(App.user?.userId, App.user?.token);
-    console.log('answer');
   }
 
   async doneBtnHandler(e?: Event) {
     if (e) {
       const card = (e.target as HTMLDivElement).closest('.card');
+      const cardId = card?.id as string;
       const doneButton = e.target as HTMLDivElement;
       const hardButton = doneButton.previousSibling as HTMLDivElement;
 
@@ -167,85 +176,76 @@ class CardView {
           card?.classList.add('done');
           doneButton.innerText = doneButtonTextOpposite;
           hardButton.innerText = hardButtonText;
+          this.updateUserWordInfo(cardId, 'no-hard', progressForDoneWord);
+          this.updateProgressBar(progressForDoneWord);
           break;
         case 'поучить':
           card?.classList.remove('done');
           doneButton.innerText = doneButtonText;
           hardButton.innerText = hardButtonText;
+          this.updateUserWordInfo(cardId, 'no-hard', progressForNoDoneWord);
+          this.updateProgressBar(progressForNoDoneWord);
           break;
         default:
           break;
       }
-
-      // --------------------------------- для поиска апи ---------------------------------
-      this.api.myConsole('привет');
-
-      // const wordId = (e.target as HTMLElement).closest('.card')?.id as string;
-      // this.updateUserWordInfo(wordId, progressForDoneWord);
-      // if (App.user?.userId) {
-      //   const usersWords: Array<UserWord> = await this.api.getUserWords(
-      //     App.user.userId,
-      //     App.user.token,
-      //   );
-      //   const searchWord = usersWords.filter((item) => item.wordId === wordId);
-      //   console.log(searchWord);
-      // }
     }
   }
 
-  async updateUserWordInfo(cardId: string, progress?: number) {
-    // let userWords: Array<UserWord> = new Array<UserWord>();
+  updateProgressBar(progress: number) {
+    const div = this.view.querySelector('.progress-loading') as HTMLDivElement;
+    div.style.width = `${progress}%`;
+  }
+
+  async updateUserWordInfo(cardId: string, newDifficulty: string, newProgress?: number) {
     if (App.user?.userId) {
       const usersWords: Array<UserWord> = await this.api.getUserWords(
         App.user.userId,
         App.user.token,
       );
-      const searchWord = usersWords.filter((item) => item.wordId === cardId);
-      console.log(searchWord, progress);
+      const searchWordsArray = usersWords.filter((item) => item.wordId === cardId);
+      const word = await this.api.getOneWord(cardId);
 
-      // if (searchWord && progressForDoneWord) {
-      // const difficulty = 'no-hard';
-      //   this.api.createUserWord(App.user.userId, App.user.token, userWord);
-      // }
-      // else {
-      //   const word = searchWord[0];
-      //   let { progress } = word.optional;
-      //   progress = test.isCorrect ? (progress += 20) : (progress -= 20);
-      //   progress = progress >= 100 ? 100 : progress;
-      //   progress = progress <= 0 ? 0 : progress;
-      //   const difficulty = progress === 100 ? 'no-hard' : searchWord[0].difficulty;
-      //   if (test.isCorrect) {
-      //     word.optional.successfulAttempts += 1;
-      //   }
-      //   if (!test.isCorrect) {
-      //     word.optional.unsuccessfulAttempts += 1;
-      //   }
-      //   const { successfulAttempts } = word.optional;
-      //   const { unsuccessfulAttempts } = word.optional;
-      //   const userWord: UserWord = new UserWord(
-      //     test.correctAnswer,
-      //     difficulty,
-      //     progress,
-      //     successfulAttempts,
-      //     unsuccessfulAttempts,
-      //   );
-      //   userWord.word = test.correctAnswer;
-      //   userWord.wordId = word.wordId;
-      //   this.api.updateUserWord(App.user.userId, App.user.token, userWord);
-      // }
+      if (searchWordsArray.length === 0) {
+        let progress;
+        if (newProgress) {
+          progress = newProgress;
+        } else {
+          progress = 0;
+        }
+        const difficulty = newDifficulty;
+        const successfulAttempts = 0;
+        const unsuccessfulAttempts = 0;
+        const userWord: UserWord = new UserWord(
+          word,
+          difficulty,
+          progress,
+          successfulAttempts,
+          unsuccessfulAttempts,
+        );
+
+        this.api.createUserWord(App.user.userId, App.user.token, userWord);
+      } else {
+        const searchWord = searchWordsArray[0];
+        let { progress } = searchWord.optional;
+        if (newProgress) {
+          progress = newProgress;
+        }
+
+        const difficulty = newDifficulty;
+        const { successfulAttempts } = searchWord.optional;
+        const { unsuccessfulAttempts } = searchWord.optional;
+        const userWord: UserWord = new UserWord(
+          word,
+          difficulty,
+          progress,
+          successfulAttempts,
+          unsuccessfulAttempts,
+        );
+
+        this.api.updateUserWord(App.user.userId, App.user.token, userWord);
+      }
     }
-  }
-
-  async updateProgressInfo(cardId: string, loading?: number): Promise<void> {
-    const progress = document
-      .getElementById(`${cardId}`)
-      ?.querySelector('.progress-loading') as HTMLDivElement;
-    progress.style.width = `${loading}%`;
-
-    // if (App.user?.userId) {
-    //   const answer = await this.api.getUserWords(App.user.userId, App.user.token);
-    //   console.log(answer);
-    // }
   }
 
   createPhrasesBlock(wordInfo: Word): HTMLDivElement {
@@ -286,6 +286,15 @@ class CardView {
     audioExample.setAttribute('src', `${this.baseUrl}/${wordInfo.audioExample}`);
     audioIcon.append(audio, audioMeaning, audioExample);
     return audioIcon;
+  }
+
+  async getOneUserWord() {
+    let userWord;
+    if (App.user?.userId) {
+      const userWords = await this.api.getUserWords(App.user.userId, App.user.token);
+      userWord = userWords.find((item) => item.wordId === this.view.id) as UserWord;
+    }
+    return userWord;
   }
 }
 

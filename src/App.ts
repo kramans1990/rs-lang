@@ -163,9 +163,10 @@ class App {
             App.renderMainPage();
             break;
         }
-      } else {
-        App.renderMainPage();
       }
+      // else {
+      //   App.renderMainPage();
+      // }
       if (getDataFromLocalStorage('rs-lang-user')) {
         const user = getDataFromLocalStorage('rs-lang-user') as ISignIn;
         App.signIn(user);

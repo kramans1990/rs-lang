@@ -42,6 +42,7 @@ const iconSprintSrc = './assets/svg/icon_sprint.svg';
 const iconAudioGameSrc = './assets/svg/icon_audio_game.svg';
 const iconExtraGameSrc = './assets/svg/icon_audio_game.svg';
 const progressForDoneWord = 100;
+const progressForNoDoneWord = 0;
 
 export {
   baseUrl,
@@ -78,4 +79,5 @@ export {
   iconAudioGameSrc,
   iconExtraGameSrc,
   progressForDoneWord,
+  progressForNoDoneWord,
 };

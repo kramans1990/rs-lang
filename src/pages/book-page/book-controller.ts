@@ -83,7 +83,7 @@ class BookController extends ApplicationContoller {
     this.gameButtons = this.pageView.gameButtons;
     this.renderLevelsBtns();
     this.renderCards(this.currentLevel, this.currentPage);
-    this.renderPaginationBlock(this.currentPage);
+    // this.renderPaginationBlock(this.currentPage);
     this.renderGameButtons();
   }
 
@@ -99,6 +99,19 @@ class BookController extends ApplicationContoller {
       this.cardsList.append(card.view);
       card.view.addEventListener('click', BookController.setEventListenersForCard);
     });
+  }
+
+  async renderHardCards(allHardWords: Array<Partial<Word & UserWord>>) {
+    this.cardsList.innerHTML = '';
+    let usersWords = new Array<UserWord>();
+    if (App.user) {
+      usersWords = await this.bookModel.getUserWords(App.user?.userId, App.user?.token);
+      allHardWords.forEach((word) => {
+        const card = new CardView(<Word>word, usersWords);
+        this.cardsList.append(card.view);
+        card.view.addEventListener('click', BookController.setEventListenersForCard);
+      });
+    }
   }
 
   renderLevelsBtns() {
@@ -119,12 +132,12 @@ class BookController extends ApplicationContoller {
         levelNumber.innerHTML = `&nbsp${i}`;
         btn.append(levelNumber);
       }
-      btn.addEventListener('click', (e): void => this.levelBtnHandler(e));
+      btn.addEventListener('click', async (e): Promise<void> => this.levelBtnHandler(e));
       this.levels.append(btn);
     }
   }
 
-  levelBtnHandler(e: MouseEvent) {
+  async levelBtnHandler(e: MouseEvent) {
     if (e.target) {
       const levelButtons = document.querySelectorAll('.level');
       levelButtons.forEach((button) => {
@@ -136,8 +149,17 @@ class BookController extends ApplicationContoller {
       this.currentLevel = group;
       this.currentPage = 0;
       this.cardsList.innerHTML = '';
-      this.renderCards(group, this.currentPage);
-      this.renderPaginationBlock(group);
+      this.pagination.innerHTML = '';
+      if (App.user && group === 6) {
+        const allHardWords = await this.bookModel.getUserWordsAllHard(
+          App.user?.userId,
+          App.user?.token,
+        );
+        this.renderHardCards(allHardWords);
+      } else {
+        this.renderCards(group, this.currentPage);
+        this.renderPaginationBlock(group);
+      }
     }
 
     saveDataToLocalStorage(
@@ -234,16 +256,6 @@ class BookController extends ApplicationContoller {
     ) as HTMLImageElement;
     iconAudioGame.setAttribute('src', iconAudioGameSrc);
     audioGameLink.prepend(iconAudioGame);
-    // const extraGameLink = BookPageView.createElementByParams('div', 'btn') as HTMLDivElement;
-    // extraGameLink.classList.add('btn_colored');
-    // extraGameLink.innerText = extraGameName;
-    // const iconExtraGame = BookPageView.createElementByParams(
-    //   'img',
-    //   'game-icon',
-    // ) as HTMLImageElement;
-    // iconExtraGame.setAttribute('src', iconExtraGameSrc);
-
-    // extraGameLink.prepend(iconExtraGame);
 
     this.gameButtons.append(audioGameLink, sprintGameLink);
   }

@@ -1,8 +1,9 @@
 .cards_list {
   display: flex;
   flex-wrap: wrap;
-  justify-content: space-between;
+  justify-content: center;
   row-gap: 20px;
+  column-gap: 1%;
 }
 
 @media (max-width: 992px) {

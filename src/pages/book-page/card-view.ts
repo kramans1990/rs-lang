@@ -12,6 +12,7 @@ import {
 /* eslint-disable import/no-cycle */
 import Api from '../../Api';
 import App from '../../App';
+// import User from '../../types/User';
 
 class CardView {
   api: Api;
@@ -26,17 +27,31 @@ class CardView {
 
   userWords: UserWord[];
 
-  constructor(wordInfo: Word, userWords: UserWord[]) {
+  constructor(wordInfo: Pick<Word, keyof Word>, userWords?: UserWord[]) {
     this.api = new Api();
     this.baseUrl = baseUrl;
     this.view = document.createElement('div');
     this.view.classList.add('card');
-    this.view.id = wordInfo.id;
-    this.userWords = userWords;
+
+    this.view.id = wordInfo._id || wordInfo.id;
+
+    if (userWords) {
+      this.setUserWords(userWords);
+    }
+
     this.createCard(wordInfo);
   }
 
-  async createCard(wordInfo: Word) {
+  async setUserWords(userWords: UserWord[]) {
+    if (userWords) {
+      this.userWords = userWords;
+    }
+    if (App.user) {
+      this.userWords = await this.api.getUserWords(App.user?.userId, App.user?.token);
+    }
+  }
+
+  async createCard(wordInfo: Word, userWordInfo?: UserWord) {
     const wordImg = document.createElement('img');
     wordImg.setAttribute('src', `${this.baseUrl}/${wordInfo.image}`);
     wordImg.setAttribute('alt', 'card photo');
@@ -44,17 +59,22 @@ class CardView {
     const statFrame = document.createElement('div');
     statFrame.classList.add('card__stat');
 
-    const userWord = this.getOneUserWord();
-    if (userWord) {
-      statFrame.innerHTML = `<span>${userWord.optional.successfulAttempts}</span> | ${userWord.optional.unsuccessfulAttempts}`;
-      if (userWord.optional.progress === 100 && userWord.difficulty !== 'hard') {
-        this.view.classList.add('done');
-      }
-      if (userWord.difficulty === 'hard') {
-        this.view.classList.add('hard');
-      }
+    let userWord;
+    if (userWordInfo) {
+      userWord = userWordInfo;
     } else {
-      statFrame.innerHTML = '<span>0</span> | 0';
+      userWord = this.getOneUserWord(this.userWords);
+      if (userWord) {
+        statFrame.innerHTML = `<span>${userWord.optional.successfulAttempts}</span> | ${userWord.optional.unsuccessfulAttempts}`;
+        if (userWord.optional.progress === 100 && userWord.difficulty !== 'hard') {
+          this.view.classList.add('done');
+        }
+        if (userWord.difficulty === 'hard') {
+          this.view.classList.add('hard');
+        }
+      } else {
+        statFrame.innerHTML = '<span>0</span> | 0';
+      }
     }
 
     const cardText = document.createElement('div');
@@ -103,7 +123,7 @@ class CardView {
     const innerdiv = document.createElement('div');
     innerdiv.className = 'progress-loading';
 
-    const userWord = await this.getOneUserWord();
+    const userWord = this.getOneUserWord(this.userWords);
     if (userWord) {
       innerdiv.style.width = `${userWord.optional.progress}%`;
     }
@@ -156,8 +176,6 @@ class CardView {
     if (e) {
       const card = (e.target as HTMLDivElement).closest('.card');
       const cardId = card?.id as string;
-      // const doneButton = e.target as HTMLDivElement;
-      // const hardButton = doneButton.previousSibling as HTMLDivElement;
 
       if (card?.classList.contains('done')) {
         card?.classList.remove('done');
@@ -268,8 +286,8 @@ class CardView {
     return audioIcon;
   }
 
-  getOneUserWord() {
-    return this.userWords.find((item) => item.wordId === this.view.id) as UserWord;
+  getOneUserWord(userWords: UserWord[]) {
+    return userWords.find((item) => item.wordId === this.view.id) as UserWord;
   }
 }
 

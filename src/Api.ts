@@ -158,6 +158,24 @@ class Api {
     }
   }
 
+  async getUserWordsAllHard(id: string, token: string): Promise<Partial<Word & UserWord>[]> {
+    try {
+      const responce = await fetch(
+        `${this.baseUrl}/users/${id}/aggregatedWords?filter={"userWord.difficulty":"hard"}`,
+        {
+          method: 'GET',
+          headers: {
+            authorization: `Bearer ${token}`,
+          },
+        },
+      );
+      const respArr = await responce.json();
+      return respArr[0].paginatedResults;
+    } catch {
+      throw new Error();
+    }
+  }
+
   async getUserWordsAgregatedAll(
     id: string,
     token: string,

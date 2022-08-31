@@ -27,28 +27,15 @@ class CardView {
 
   userWords: UserWord[];
 
-  constructor(wordInfo: Pick<Word, keyof Word>, userWords?: UserWord[]) {
+  constructor(wordInfo: Pick<Word, keyof Word>, userWords: UserWord[]) {
     this.api = new Api();
     this.baseUrl = baseUrl;
     this.view = document.createElement('div');
     this.view.classList.add('card');
-
     this.view.id = wordInfo._id || wordInfo.id;
-
-    if (userWords) {
-      this.setUserWords(userWords);
-    }
+    this.userWords = userWords;
 
     this.createCard(wordInfo);
-  }
-
-  async setUserWords(userWords: UserWord[]) {
-    if (userWords) {
-      this.userWords = userWords;
-    }
-    if (App.user) {
-      this.userWords = await this.api.getUserWords(App.user?.userId, App.user?.token);
-    }
   }
 
   async createCard(wordInfo: Word, userWordInfo?: UserWord) {
@@ -158,8 +145,6 @@ class CardView {
     if (e) {
       const card = (e.target as HTMLDivElement).closest('.card');
       const cardId = card?.id as string;
-      // const hardButton = e.target as HTMLDivElement;
-      // const doneButton = hardButton.nextSibling as HTMLDivElement;
 
       if (card?.classList.contains('hard')) {
         card?.classList.remove('hard');

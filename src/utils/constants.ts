@@ -41,6 +41,7 @@ const doneButtonTextOpposite = 'поучить';
 const iconSprintSrc = './assets/svg/icon_sprint.svg';
 const iconAudioGameSrc = './assets/svg/icon_audio_game.svg';
 const iconExtraGameSrc = './assets/svg/icon_audio_game.svg';
+const progressForDoneWord = 100;
 
 export {
   baseUrl,
@@ -76,4 +77,5 @@ export {
   iconSprintSrc,
   iconAudioGameSrc,
   iconExtraGameSrc,
+  progressForDoneWord,
 };

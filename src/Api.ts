@@ -208,6 +208,10 @@ class Api {
       throw new Error();
     }
   }
+
+  myConsole(a: string) {
+    console.log(a, this.baseUrl);
+  }
 }
 
 export default Api;

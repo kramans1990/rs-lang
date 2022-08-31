@@ -42,6 +42,13 @@ const iconSprintSrc = './assets/svg/icon_sprint.svg';
 const iconAudioGameSrc = './assets/svg/icon_audio_game.svg';
 const iconExtraGameSrc = './assets/svg/icon_audio_game.svg';
 
+const backButtonText = 'Назад';
+const levelext = 'Уровень';
+const levelSelectLabelText = 'Выберите уровень';
+const newGameButtonText = 'Новая игра (N)';
+const skipText = 'Пропустить (Space)';
+const nextText = 'Далее (Space)';
+
 const correctResultsText = 'Правильные ответы';
 const incorrectResultsText = 'Неправильные ответы:';
 const resultsText = 'Результаты';
@@ -50,6 +57,9 @@ const sprintTime = 5;
 const startPointsPerCorrectAnswer = 10;
 const correctText = 'Верно';
 const incorrectText = 'Неверно';
+const arrowRight = '→';
+const arrowLeft = '←';
+// const
 
 export {
   baseUrl,
@@ -92,4 +102,12 @@ export {
   correctResultsText,
   incorrectResultsText,
   resultsText,
+  backButtonText,
+  levelext,
+  levelSelectLabelText,
+  newGameButtonText,
+  arrowRight,
+  arrowLeft,
+  skipText,
+  nextText,
 };

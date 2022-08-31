@@ -1,3 +1,4 @@
+/* eslint-disable import/no-cycle */
 import '../../styles/cards.css';
 import '../../styles/level-buttons.css';
 import '../../styles/main.css';
@@ -7,9 +8,11 @@ import ApplicationContoller from '../application-controller';
 import { IPageInfo } from '../../types/interfaces';
 import { Word } from '../../types/Word';
 import { BookPageView } from './book-view';
-// eslint-disable-next-line import/no-cycle
 import CardView from './card-view';
 import BookModel from './book-model';
+import App from '../../App';
+import UserWord from '../../types/userword';
+
 import {
   numberOfLevels,
   btnHardText,
@@ -87,8 +90,12 @@ class BookController extends ApplicationContoller {
   async renderCards(group: number, page: number) {
     this.cardsList.innerHTML = '';
     const words = await this.bookModel.getWords(group, page);
+    let usersWords = new Array<UserWord>();
+    if (App.user) {
+      usersWords = await this.bookModel.getUserWords(App.user?.userId, App.user?.token);
+    }
     words.forEach((wordInfo: Word) => {
-      const card = new CardView(wordInfo);
+      const card = new CardView(wordInfo, usersWords);
       this.cardsList.append(card.view);
       card.view.addEventListener('click', BookController.setEventListenersForCard);
     });
@@ -145,9 +152,6 @@ class BookController extends ApplicationContoller {
 
   static setEventListenersForCard(e: Event) {
     const eTargetClassList = (e.target as HTMLDivElement).classList;
-
-    // if (eTargetClassList.contains('hard__btn')) {}
-    // if (eTargetClassList.contains('done__btn')) {}
 
     if (eTargetClassList.contains('audio-icon')) {
       disableAudioBtns();

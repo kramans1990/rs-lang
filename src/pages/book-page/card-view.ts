@@ -28,20 +28,14 @@ class CardView {
 
   userWords: UserWord[];
 
-  // userWord: UserWord;
-
-  constructor(wordInfo: Word) {
+  constructor(wordInfo: Word, userWords: UserWord[]) {
     this.api = new Api();
     this.baseUrl = baseUrl;
     this.view = document.createElement('div');
     this.view.classList.add('card');
     this.view.id = wordInfo.id;
+    this.userWords = userWords;
     this.createCard(wordInfo);
-    // console.log('this.userWords', this.userWords);
-
-    // console.log(this.userWords);
-
-    // console.log(this.view.id, this.userWord);
   }
 
   async createCard(wordInfo: Word) {
@@ -52,9 +46,15 @@ class CardView {
     const statFrame = document.createElement('div');
     statFrame.classList.add('card__stat');
 
-    const userWord = await this.getOneUserWord();
+    const userWord = this.getOneUserWord();
     if (userWord) {
       statFrame.innerHTML = `<span>${userWord.optional.successfulAttempts}</span> | ${userWord.optional.unsuccessfulAttempts}`;
+      if (userWord.optional.progress === 100) {
+        this.view.classList.add('done');
+      }
+      if (userWord.difficulty === 'hard') {
+        this.view.classList.add('hard');
+      }
     } else {
       statFrame.innerHTML = '<span>0</span> | 0';
     }
@@ -288,13 +288,8 @@ class CardView {
     return audioIcon;
   }
 
-  async getOneUserWord() {
-    let userWord;
-    if (App.user?.userId) {
-      const userWords = await this.api.getUserWords(App.user.userId, App.user.token);
-      userWord = userWords.find((item) => item.wordId === this.view.id) as UserWord;
-    }
-    return userWord;
+  getOneUserWord() {
+    return this.userWords.find((item) => item.wordId === this.view.id) as UserWord;
   }
 }
 

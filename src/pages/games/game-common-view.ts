@@ -4,7 +4,7 @@ import {
   backButtonText,
   correctResultsText,
   incorrectResultsText,
-  levelext,
+  levelText,
   levelSelectLabelText,
   newGameButtonText,
   resultsText,
@@ -35,7 +35,7 @@ class GameCommonView {
       const button = document.createElement('button');
       button.className = `game-button l${i}`;
       button.value = (i - 1).toString();
-      button.innerText = `${levelext} ${i}`;
+      button.innerText = `${levelText} ${i}`;
       divButtonsContainer.appendChild(button);
     }
     const levelSelectLabel = document.createElement('label');

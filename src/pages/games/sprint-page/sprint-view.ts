@@ -5,7 +5,9 @@ import {
   resultsText,
   incorrectResultsText,
   correctResultsText,
-  nextText,
+  levelText,
+  newGameButtonText,
+  levelSelectLabelText,
 } from '../../../utils/constants';
 import ApplicationView from '../../application-view';
 import SprintQuestion from './sprint-question-component';
@@ -32,7 +34,7 @@ class SprintView extends ApplicationView {
     const div = document.createElement('div');
     div.className = 'audio-call-container';
     const buttonNewGame = document.createElement('button');
-    buttonNewGame.innerText = 'Новая игра (N)';
+    buttonNewGame.innerText = newGameButtonText;
     buttonNewGame.id = 'new-game';
     buttonNewGame.className = 'new-game-button';
     const divButtonsContainer = document.createElement('div');
@@ -42,11 +44,11 @@ class SprintView extends ApplicationView {
       const button = document.createElement('button');
       button.className = `game-button l${i}`;
       button.value = (i - 1).toString();
-      button.innerText = `Уровень ${i}`;
+      button.innerText = `${levelText} ${i}`;
       divButtonsContainer.appendChild(button);
     }
     const levelSelectLabel = document.createElement('label');
-    levelSelectLabel.innerText = 'Выберите уровень сложности';
+    levelSelectLabel.innerText = levelSelectLabelText;
     const divDifficulty = document.createElement('div');
     divDifficulty.className = 'dif-container hidden';
     divDifficulty.append(levelSelectLabel, divButtonsContainer);
@@ -112,11 +114,11 @@ class SprintView extends ApplicationView {
     }
 
     (
-      this.view.querySelector('.game-span-wrong') as HTMLSpanElement
-    ).innerText = `Неверные ответы (${wrongs.length}) : `;
-    (
       this.view.querySelector('.game-span-correct') as HTMLSpanElement
-    ).innerText = `Верные ответы (${corrects.length}) :`;
+    ).innerText = `${correctResultsText} (${corrects.length}) :`;
+    (
+      this.view.querySelector('.game-span-wrong') as HTMLSpanElement
+    ).innerText = `${incorrectResultsText} (${wrongs.length}) : `;
   }
 
   // renderResultWindow(): HTMLDivElement {
@@ -213,8 +215,9 @@ class SprintView extends ApplicationView {
         }
       }
     }
-    const nextButton = this.view.querySelector('#next-question-button') as HTMLButtonElement;
-    nextButton.innerText = nextText;
+    window.setTimeout((): void => {
+      (this.view.querySelector('.next-question-button') as HTMLButtonElement).click();
+    }, 200);
   }
 
   // view
@@ -302,9 +305,6 @@ class SprintView extends ApplicationView {
       const diff = this.view.querySelectorAll('.option')[1] as HTMLButtonElement;
       diff.click();
     }
-    window.setTimeout((): void => {
-      (this.view.querySelector('.next-question-button') as HTMLButtonElement).click();
-    }, 200);
     document.body.focus();
   }
 

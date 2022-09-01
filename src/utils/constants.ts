@@ -43,14 +43,14 @@ const iconAudioGameSrc = './assets/svg/icon_audio_game.svg';
 const iconExtraGameSrc = './assets/svg/icon_audio_game.svg';
 
 const backButtonText = 'Назад';
-const levelext = 'Уровень';
-const levelSelectLabelText = 'Выберите уровень';
+const levelText = 'Уровень';
+const levelSelectLabelText = 'Выберите уровень сложности';
 const newGameButtonText = 'Новая игра (N)';
 const skipText = 'Пропустить (Space)';
 const nextText = 'Далее (Space)';
 
-const correctResultsText = 'Правильные ответы';
-const incorrectResultsText = 'Неправильные ответы:';
+const correctResultsText = 'Верные ответы';
+const incorrectResultsText = 'Неверные ответы:';
 const resultsText = 'Результаты';
 
 const sprintTime = 5;
@@ -103,7 +103,7 @@ export {
   incorrectResultsText,
   resultsText,
   backButtonText,
-  levelext,
+  levelText,
   levelSelectLabelText,
   newGameButtonText,
   arrowRight,

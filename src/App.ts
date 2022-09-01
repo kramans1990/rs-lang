@@ -140,6 +140,10 @@ class App {
 
   addEventListeners() {
     window.addEventListener('load', (): void => {
+      if (getDataFromLocalStorage('rs-lang-user')) {
+        const user = getDataFromLocalStorage('rs-lang-user') as ISignIn;
+        App.signIn(user);
+      }
       if (getDataFromLocalStorage('pageInfo')) {
         const pageInfo = getDataFromLocalStorage('pageInfo') as IPageInfo;
         const { pageName } = pageInfo;
@@ -167,10 +171,6 @@ class App {
       // else {
       //   App.renderMainPage();
       // }
-      if (getDataFromLocalStorage('rs-lang-user')) {
-        const user = getDataFromLocalStorage('rs-lang-user') as ISignIn;
-        App.signIn(user);
-      }
     });
     document.querySelector('.header__logo')?.addEventListener('click', App.renderMainPage);
     document.querySelector('.main-page-link')?.addEventListener('click', App.renderMainPage);

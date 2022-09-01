@@ -74,7 +74,7 @@ class BookController extends ApplicationContoller {
     );
   }
 
-  setView(): void {
+  async setView(): Promise<void> {
     this.pageView = new BookPageView();
     this.view = this.pageView.view;
     this.levels = this.pageView.levels;
@@ -82,8 +82,16 @@ class BookController extends ApplicationContoller {
     this.pagination = this.pageView.pagination;
     this.gameButtons = this.pageView.gameButtons;
     this.renderLevelsBtns();
-    this.renderCards(this.currentLevel, this.currentPage);
-    // this.renderPaginationBlock(this.currentPage);
+    if (App.user && this.currentLevel === 6) {
+      const allHardWords = await this.bookModel.getUserWordsAllHard(
+        App.user.userId,
+        App.user.token,
+      );
+      this.renderHardCards(allHardWords);
+    } else {
+      this.renderCards(this.currentLevel, this.currentPage);
+    }
+
     this.renderGameButtons();
   }
 

@@ -1,8 +1,6 @@
-// import { sprintTime } from '../../../utils/constants';
+/* eslint-disable import/no-cycle */
 import Api from '../../../Api';
-// import { Word } from '../../../types/Word';
 import {
-  resultsText,
   incorrectResultsText,
   correctResultsText,
   levelText,
@@ -10,6 +8,7 @@ import {
   levelSelectLabelText,
 } from '../../../utils/constants';
 import ApplicationView from '../../application-view';
+import GameCommonView from '../game-common-view';
 import SprintQuestion from './sprint-question-component';
 import './sprint.css';
 
@@ -53,7 +52,6 @@ class SprintView extends ApplicationView {
     divDifficulty.className = 'dif-container hidden';
     divDifficulty.append(levelSelectLabel, divButtonsContainer);
     const progressBar = document.createElement('div');
-    // progressBar.innerHTML = '<div id="loading"  class="loading"></div>';
     const innerdiv = document.createElement('div');
     innerdiv.className = 'loading';
     progressBar.className = 'game-progress-bar hidden';
@@ -61,9 +59,8 @@ class SprintView extends ApplicationView {
     progressBar.appendChild(innerdiv);
     const gameContainer = document.createElement('div');
     const statusContainer = document.createElement('div');
-    const modal = this.createModalContent();
+    const modal = GameCommonView.createModalContent();
     modal.className = 'game-result hidden';
-
     gameContainer.className = 'game-container';
     gameContainer.append(divDifficulty, progressBar, statusContainer);
     div.appendChild(gameContainer);
@@ -82,34 +79,34 @@ class SprintView extends ApplicationView {
     const wrongs = audioTests.filter((p) => !p.isCorrect);
     for (let i = 0; i < wrongs.length; i += 1) {
       const divResult = document.createElement('div');
-      const divaudioresult = document.createElement('div');
-      divaudioresult.className = 'audio-icon';
-      const audioresult: HTMLAudioElement = document.createElement('audio');
-      audioresult.src = `${this.api.baseUrl}/${wrongs[i].correctAnswer.audio}`;
-      divaudioresult.appendChild(audioresult);
+      const audioResultBox = document.createElement('div');
+      audioResultBox.className = 'audio-icon';
+      const audioResult: HTMLAudioElement = document.createElement('audio');
+      audioResult.src = `${this.api.baseUrl}/${wrongs[i].correctAnswer.audio}`;
+      audioResultBox.appendChild(audioResult);
       const word: HTMLSpanElement = document.createElement('span');
       const wordTranslation: HTMLSpanElement = document.createElement('span');
       const dash: HTMLSpanElement = document.createElement('span');
       dash.innerText = '—';
       word.innerText = wrongs[i].correctAnswer.word;
       wordTranslation.innerText = wrongs[i].correctAnswer.wordTranslate;
-      divResult.append(divaudioresult, word, dash, wordTranslation);
+      divResult.append(audioResultBox, word, dash, wordTranslation);
       wrongDiv.appendChild(divResult);
     }
     for (let i = 0; i < corrects.length; i += 1) {
       const divResult = document.createElement('div');
-      const divaudioresult = document.createElement('div');
-      divaudioresult.className = 'audio-icon';
-      const audioresult: HTMLAudioElement = document.createElement('audio');
-      audioresult.src = `${this.api.baseUrl}/${corrects[i].correctAnswer.audio}`;
-      divaudioresult.appendChild(audioresult);
+      const audioResultBox = document.createElement('div');
+      audioResultBox.className = 'audio-icon';
+      const audioResult: HTMLAudioElement = document.createElement('audio');
+      audioResult.src = `${this.api.baseUrl}/${corrects[i].correctAnswer.audio}`;
+      audioResultBox.appendChild(audioResult);
       const word: HTMLSpanElement = document.createElement('span');
       const wordTranslation: HTMLSpanElement = document.createElement('span');
       const dash: HTMLSpanElement = document.createElement('span');
       dash.innerText = '—';
       word.innerText = corrects[i].correctAnswer.word;
       wordTranslation.innerText = corrects[i].correctAnswer.wordTranslate;
-      divResult.append(divaudioresult, word, dash, wordTranslation);
+      divResult.append(audioResultBox, word, dash, wordTranslation);
       correctdiv.appendChild(divResult);
     }
 
@@ -325,39 +322,6 @@ class SprintView extends ApplicationView {
     } else {
       this.handleNavKeys(key);
     }
-  }
-
-  /* eslint-disable class-methods-use-this */
-  // view
-  createModalContent(): HTMLDivElement {
-    const modalContent = document.createElement('div');
-    modalContent.classList.add('modal-content');
-    const modalClose = document.createElement('span');
-    modalClose.classList.add('modal-close');
-    modalClose.innerHTML = '&times;';
-    const resultsBox = document.createElement('div');
-    resultsBox.classList.add('div-result-flex');
-    const resilts = document.createElement('span');
-    resilts.innerText = resultsText;
-    const incorrectAnswers = document.createElement('span');
-    incorrectAnswers.classList.add('game-span-wrong');
-    incorrectAnswers.innerText = incorrectResultsText;
-    const correctAnswers = document.createElement('span');
-    correctAnswers.classList.add('game-span-correct');
-    correctAnswers.innerText = correctResultsText;
-    const incorrectAnswersContainer = document.createElement('div');
-    incorrectAnswersContainer.classList.add('answer-container-wrong');
-    const correctAnswersContainer = document.createElement('div');
-    correctAnswersContainer.classList.add('answer-container-correct');
-    resultsBox.append(
-      resilts,
-      incorrectAnswers,
-      incorrectAnswersContainer,
-      correctAnswers,
-      correctAnswersContainer,
-    );
-    modalContent.append(modalClose, resultsBox);
-    return modalContent;
   }
 }
 //   constructor() {

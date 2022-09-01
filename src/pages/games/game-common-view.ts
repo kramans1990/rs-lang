@@ -63,6 +63,7 @@ class GameCommonView {
     const modalContent = document.createElement('div');
     modalContent.classList.add('modal-content');
     const modalClose = document.createElement('span');
+    modalClose.classList.add('modal-close');
     modalClose.innerHTML = '&times;';
     const resultsBox = document.createElement('div');
     resultsBox.classList.add('div-result-flex');

@@ -201,18 +201,15 @@ class Api {
     }
   }
 
-  async getUserWordsAgregatedByGroup(
+  async getUserWordsAgregatedByGroupAndByPage(
     id: string,
     token: string,
-    group: number,
     wordsPerPage: number,
-    page: number,
     filter: string,
   ): Promise<Array<UserWord>> {
     try {
       const responce = await fetch(
-        `${this.baseUrl}/users/${id}/aggregatedWords?group=${group}&page=${page}
-      &wordsPerPage=${wordsPerPage}&filter=${filter}`,
+        `${this.baseUrl}/users/${id}/aggregatedWords?wordsPerPage=${wordsPerPage}&filter=${filter}`,
         {
           method: 'GET',
           headers: {
@@ -221,11 +218,37 @@ class Api {
         },
       );
       const userword = await responce.json();
-      return userword;
+      return userword[0].paginatedResults;
     } catch {
       throw new Error();
     }
   }
+
+  // async getUserWordsAgregatedByGroup(
+  //   id: string,
+  //   token: string,
+  //   group: number,
+  //   wordsPerPage: number,
+  //   page: number,
+  //   filter: string,
+  // ): Promise<Array<UserWord>> {
+  //   try {
+  //     const responce = await fetch(
+  //       `${this.baseUrl}/users/${id}/aggregatedWords?group=${group}&page=${page}
+  //     &wordsPerPage=${wordsPerPage}&filter=${filter}`,
+  //       {
+  //         method: 'GET',
+  //         headers: {
+  //           authorization: `Bearer ${token}`,
+  //         },
+  //       },
+  //     );
+  //     const userword = await responce.json();
+  //     return userword[0].paginatedResults;
+  //   } catch {
+  //     throw new Error();
+  //   }
+  // }
 }
 
 export default Api;

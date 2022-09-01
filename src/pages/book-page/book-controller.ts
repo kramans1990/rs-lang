@@ -28,6 +28,7 @@ import {
   enableAudioBtns,
   getDataFromLocalStorage,
   saveDataToLocalStorage,
+  setBackgroundForBookPage,
 } from '../../functions/functions';
 
 class BookController extends ApplicationContoller {
@@ -51,6 +52,8 @@ class BookController extends ApplicationContoller {
 
   bookPageInfo: IPageInfo;
 
+  aggregatedNumber: number;
+
   constructor() {
     super();
     this.pageView = new BookPageView();
@@ -61,8 +64,8 @@ class BookController extends ApplicationContoller {
     if (getDataFromLocalStorage('pageInfo')) {
       this.getPageInfoFromLocalStorage();
     }
-
-    this.setView();
+    this.getAggregatedNumber(this.currentLevel, this.currentPage);
+    setBackgroundForBookPage(this.aggregatedNumber);
 
     saveDataToLocalStorage(
       'pageInfo',
@@ -72,6 +75,22 @@ class BookController extends ApplicationContoller {
         pageNumber: this.currentPage,
       }),
     );
+
+    this.setView();
+  }
+
+  async getAggregatedNumber(currentLevel: number, currentPage: number) {
+    if (App.user) {
+      const responce = await this.bookModel.getUserWordsAgregatedByGroupAndByPage(
+        App.user.userId,
+        App.user.token,
+        1000,
+        `{"$and":[{"group":${currentLevel}},{"page":${currentPage}},{"$or":[{"userWord.difficulty":"hard"},{"userWord.optional.progress":100}]}]}`,
+      );
+      this.aggregatedNumber = responce.length;
+      saveDataToLocalStorage('aggregatedNumber', JSON.stringify(this.aggregatedNumber));
+    }
+    return this.aggregatedNumber;
   }
 
   async setView(): Promise<void> {
@@ -82,6 +101,7 @@ class BookController extends ApplicationContoller {
     this.pagination = this.pageView.pagination;
     this.gameButtons = this.pageView.gameButtons;
     this.renderLevelsBtns();
+
     if (App.user && this.currentLevel === 6) {
       const allHardWords = await this.bookModel.getUserWordsAllHard(
         App.user.userId,
@@ -93,6 +113,10 @@ class BookController extends ApplicationContoller {
     }
 
     this.renderGameButtons();
+
+    if (this.currentLevel !== 6) {
+      this.renderPaginationBlock(this.currentLevel);
+    }
   }
 
   async renderCards(group: number, page: number) {
@@ -123,16 +147,16 @@ class BookController extends ApplicationContoller {
   }
 
   renderLevelsBtns() {
-    for (let i = 1; i <= numberOfLevels; i += 1) {
+    for (let i = 0; i < numberOfLevels; i += 1) {
       const btn = BookPageView.createElementByParams('div', 'level');
       btn.classList.add(`level-${i}`);
       btn.dataset.level = `${i}`;
 
-      if (i === this.currentLevel + 1) {
+      if (i === this.currentLevel) {
         btn.classList.add('active');
       }
 
-      if (i === numberOfLevels) {
+      if (i === numberOfLevels - 1) {
         btn.innerText = btnHardText;
         if (!App.user) {
           btn.style.display = 'none';
@@ -140,7 +164,7 @@ class BookController extends ApplicationContoller {
       } else {
         btn.innerHTML = btnLevelText;
         const levelNumber = BookPageView.createElementByParams('span', 'level_number');
-        levelNumber.innerHTML = `&nbsp${i}`;
+        levelNumber.innerHTML = `&nbsp${i + 1}`;
         btn.append(levelNumber);
       }
 
@@ -157,7 +181,7 @@ class BookController extends ApplicationContoller {
       });
       (e.target as HTMLDivElement).classList.add('active');
 
-      const group = Number((e.target as HTMLDivElement).dataset.level) - 1;
+      const group = Number((e.target as HTMLDivElement).dataset.level);
       this.currentLevel = group;
       this.currentPage = 0;
       this.cardsList.innerHTML = '';
@@ -172,6 +196,10 @@ class BookController extends ApplicationContoller {
         this.renderCards(group, this.currentPage);
         this.renderPaginationBlock(group);
       }
+
+      this.getAggregatedNumber(group, 0);
+
+      saveDataToLocalStorage('aggregatedNumber', JSON.stringify(this.aggregatedNumber));
     }
 
     saveDataToLocalStorage(
@@ -234,7 +262,7 @@ class BookController extends ApplicationContoller {
     }
   }
 
-  pageBtnHandler(e: Event, group: number, page: number) {
+  async pageBtnHandler(e: Event, group: number, page: number) {
     this.currentPage = page;
     this.renderCards(group, page);
     const pageItems = document.querySelectorAll('.pagination-element');
@@ -250,6 +278,10 @@ class BookController extends ApplicationContoller {
         pageNumber: this.currentPage,
       }),
     );
+
+    this.aggregatedNumber = await this.getAggregatedNumber(group, page);
+    setBackgroundForBookPage(this.aggregatedNumber);
+    saveDataToLocalStorage('aggregatedNumber', JSON.stringify(this.aggregatedNumber));
   }
 
   renderGameButtons() {

@@ -1,6 +1,5 @@
 import { Word } from '../../types/Word';
 import UserWord from '../../types/userword';
-// import UserWord from '../../types/userword';
 import {
   baseUrl,
   doneButtonText,
@@ -8,11 +7,11 @@ import {
   progressForDoneWord,
   progressForNoDoneWord,
 } from '../../utils/constants';
+import { saveDataToLocalStorage, getDataFromLocalStorage } from '../../functions/functions';
 
 /* eslint-disable import/no-cycle */
 import Api from '../../Api';
 import App from '../../App';
-// import User from '../../types/User';
 
 class CardView {
   api: Api;
@@ -27,6 +26,8 @@ class CardView {
 
   userWords: UserWord[];
 
+  aggregatedNumber: number | 0;
+
   constructor(wordInfo: Pick<Word, keyof Word>, userWords: UserWord[]) {
     this.api = new Api();
     this.baseUrl = baseUrl;
@@ -34,8 +35,17 @@ class CardView {
     this.view.classList.add('card');
     this.view.id = wordInfo._id || wordInfo.id;
     this.userWords = userWords;
-
     this.createCard(wordInfo);
+  }
+
+  static getAggregatedNumber() {
+    let aggregatedNumber;
+    if (getDataFromLocalStorage('aggregatedNumber')) {
+      aggregatedNumber = getDataFromLocalStorage('aggregatedNumber') as number;
+    } else {
+      aggregatedNumber = 0;
+    }
+    return aggregatedNumber;
   }
 
   async createCard(wordInfo: Word, userWordInfo?: UserWord) {
@@ -53,11 +63,11 @@ class CardView {
       userWord = this.getOneUserWord(this.userWords);
       if (userWord) {
         statFrame.innerHTML = `<span>${userWord.optional.successfulAttempts}</span> | ${userWord.optional.unsuccessfulAttempts}`;
-        if (userWord.optional.progress === 100 && userWord.difficulty !== 'hard') {
-          this.view.classList.add('done');
-        }
-        if (userWord.difficulty === 'hard') {
+        if (userWord.difficulty === 'hard' && userWord.optional.progress !== 100) {
           this.view.classList.add('hard');
+        }
+        if (userWord.optional.progress === 100) {
+          this.view.classList.add('done');
         }
       } else {
         statFrame.innerHTML = '<span>0</span> | 0';
@@ -145,15 +155,24 @@ class CardView {
     if (e) {
       const card = (e.target as HTMLDivElement).closest('.card');
       const cardId = card?.id as string;
+      let aggregatedNumber = CardView.getAggregatedNumber();
 
       if (card?.classList.contains('hard')) {
+        aggregatedNumber -= 1;
         card?.classList.remove('hard');
         this.updateUserWordInfo(cardId, 'no-hard');
-      } else {
+      } else if (card?.classList.contains('done')) {
         card?.classList.remove('done');
+        card?.classList.add('hard');
+        this.updateProgressBar(progressForNoDoneWord);
+        this.updateUserWordInfo(cardId, 'hard', progressForNoDoneWord);
+      } else {
+        aggregatedNumber += 1;
         card?.classList.add('hard');
         this.updateUserWordInfo(cardId, 'hard');
       }
+
+      saveDataToLocalStorage('aggregatedNumber', JSON.stringify(aggregatedNumber));
     }
   }
 
@@ -161,17 +180,26 @@ class CardView {
     if (e) {
       const card = (e.target as HTMLDivElement).closest('.card');
       const cardId = card?.id as string;
+      let aggregatedNumber = CardView.getAggregatedNumber();
 
       if (card?.classList.contains('done')) {
+        aggregatedNumber -= 1;
         card?.classList.remove('done');
-        this.updateUserWordInfo(cardId, 'no-hard', progressForNoDoneWord);
         this.updateProgressBar(progressForNoDoneWord);
-      } else {
+        this.updateUserWordInfo(cardId, 'no-hard', progressForNoDoneWord);
+      } else if (card?.classList.contains('hard')) {
         card?.classList.remove('hard');
         card?.classList.add('done');
         this.updateUserWordInfo(cardId, 'no-hard', progressForDoneWord);
         this.updateProgressBar(progressForDoneWord);
+      } else {
+        aggregatedNumber += 1;
+        card?.classList.add('done');
+        this.updateProgressBar(progressForDoneWord);
+        this.updateUserWordInfo(cardId, 'no-hard', progressForDoneWord);
       }
+
+      saveDataToLocalStorage('aggregatedNumber', JSON.stringify(aggregatedNumber));
     }
   }
 
@@ -191,7 +219,7 @@ class CardView {
 
       if (searchWordsArray.length === 0) {
         let progress;
-        if (newProgress) {
+        if (typeof newProgress === 'number') {
           progress = newProgress;
         } else {
           progress = 0;
@@ -211,7 +239,7 @@ class CardView {
       } else {
         const searchWord = searchWordsArray[0];
         let { progress } = searchWord.optional;
-        if (newProgress) {
+        if (typeof newProgress === 'number') {
           progress = newProgress;
         }
 

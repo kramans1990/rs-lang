@@ -14,7 +14,7 @@ function saveDataToLocalStorage(name: string, data: string): void {
   localStorage.setItem(name, data);
 }
 
-function getDataFromLocalStorage(name: string): ISignIn | IPageInfo | null {
+function getDataFromLocalStorage(name: string): ISignIn | IPageInfo | string | number | null {
   return localStorage.getItem(name) !== null ? JSON.parse(localStorage.getItem(name) || '') : null;
 }
 
@@ -53,6 +53,15 @@ function clickMenuHandle(e: Event) {
     document.querySelector('body')?.classList.remove('not-scroll');
   }
 }
+
+function setBackgroundForBookPage(aggregatedNumber: number) {
+  const mainWrapper = document.querySelector('.main_wrapper') as HTMLDivElement;
+  if (aggregatedNumber === 20) {
+    mainWrapper.classList.add('all-done');
+  } else {
+    mainWrapper.classList.remove('all-done');
+  }
+}
 /* prettier-ignore */
 
 export {
@@ -65,4 +74,5 @@ export {
   removeDataFromLocalStorage,
   burgerMenuHandle,
   clickMenuHandle,
+  setBackgroundForBookPage,
 };

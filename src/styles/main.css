@@ -242,33 +242,12 @@ header {
   scale: 96%;
 }
 
-.intro {
-  display: flex;
-  flex-direction: column;
-  /* justify-content: space-around; */
-  /* margin-top: 80px; */
-  max-width: 60%;
-}
-
-.h1 {
-  font-weight: 900;
-  font-size: 6rem;
-  line-height: 10rem;
-  color: #ffffff;
-  flex-direction: row;
-  justify-content: space-around;
-  align-items: center;
-  height: 60px;
-  margin: 0 auto;
-  width: 100%;
-}
-
-.intro__text p {
-  /* margin-top: 16px; */
-  font-weight: 500;
-  font-size: 1.8rem;
-  line-height: 2.6rem;
-  color: #ffffff;
+.main_wrapper.all-done {
+  background-image: linear-gradient(180deg, rgba(236, 153, 14, 0.37) 0%, rgba(236, 153, 14, 0) 100%),
+    url("../assets/svg/flags.svg");
+  background-repeat: no-repeat;
+  background-position: top center;
+  background-size: auto;
 }
 
 .game__buttons {

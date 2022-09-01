@@ -69,6 +69,7 @@ class App {
     signInButton.addEventListener('click', App.renderAuthPage);
     this.user = undefined;
     removeDataFromLocalStorage('rs-lang-user');
+    removeDataFromLocalStorage('aggregatedNumber');
   }
 
   static changeActiveClassForNavItemByEvent(e: Event): void {

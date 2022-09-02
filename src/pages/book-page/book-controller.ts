@@ -19,6 +19,7 @@ import {
   btnHardText,
   btnLevelText,
   numberOfPagesInLevel,
+  numberOfCardsPerPage,
   sprintGameName,
   audioGameName,
   iconSprintSrc,
@@ -82,7 +83,7 @@ class BookController extends ApplicationContoller {
 
   async setBackgroundByAggregatedNumber(currentLevel: number, currentPage: number) {
     if (App.user) {
-      const responce = await this.bookModel.getUserWordsAgregatedByGroupAndByPage(
+      const responce = await this.bookModel.getUserWordsAgregatedByFilter(
         App.user.userId,
         App.user.token,
         1000,
@@ -250,12 +251,17 @@ class BookController extends ApplicationContoller {
   }
 
   async renderPaginationBlock(group: number) {
+    const arrOfDonePages = await this.makeArrOfDonePages(group);
     this.pagination.innerHTML = '';
     for (let i = 0; i < numberOfPagesInLevel; i += 1) {
       const page = BookPageView.createElementByParams('p', 'pagination-element');
 
       if (i === this.currentPage) {
         page.classList.add('active');
+      }
+
+      if (arrOfDonePages.includes(i)) {
+        page.classList.add('done');
       }
 
       page.innerText = `${i + 1}`;
@@ -313,6 +319,26 @@ class BookController extends ApplicationContoller {
       this.currentLevel = level;
       this.currentPage = pageNumber;
     }
+  }
+
+  async makeArrOfDonePages(currentLevel: number) {
+    const arrOfDonePages = [];
+    if (App.user) {
+      const aggregatedWordsAll = await this.bookModel.getUserWordsAgregatedByFilter(
+        App.user.userId,
+        App.user.token,
+        1000,
+        `{"$and":[{"group":${currentLevel}},{"$or":[{"userWord.difficulty":"hard"},{"userWord.optional.progress":100}]}]}`,
+      );
+      for (let i = 0; i < numberOfPagesInLevel; i += 1) {
+        const numOfWords = (aggregatedWordsAll as Word[]).filter((word) => word.page === i).length;
+
+        if (numOfWords === numberOfCardsPerPage) {
+          arrOfDonePages.push(i);
+        }
+      }
+    }
+    return arrOfDonePages;
   }
 }
 

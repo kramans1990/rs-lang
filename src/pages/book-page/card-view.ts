@@ -6,6 +6,7 @@ import {
   hardButtonText,
   progressForDoneWord,
   progressForNoDoneWord,
+  numberOfCardsPerPage,
 } from '../../utils/constants';
 import {
   saveDataToLocalStorage,
@@ -151,6 +152,7 @@ class CardView {
     if (e) {
       const card = (e.target as HTMLDivElement).closest('.card');
       const cardId = card?.id as string;
+      const pageElement = document.querySelector('.pagination-element.active');
       let aggregatedNumber = getAggregatedNumberFromLS();
 
       if (card?.classList.contains('hard')) {
@@ -168,6 +170,12 @@ class CardView {
         this.updateUserWordInfo(cardId, 'hard');
       }
 
+      if (aggregatedNumber === numberOfCardsPerPage) {
+        pageElement?.classList.add('done');
+      } else {
+        pageElement?.classList.remove('done');
+      }
+
       saveDataToLocalStorage('aggregatedNumber', JSON.stringify(aggregatedNumber));
       setBackgroundForBookPage(aggregatedNumber);
     }
@@ -177,6 +185,7 @@ class CardView {
     if (e) {
       const card = (e.target as HTMLDivElement).closest('.card');
       const cardId = card?.id as string;
+      const pageElement = document.querySelector('.pagination-element.active');
       let aggregatedNumber = getAggregatedNumberFromLS();
 
       if (card?.classList.contains('done')) {
@@ -194,6 +203,12 @@ class CardView {
         card?.classList.add('done');
         this.updateProgressBar(progressForDoneWord);
         this.updateUserWordInfo(cardId, 'no-hard', progressForDoneWord);
+      }
+
+      if (aggregatedNumber === numberOfCardsPerPage) {
+        pageElement?.classList.add('done');
+      } else {
+        pageElement?.classList.remove('done');
       }
 
       saveDataToLocalStorage('aggregatedNumber', JSON.stringify(aggregatedNumber));

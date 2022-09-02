@@ -176,37 +176,12 @@ class Api {
     }
   }
 
-  async getUserWordsAgregatedAll(
-    id: string,
-    token: string,
-    wordsPerPage: number,
-    page: number,
-    filter: string,
-  ): Promise<Array<UserWord>> {
-    try {
-      const responce = await fetch(
-        `${this.baseUrl}/users/${id}/aggregatedWords?page=${page}
-      &wordsPerPage=${wordsPerPage}&filter=${filter}`,
-        {
-          method: 'GET',
-          headers: {
-            authorization: `Bearer ${token}`,
-          },
-        },
-      );
-      const userword = await responce.json();
-      return userword;
-    } catch {
-      throw new Error();
-    }
-  }
-
-  async getUserWordsAgregatedByGroupAndByPage(
+  async getUserWordsAgregatedByFilter(
     id: string,
     token: string,
     wordsPerPage: number,
     filter: string,
-  ): Promise<Array<UserWord>> {
+  ): Promise<Array<UserWord | Word>> {
     try {
       const responce = await fetch(
         `${this.baseUrl}/users/${id}/aggregatedWords?wordsPerPage=${wordsPerPage}&filter=${filter}`,
@@ -223,32 +198,6 @@ class Api {
       throw new Error();
     }
   }
-
-  // async getUserWordsAgregatedByGroup(
-  //   id: string,
-  //   token: string,
-  //   group: number,
-  //   wordsPerPage: number,
-  //   page: number,
-  //   filter: string,
-  // ): Promise<Array<UserWord>> {
-  //   try {
-  //     const responce = await fetch(
-  //       `${this.baseUrl}/users/${id}/aggregatedWords?group=${group}&page=${page}
-  //     &wordsPerPage=${wordsPerPage}&filter=${filter}`,
-  //       {
-  //         method: 'GET',
-  //         headers: {
-  //           authorization: `Bearer ${token}`,
-  //         },
-  //       },
-  //     );
-  //     const userword = await responce.json();
-  //     return userword[0].paginatedResults;
-  //   } catch {
-  //     throw new Error();
-  //   }
-  // }
 }
 
 export default Api;

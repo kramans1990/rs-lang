@@ -42,7 +42,9 @@ class CardView {
     this.view = document.createElement('div');
     this.view.classList.add('card');
     this.view.id = wordInfo._id || wordInfo.id;
-    this.userWords = userWords;
+    if (userWords) {
+      this.userWords = userWords;
+    }
     this.createCard(wordInfo);
   }
 
@@ -252,7 +254,6 @@ class CardView {
         } else {
           userWord.optional.wasLearned = false;
         }
-
         this.api.createUserWord(App.user.userId, App.user.token, userWord);
       } else {
         const searchWord = searchWordsArray[0];
@@ -265,17 +266,20 @@ class CardView {
         const { successfulAttempts } = searchWord.optional;
         const { unsuccessfulAttempts } = searchWord.optional;
         const userWord: UserWord = new UserWord();
+        let wasLearned;
+        if (progress === 100) {
+          wasLearned = true;
+        } else {
+          wasLearned = false;
+        }
         userWord.word = word;
         userWord.difficulty = difficulty;
-        userWord.optional.progress = progress;
-        userWord.optional.successfulAttempts = successfulAttempts;
-        userWord.optional.unsuccessfulAttempts = unsuccessfulAttempts;
-        if (progress === 100) {
-          userWord.optional.wasLearned = true;
-        } else {
-          userWord.optional.wasLearned = false;
-        }
-
+        userWord.optional = {
+          progress,
+          successfulAttempts,
+          unsuccessfulAttempts,
+          wasLearned,
+        };
         this.api.updateUserWord(App.user.userId, App.user.token, userWord);
       }
     }

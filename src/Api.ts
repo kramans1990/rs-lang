@@ -166,7 +166,7 @@ class Api {
   async getUserWordsAllHard(id: string, token: string): Promise<Partial<Word & UserWord>[]> {
     try {
       const responce = await fetch(
-        `${this.baseUrl}/users/${id}/aggregatedWords?filter={"userWord.difficulty":"hard"}`,
+        `${this.baseUrl}/users/${id}/aggregatedWords?wordsPerPage=600&filter={"userWord.difficulty":"hard"}`,
         {
           method: 'GET',
           headers: {

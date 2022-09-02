@@ -64,7 +64,6 @@ class SprintQuestion {
     const quizContainer = document.createElement('div');
     quizContainer.className = 'div-quiz-container';
     quizContainer.id = this.id.toString();
-    // const label = document.createElement('label');
     const divPlay = this.audioAnswer;
     const questionContainer = document.createElement('div');
     questionContainer.className = 'sprint-question-container';

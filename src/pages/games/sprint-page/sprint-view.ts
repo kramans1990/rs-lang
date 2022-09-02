@@ -6,6 +6,7 @@ import {
   levelText,
   newGameButtonText,
   levelSelectLabelText,
+  sprintTime,
 } from '../../../utils/constants';
 import ApplicationView from '../../application-view';
 import GameCommonView from '../game-common-view';
@@ -38,7 +39,6 @@ class SprintView extends ApplicationView {
     buttonNewGame.className = 'new-game-button';
     const divButtonsContainer = document.createElement('div');
     divButtonsContainer.className = 'buttons-container';
-    div.appendChild(buttonNewGame);
     for (let i = 1; i < 8; i += 1) {
       const button = document.createElement('button');
       button.className = `game-button l${i}`;
@@ -63,20 +63,24 @@ class SprintView extends ApplicationView {
     modal.className = 'game-result hidden';
     gameContainer.className = 'game-container';
     gameContainer.append(divDifficulty, progressBar, statusContainer);
-    div.appendChild(gameContainer);
-    div.appendChild(modal);
+    this.timer = GameCommonView.createTimer();
+    div.append(buttonNewGame, this.timer, gameContainer, modal);
     this.view = div;
   }
 
   // view
   showGameResult(audioTests: Array<SprintQuestion>) {
-    this.view.querySelector('.game-result')?.classList.remove('hidden');
+    this.showResults();
     const correctdiv = document.querySelector('.answer-container-correct') as HTMLDivElement;
     const wrongDiv = document.querySelector('.answer-container-wrong') as HTMLDivElement;
     correctdiv.innerHTML = '';
     wrongDiv.innerHTML = '';
-    const corrects = audioTests.filter((p) => p.isCorrect);
-    const wrongs = audioTests.filter((p) => !p.isCorrect);
+    const corrects = audioTests.filter(
+      (p: SprintQuestion): boolean => p.isCorrect && !!p.isAnswered,
+    );
+    const wrongs = audioTests.filter(
+      (p: SprintQuestion): boolean => !p.isCorrect && !!p.isAnswered,
+    );
     for (let i = 0; i < wrongs.length; i += 1) {
       const divResult = document.createElement('div');
       const audioResultBox = document.createElement('div');
@@ -128,15 +132,41 @@ class SprintView extends ApplicationView {
 
   // view
   showQuestion(audioTestView: HTMLDivElement): void {
-    const qustionContainer = this.view.querySelector('.div-quiz-container');
-    if (qustionContainer) {
-      qustionContainer.innerHTML = audioTestView.innerHTML;
+    const questionContainer = this.view.querySelector('.div-quiz-container');
+    if (questionContainer) {
+      questionContainer.innerHTML = audioTestView.innerHTML;
     } else {
       this.view.appendChild(audioTestView);
     }
     const divPlay = document.querySelector('.audio-icon');
     const audio = divPlay?.firstChild as HTMLAudioElement;
     audio.play();
+  }
+
+  showTimer() {
+    this.timer.innerText = `${sprintTime}`;
+    this.timer.classList.remove('hidden');
+    this.timer.classList.remove('hidden');
+    let gameTime = 0;
+    let isResultsShown = false;
+    window.setInterval((): void => {
+      if (gameTime <= sprintTime) {
+        this.timer.innerText = `${sprintTime - gameTime}`;
+        gameTime += 1;
+      }
+      if (this.timer.innerText === '0' && !isResultsShown) {
+        const nextQuestionButton = this.view.querySelector(
+          '.next-question-button',
+        ) as HTMLButtonElement;
+        nextQuestionButton.click();
+        this.hideTimer();
+        isResultsShown = true;
+      }
+    }, 1000);
+  }
+
+  hideTimer() {
+    this.timer.classList.add('hidden');
   }
 
   // view
@@ -151,11 +181,13 @@ class SprintView extends ApplicationView {
 
   // view
   showGame() {
+    this.showTimer();
     (this.view.querySelector('.div-quiz-container') as HTMLDivElement)?.classList.remove('hidden');
   }
 
   // view
   hideGame() {
+    this.timer.classList.add('hidden');
     (this.view.querySelector('.div-quiz-container') as HTMLDivElement)?.classList.add('hidden');
   }
 
@@ -362,12 +394,6 @@ class SprintView extends ApplicationView {
 //     wordBlock.prepend(wordControlsBlock);
 //     gameBlock.append(controlsBlock, wordBlock);
 //     this.view.append(this.createTimer(), gameBlock);
-//   }
-
-//   createTimer(): HTMLDivElement {
-//     this.timer = document.createElement('div');
-//     this.timer.classList.add('sprint-timer');
-//     return this.timer;
 //   }
 // }
 

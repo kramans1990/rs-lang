@@ -90,6 +90,12 @@ class GameCommonView {
     return modalContent;
   }
 
+  static createTimer(): HTMLDivElement {
+    const timer = document.createElement('div');
+    timer.classList.add('sprint-timer', 'hidden');
+    return timer;
+  }
+
   showLevelSelection() {
     (this.view.querySelector('.dif-container') as HTMLDivElement).classList.remove('hidden');
   }

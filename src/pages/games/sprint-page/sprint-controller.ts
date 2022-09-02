@@ -18,11 +18,11 @@ class SprintController extends ApplicationContoller {
 
   wordsPerPage = 20;
 
-  countQuestions = 20;
+  countQuestions = 200;
 
   initialbarProgress = 3;
 
-  pagesPerGame = 3;
+  pagesPerGame = 9;
 
   constructor(words?: Array<Word>) {
     super();
@@ -41,15 +41,16 @@ class SprintController extends ApplicationContoller {
   addListeners() {
     const btns = this.pageView.view.querySelectorAll('button');
     for (let i = 0; i < btns.length; i += 1) {
-      btns[i].addEventListener('click', (e: MouseEvent) => {
+      btns[i].addEventListener('click', async (e: MouseEvent): Promise<void> => {
         const target = e.currentTarget as HTMLButtonElement;
         if (target.classList.contains('game-button')) {
           this.model.gameStatus = 'Set Level';
-          this.getAllWords(Number(target.value));
+          const words = await this.getAllWords(Number(target.value));
+          this.model.createQuiz(words, this.countQuestions);
         }
       });
     }
-    this.pageView.view.addEventListener('click', (e) => {
+    this.pageView.view.addEventListener('click', (e: MouseEvent): void => {
       const target = e.target as HTMLElement;
       // if (target.className === 'game-button option') {
       //   this.model.updateGameProgress();//обновление статистики
@@ -73,14 +74,14 @@ class SprintController extends ApplicationContoller {
         this.model.closeResult();
       }
     });
-    this.pageView.view.querySelector('#new-game')?.addEventListener('click', () => {
+    this.pageView.view.querySelector('#new-game')?.addEventListener('click', (): void => {
       this.model.gameStatus = 'Select Level';
     });
   }
 
   // ctrlr
   addKeyBoardListeners() {
-    document.addEventListener('keydown', (e) => this.keyPress(e));
+    document.addEventListener('keydown', (e): void => this.keyPress(e));
   }
 
   // ctrlr
@@ -91,7 +92,7 @@ class SprintController extends ApplicationContoller {
   }
 
   // ctrlr
-  async getAllWords(group: number): Promise<void> {
+  async getAllWords(group: number): Promise<Array<Word>> {
     this.pageView.showProgressBar();
     this.model.gameStatus = 'Loading';
     let progress = this.initialbarProgress;
@@ -110,7 +111,7 @@ class SprintController extends ApplicationContoller {
       const value: Array<Word> = await this.getWords(group, i);
       words = words.concat(value);
     }
-    this.model.createQuiz(words, this.countQuestions);
+    return words;
   }
 
   // model
@@ -123,11 +124,11 @@ class SprintController extends ApplicationContoller {
           'Content-Type': 'application/json',
         },
       })
-        .then((result) => {
+        .then((result: Response): void => {
           const words = result.json() as Promise<Array<Word>>;
           res(words);
         })
-        .catch((err) => {
+        .catch((err: Error): void => {
           rej(err);
         });
     });
@@ -138,8 +139,9 @@ class SprintController extends ApplicationContoller {
     if (App.user?.userId) {
       const value: Array<UserWord> = await this.api.getUserWords(App.user.userId, App.user.token);
       userWords = value;
-      const find = userWords.filter((item) => item.wordId === test.correctAnswer.id);
-
+      const find = userWords.filter(
+        (item: UserWord): boolean => item.wordId === test.correctAnswer.id,
+      );
       if (find.length === 0) {
         let progress = 0;
         progress = test.isCorrect ? (progress = 20) : 0;
@@ -192,16 +194,6 @@ class SprintController extends ApplicationContoller {
 
 //   setTimer() {
 //     const timer = this.pageView.view.querySelector('.sprint-timer') as HTMLDivElement;
-//     let gameTime = 0;
-//     window.setInterval((): void => {
-//       if (gameTime <= sprintTime) {
-//         timer.innerText = `${sprintTime - gameTime}`;
-//         gameTime += 1;
-//       }
-//       if (!gameTime) {
-//         // this.renderResults();
-//       }
-//     }, 1000);
 //   }
 // }
 

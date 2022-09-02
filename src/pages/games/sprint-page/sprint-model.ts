@@ -40,6 +40,7 @@ class SprintModel {
     this.status = status;
 
     if (this.status === 'Set Level') {
+      this.pageView.hideTimer();
       this.pageView.hideDifficultySelection();
       this.pageView.hideGame();
       this.pageView.hideResults();
@@ -80,9 +81,10 @@ class SprintModel {
 
   nextQuestion() {
     this.currentQuestion += 1;
-    if (this.currentQuestion === this.audioTests.length) {
+    if (this.currentQuestion === this.audioTests.length || this.pageView.timer.innerText === '0') {
       this.pageView.showGameResult(this.audioTests);
       this.pageView.hideGame();
+      this.pageView.hideTimer();
     } else {
       this.pageView.showQuestion(this.audioTests[this.currentQuestion].audioTestView);
     }

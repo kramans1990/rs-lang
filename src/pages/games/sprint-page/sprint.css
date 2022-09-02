@@ -17,8 +17,13 @@
   width: var(--timer-size);
   height: var(--timer-size);
   font-size: calc(var(--timer-size) / 4);
+  color: #ffffff;
   border: 3px solid #ffffff;
   border-radius: calc(var(--timer-size) / 2);
+}
+
+.sprint-timer.hidden {
+  display: none;
 }
 
 .sprint-block {

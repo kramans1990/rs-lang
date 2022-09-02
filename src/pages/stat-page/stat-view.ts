@@ -1,5 +1,6 @@
 /* eslint-disable import/no-cycle */
 import './stat.css';
+import { Chart, registerables } from 'chart.js';
 import Api from '../../Api';
 import ApplicationView from '../application-view';
 import * as constants from './stat-constants';
@@ -14,7 +15,96 @@ class StatView extends ApplicationView {
   constructor() {
     super();
     this.renderView();
+    Chart.register(...registerables);
   }
+
+  showEverydayStat(
+    newWordsAudio: number,
+    newWordsSprint: number,
+    accuracyAudio: number,
+    accuracySprint: number,
+    serieAudio: number,
+    serieSprint: number,
+  ) {
+    const div = this.view.querySelector('.stat-content') as HTMLDivElement;
+    div.innerHTML = '';
+    const title = document.createElement('div');
+    title.innerText = 'Статистика за сегодня';
+    const titleAudioCall = document.createElement('h3');
+
+    title.className = 'title ';
+    titleAudioCall.innerText = 'Аудиовызов';
+    const divNewWordsAudio = document.createElement('div');
+    divNewWordsAudio.innerText = `Новых слов : ${newWordsAudio}`;
+    const divAccuracyAudio = document.createElement('div');
+    divAccuracyAudio.innerText = `Верных ответов, % : ${accuracyAudio}`;
+    const divSerieAudio = document.createElement('div');
+    divSerieAudio.innerText = `Лучшая серия ответов : ${serieAudio}`;
+    div.append(title, titleAudioCall, divNewWordsAudio, divAccuracyAudio, divSerieAudio);
+
+    const titleSprint = document.createElement('h3');
+    titleSprint.innerText = 'Спринт';
+    const divNewWordsSprint = document.createElement('div');
+    divNewWordsSprint.innerText = `Новых слов : ${newWordsSprint}`;
+    const divAccuracySprint = document.createElement('div');
+    divAccuracySprint.innerText = `Верных ответов, %: ${accuracySprint}`;
+    const divSerieSprint = document.createElement('div');
+    divSerieSprint.innerText = `Лучшая серия ответов : ${serieSprint}`;
+    div.append(titleSprint, divNewWordsSprint, divAccuracySprint, divSerieSprint);
+  }
+
+  // showAllStat() {
+  //   const div = this.view.querySelector('.stat-content') as HTMLDivElement;
+  //   div.innerHTML = '';
+  //   div.innerText = 'all';
+  //   const canvasLearnedWords = document.createElement('canvas') as HTMLCanvasElement;
+  //   canvasLearnedWords.id = 'learnedWordsChart';
+  //   const canvasLearnedWordsContext = canvasLearnedWords.getContext(
+  //     '2d',
+  //   ) as CanvasRenderingContext2D;
+  //   const myChartlearned = new Chart(canvasLearnedWordsContext, {
+  //     type: 'bar',
+
+  //     data: {
+  //       labels: [1, 2, 3, 4, 5, 6],
+  //       datasets: [{
+  //         {
+  //           label: '# of Votes',
+  //           data: [12, 19, 3, 5, 2, 3],
+
+  //           backgroundColor: [
+  //           'rgba(255, 99, 132, 0.2)',
+  //             'rgba(54, 162, 235, 0.2)',
+  //             'rgba(255, 206, 86, 0.2)',
+  //             'rgba(75, 192, 192, 0.2)',
+  //             'rgba(153, 102, 255, 0.2)',
+  //           'rgba(255, 159, 64, 0.2)'
+  //           ],
+  //         borderColor: [
+  //             'rgba(255, 99, 132, 1)',
+  //             'rgba(54, 162, 235, 1)',
+  //             'rgba(255, 206, 86, 1)',
+  //           'rgba(75, 192, 192, 1)',
+  //             'rgba(153, 102, 255, 1)',
+  //           'rgba(255, 159, 64, 1)'
+  //           ],
+  //           borderWidth: 5,
+
+  //       }],
+  //    },
+  //     options: {
+  //       scales: {
+  //         y: {
+  //           beginAtZero: true,
+  //            }
+
+  //       },
+
+  //     },
+
+  //   });
+  //   div.appendChild(canvasLearnedWords);
+  // }
 
   renderView() {
     const div = document.createElement('div');
@@ -25,22 +115,27 @@ class StatView extends ApplicationView {
     const buttonDay = document.createElement('button');
     buttonDay.innerText = constants.TodayStatButtonText;
     buttonDay.className = 'stat-button';
+    buttonDay.id = 'stat-button-today';
     const buttonAll = document.createElement('button');
     buttonAll.innerText = constants.AllStatButtonText;
     buttonAll.className = 'stat-button';
+    buttonAll.id = 'stat-button-all';
     buttonsBarDiv.append(buttonDay, buttonAll);
+    const divContent = document.createElement('div');
+    divContent.className = 'stat-content';
     div.appendChild(buttonsBarDiv);
+    div.appendChild(divContent);
 
     const divDay = document.createElement('div');
     divDay.className = 'div-day';
     const divAll = document.createElement('div');
     divAll.className = 'div-day';
+    /// //
 
+    ///
+    // div.appendChild(canvasNewWords);
+    // div.appendChild(canvasLearnedWords);
     this.view = div;
   }
-
-  // showEveryDayStat() {}
-
-  // showAllStat() {}
 }
 export default StatView;

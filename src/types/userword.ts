@@ -32,12 +32,11 @@ class UserWord {
       const find = userWords.find((item) => item.wordId === correctAnswer.id);
       if (!find) {
         const progress: number = isCorrect ? 20 : 0;
-        const difficulty = 'no-hard';
         const successfulAttempts = isCorrect ? 1 : 0;
         const unsuccessfulAttempts = isCorrect ? 0 : 1;
         const userWord: UserWord = new UserWord();
         userWord.word = correctAnswer;
-        userWord.difficulty = difficulty;
+        userWord.difficulty = 'no-hard';
         userWord.optional = {
           progress,
           successfulAttempts,
@@ -74,6 +73,7 @@ class UserWord {
         };
         userWord.word = correctAnswer;
         userWord.wordId = find.wordId;
+        isNew = find.optional.successfulAttempts + find.optional.successfulAttempts === 1;
         this.api.updateUserWord(App.user.userId, App.user.token, userWord);
       }
     }

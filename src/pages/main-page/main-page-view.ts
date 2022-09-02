@@ -4,7 +4,8 @@ import '../../styles/main-page.css';
 /* prettier-ignore */
 
 import {
-  mainPageText,
+  mainPageText1,
+  mainPageText2,
   learnButtonText,
   playButtonText,
   rsLang,
@@ -29,9 +30,9 @@ class MainPageView extends ApplicationView {
     const introText = document.createElement('div');
     introText.classList.add('main-page__text');
     const text1 = document.createElement('p');
-    text1.innerText = mainPageText;
+    text1.innerText = mainPageText1;
     const text2 = document.createElement('p');
-    text2.innerText = mainPageText;
+    text2.innerText = mainPageText2;
     introText.append(text1, text2);
     const buttons = document.createElement('div');
     buttons.classList.add('buttons');

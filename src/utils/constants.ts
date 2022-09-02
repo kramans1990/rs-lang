@@ -19,9 +19,11 @@ const invalidPassword = 'Password should contain digits, letters or both';
 
 /* prettier-ignore */
 
-const mainPageText = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco.';
+const mainPageText1 = 'Перед вами приложение для эффективного изучения иностранных слов в игровой форме. Тратя всего несколько минут в день, вы обогатите словарный запас и приблизитесь к своей цели наконец-то выучить английский.';
 
 /* prettier-ignore */
+
+const mainPageText2 = 'Дополнительно приложение позволяет прокачать навык аудирования и понять, как применять выученные слова и фразы в жизни. Игры превратят изучение языка в удовольствие и позволят с лёгкостью запоминать новые слова. Начни изучать английский прямо сейчас!';
 
 const rsLang = 'RS Lang';
 const learnButtonText = 'Учиться';
@@ -76,7 +78,8 @@ export {
   name,
   upperSignUpButtonText,
   upperSignInButtonText,
-  mainPageText,
+  mainPageText1,
+  mainPageText2,
   rsLang,
   learnButtonText,
   playButtonText,

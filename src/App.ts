@@ -12,6 +12,7 @@ import {
   saveDataToLocalStorage,
 } from './functions/functions';
 import { logOutText, signInButtonText } from './utils/constants';
+import StatController from './pages/stat-page/stat-controller';
 
 class App {
   static main: HTMLElement | null;
@@ -158,9 +159,10 @@ class App {
     //   document.querySelector('.words-page-link')?.addEventListener('click', (): void => {
     //     this.page = new WordsPage();
     //   });
-    //   document.querySelector('.stat-page-link')?.addEventListener('click', (): void => {
-    //     this.page = new StatPage();
-    //   });
+    document.querySelector('.stat-page-link')?.addEventListener('click', (): void => {
+      const controller: ApplicationContoller = new StatController();
+      App.setController(controller);
+    });
 
     document.querySelector('.game-page-link')?.addEventListener('click', (): void => {
       const controller: ApplicationContoller = new AudioController();

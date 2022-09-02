@@ -1,17 +1,21 @@
+/* eslint-disable import/no-cycle */
 import { isValidEmail, isValidPassword } from '../../functions/functions';
 import { invalidEmail, invalidPassword } from '../../utils/constants';
 import { ISignIn, IUser } from '../../types/interfaces';
 import ApplicationContoller from '../application-controller';
 import RegModel from './registration-model';
-
+import Statistic from '../../types/Statistic';
 /* eslint-disable import/no-cycle */
 import RegistrationView from './registration-view';
 import App from '../../App';
+import Api from '../../Api';
 
 class RegistrationController extends ApplicationContoller {
   regPageView: RegistrationView;
 
   regModel: RegModel;
+
+  api: Api = new Api();
 
   constructor() {
     super();
@@ -43,11 +47,19 @@ class RegistrationController extends ApplicationContoller {
               }
               return `${result.status} ${result.statusText}`;
             })
-            .then((userData: string | ISignIn): void => App.signIn(userData));
+            .then((userData: string | ISignIn): void => App.signIn(userData))
+            .then((): void => {
+              this.createStatistic();
+            });
         }
       });
   }
 
+  /* eslint-disable class-methods-use-this */
+  createStatistic() {
+    const initialStat: Statistic = new Statistic();
+    initialStat.initStatistic();
+  }
   /* eslint-disable no-alert */
 
   addListeners(): void {

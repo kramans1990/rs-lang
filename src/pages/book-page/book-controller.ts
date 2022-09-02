@@ -2,12 +2,12 @@ import '../../styles/cards.css';
 import '../../styles/level-buttons.css';
 import '../../styles/main.css';
 import '../../styles/pagination.css';
-
+/* eslint-disable import/no-cycle */
 import ApplicationContoller from '../application-controller';
 import { IPageInfo } from '../../types/interfaces';
 import { Word } from '../../types/Word';
 import { BookPageView } from './book-view';
-// eslint-disable-next-line import/no-cycle
+
 import CardView from './card-view';
 import BookModel from './book-model';
 import {

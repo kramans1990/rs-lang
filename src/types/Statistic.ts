@@ -22,6 +22,7 @@ class Statistic {
     statOptional.gameName = gameName;
     statOptional.serie = 0;
     statOptional.currentSerie = 0;
+    statOptional.learnedByBook = 0;
     return statOptional;
   }
 
@@ -116,16 +117,20 @@ class Statistic {
       const toOptionsArrayString = toOptionsObject.value as unknown as StatOptional[];
       const StatOptionsArrray: StatOptional[] = JSON.parse(toOptionsArrayString.toString());
       currentStat.optional = StatOptionsArrray;
-      const find = currentStat.optional.find((item) => item.dateShort === dateShort);
-      if (!find) {
+      const find = currentStat.optional.filter((item) => item.dateShort === dateShort);
+      if (find.length === 0) {
         const initStatistic: Statistic = new Statistic();
         initStatistic.learnedWords = 1;
         initStatistic.optional.push(this.initOptional('audiocall'));
         initStatistic.optional.push(this.initOptional('sprint'));
+        initStatistic.optional[0].learnedByBook += 1;
+        initStatistic.optional[1].learnedByBook += 1;
         await this.api.updateUserStat(App.user.userId, App.user.token, currentStat);
       }
       if (find) {
-        currentStat.learnedWords += 1;
+        for (let i = 0; i < find.length; i += 1) {
+          find[i].learnedByBook += 1;
+        }
         await this.api.updateUserStat(App.user.userId, App.user.token, currentStat);
       }
     }

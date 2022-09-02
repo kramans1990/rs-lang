@@ -16,5 +16,7 @@ class StatOptional {
   correctAnswers: number;
 
   wrongAnswers: number;
+
+  learnedByBook: number;
 }
 export default StatOptional;

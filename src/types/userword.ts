@@ -31,21 +31,10 @@ class UserWord {
       userWords = await this.api.getUserWords(App.user.userId, App.user.token);
       const find = userWords.find((item) => item.wordId === correctAnswer.id);
       if (!find) {
-        const progress: number = isCorrect ? 20 : 0;
-        const successfulAttempts = isCorrect ? 1 : 0;
-        const unsuccessfulAttempts = isCorrect ? 0 : 1;
-        const userWord: UserWord = new UserWord();
-        userWord.word = correctAnswer;
-        userWord.difficulty = 'no-hard';
-        userWord.optional = {
-          progress,
-          successfulAttempts,
-          unsuccessfulAttempts,
-          wasLearned: false,
-        };
+        this.createUserWord(isCorrect, correctAnswer);
         isNew = true;
-        this.api.createUserWord(App.user.userId, App.user.token, userWord);
-      } else {
+      }
+      if (find) {
         wasLearned = find.optional.wasLearned;
         let { progress } = find.optional;
         progress = isCorrect ? (progress += 20) : (progress -= 20);
@@ -78,6 +67,24 @@ class UserWord {
       }
     }
     return { isNew, isCorrect, isLearned };
+  }
+
+  createUserWord(isCorrect: boolean, correctAnswer: Word) {
+    if (App.user) {
+      const progress: number = isCorrect ? 20 : 0;
+      const successfulAttempts = isCorrect ? 1 : 0;
+      const unsuccessfulAttempts = isCorrect ? 0 : 1;
+      const userWord: UserWord = new UserWord();
+      userWord.word = correctAnswer;
+      userWord.difficulty = 'no-hard';
+      userWord.optional = {
+        progress,
+        successfulAttempts,
+        unsuccessfulAttempts,
+        wasLearned: false,
+      };
+      this.api.createUserWord(App.user.userId, App.user.token, userWord);
+    }
   }
 }
 export default UserWord;

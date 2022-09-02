@@ -143,9 +143,5 @@ class AudioModel {
     }
     audioTest.isAnswered = 'Yes';
   }
-
-  // updateGameProgress() {
-  //   // обновление статистики
-  // }
 }
 export default AudioModel;

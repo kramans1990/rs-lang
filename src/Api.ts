@@ -1,7 +1,9 @@
+/* eslint-disable import/no-cycle */
 import { IUser } from './types/interfaces';
 import { Word } from './types/Word';
 import { baseUrl } from './utils/constants';
 import UserWord from './types/userword';
+import Statistic from './types/Statistic';
 
 class Api {
   baseUrl: string;
@@ -120,6 +122,7 @@ class Api {
             progress: userWord.optional.progress,
             successfulAttempts: userWord.optional.successfulAttempts,
             unsuccessfulAttempts: userWord.optional.unsuccessfulAttempts,
+            wasLearned: userWord.optional.wasLearned,
           },
         }),
         headers: {
@@ -144,6 +147,7 @@ class Api {
             progress: userWord.optional.progress,
             successfulAttempts: userWord.optional.successfulAttempts,
             unsuccessfulAttempts: userWord.optional.unsuccessfulAttempts,
+            wasLearned: userWord.optional.wasLearned,
           },
         }),
         headers: {
@@ -151,8 +155,9 @@ class Api {
           authorization: `Bearer ${token}`,
         },
       });
-      const createdUserword = await responce.json();
-      return createdUserword;
+
+      const updatedUserWord = await responce.json();
+      return updatedUserWord;
     } catch {
       throw new Error();
     }
@@ -194,6 +199,43 @@ class Api {
       );
       const userword = await responce.json();
       return userword[0].paginatedResults;
+    } catch {
+      throw new Error();
+    }
+  }
+
+  async getUserStat(id: string, token: string): Promise<Statistic> {
+    try {
+      const responce = await fetch(`${this.baseUrl}/users/${id}/statistics`, {
+        method: 'GET',
+        headers: {
+          authorization: `Bearer ${token}`,
+        },
+      });
+      const userstat = await responce.json();
+      return userstat;
+    } catch {
+      throw new Error();
+    }
+  }
+
+  async updateUserStat(id: string, token: string, stat: Statistic) {
+    try {
+      const responce = await fetch(`${this.baseUrl}/users/${id}/statistics`, {
+        method: 'PUT',
+        body: JSON.stringify({
+          learnedWords: stat.learnedWords,
+          optional: {
+            value: JSON.stringify(stat.optional),
+          },
+        }),
+        headers: {
+          'Content-Type': 'application/json',
+          authorization: `Bearer ${token}`,
+        },
+      });
+      const createdUserword = await responce.json();
+      return createdUserword;
     } catch {
       throw new Error();
     }

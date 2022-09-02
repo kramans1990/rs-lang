@@ -16,6 +16,7 @@ import {
   getAggregatedNumberFromLS,
 } from './functions/functions';
 import { logOutText, signInButtonText } from './utils/constants';
+import StatController from './pages/stat-page/stat-controller';
 
 class App {
   static main: HTMLElement | null;
@@ -181,9 +182,10 @@ class App {
     document.querySelector('.main-page-link')?.addEventListener('click', App.renderMainPage);
     document.querySelector('.book-page-link')?.addEventListener('click', App.renderBookPage);
     document.querySelector('.sign-in-page-link')?.addEventListener('click', App.renderAuthPage);
-    //   document.querySelector('.stat-page-link')?.addEventListener('click', (): void => {
-    //     this.page = new StatPage();
-    //   });
+    document.querySelector('.stat-page-link')?.addEventListener('click', (): void => {
+      const controller: ApplicationContoller = new StatController();
+      App.setController(controller);
+    });
 
     document.querySelector('.audio-page-link')?.addEventListener('click', App.renderAudiocallPage);
     // document.querySelector('.sprint-page-link')?.addEventListener('click', App.renderSprintPage);

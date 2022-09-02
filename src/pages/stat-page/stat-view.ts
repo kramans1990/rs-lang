@@ -25,6 +25,8 @@ class StatView extends ApplicationView {
     accuracySprint: number,
     serieAudio: number,
     serieSprint: number,
+    learnded: string,
+    accuracyTotal: number,
   ) {
     const div = this.view.querySelector('.stat-content') as HTMLDivElement;
     div.innerHTML = '';
@@ -37,7 +39,7 @@ class StatView extends ApplicationView {
     const divNewWordsAudio = document.createElement('div');
     divNewWordsAudio.innerText = `Новых слов : ${newWordsAudio}`;
     const divAccuracyAudio = document.createElement('div');
-    divAccuracyAudio.innerText = `Верных ответов, % : ${accuracyAudio}`;
+    divAccuracyAudio.innerText = `Верных ответов, % : ${accuracyAudio.toFixed(2)}`;
     const divSerieAudio = document.createElement('div');
     divSerieAudio.innerText = `Лучшая серия ответов : ${serieAudio}`;
     div.append(title, titleAudioCall, divNewWordsAudio, divAccuracyAudio, divSerieAudio);
@@ -47,10 +49,20 @@ class StatView extends ApplicationView {
     const divNewWordsSprint = document.createElement('div');
     divNewWordsSprint.innerText = `Новых слов : ${newWordsSprint}`;
     const divAccuracySprint = document.createElement('div');
-    divAccuracySprint.innerText = `Верных ответов, %: ${accuracySprint}`;
+    divAccuracySprint.innerText = `Верных ответов, %: ${accuracySprint.toFixed(2)}`;
     const divSerieSprint = document.createElement('div');
     divSerieSprint.innerText = `Лучшая серия ответов : ${serieSprint}`;
     div.append(titleSprint, divNewWordsSprint, divAccuracySprint, divSerieSprint);
+
+    const titleWords = document.createElement('h3');
+    titleWords.innerText = 'Статистика по словам за день';
+    const divNewWords = document.createElement('div');
+    divNewWords.innerText = `Новых слов : ${newWordsSprint + newWordsAudio}`;
+    const divLearnWords = document.createElement('div');
+    divLearnWords.innerText = `Слов изучено: ${learnded}`;
+    const divAccuracyWords = document.createElement('div');
+    divAccuracyWords.innerText = `Верных ответов, % : ${accuracyTotal.toFixed(2)}`;
+    div.append(titleWords, divNewWords, divLearnWords, divAccuracyWords);
   }
 
   // showAllStat() {

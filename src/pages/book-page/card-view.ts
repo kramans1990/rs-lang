@@ -1,4 +1,5 @@
 import { Word } from '../../types/Word';
+// eslint-disable-next-line import/no-cycle
 import UserWord from '../../types/userword';
 import {
   baseUrl,
@@ -240,13 +241,17 @@ class CardView {
         const difficulty = newDifficulty;
         const successfulAttempts = 0;
         const unsuccessfulAttempts = 0;
-        const userWord: UserWord = new UserWord(
-          word,
-          difficulty,
-          progress,
-          successfulAttempts,
-          unsuccessfulAttempts,
-        );
+        const userWord: UserWord = new UserWord();
+        userWord.word = word;
+        userWord.difficulty = difficulty;
+        userWord.optional.progress = progress;
+        userWord.optional.successfulAttempts = successfulAttempts;
+        userWord.optional.unsuccessfulAttempts = unsuccessfulAttempts;
+        if (progress === 100) {
+          userWord.optional.wasLearned = true;
+        } else {
+          userWord.optional.wasLearned = false;
+        }
 
         this.api.createUserWord(App.user.userId, App.user.token, userWord);
       } else {
@@ -259,13 +264,17 @@ class CardView {
         const difficulty = newDifficulty;
         const { successfulAttempts } = searchWord.optional;
         const { unsuccessfulAttempts } = searchWord.optional;
-        const userWord: UserWord = new UserWord(
-          word,
-          difficulty,
-          progress,
-          successfulAttempts,
-          unsuccessfulAttempts,
-        );
+        const userWord: UserWord = new UserWord();
+        userWord.word = word;
+        userWord.difficulty = difficulty;
+        userWord.optional.progress = progress;
+        userWord.optional.successfulAttempts = successfulAttempts;
+        userWord.optional.unsuccessfulAttempts = unsuccessfulAttempts;
+        if (progress === 100) {
+          userWord.optional.wasLearned = true;
+        } else {
+          userWord.optional.wasLearned = false;
+        }
 
         this.api.updateUserWord(App.user.userId, App.user.token, userWord);
       }

@@ -1,5 +1,5 @@
 /* eslint-disable import/no-cycle */
-import MainPageController from './pages/main-page/main-page-controler';
+import MainPageController from './pages/main-page/main-page-controller';
 import ApplicationContoller from './pages/application-controller';
 import AudioController from './pages/audio-call-page/audio-call-controller';
 import AuthController from './pages/auth-page/auth-controller';
@@ -73,6 +73,7 @@ class App {
     this.user = undefined;
     removeDataFromLocalStorage('rs-lang-user');
     removeDataFromLocalStorage('aggregatedNumber');
+    App.makeMainTransparentAgain();
   }
 
   static changeActiveClassForNavItemByEvent(e: Event): void {
@@ -111,6 +112,7 @@ class App {
     App.setController(controller);
     const mainButton = document.querySelector('.game-page-link') as HTMLElement;
     App.changeActiveClassForNavItemByElement(mainButton);
+    App.makeMainTransparentAgain();
     App.pageInfo = { pageName: 'audiocallPage' };
   }
 
@@ -134,6 +136,13 @@ class App {
     App.pageInfo = { pageName: 'authPage' };
   }
 
+  static renderStatPage() {
+    const controller: ApplicationContoller = new StatController();
+    App.setController(controller);
+    App.makeMainTransparentAgain();
+    App.pageInfo = { pageName: 'statPage' };
+  }
+
   static renderRegPage(): void {
     const controller: ApplicationContoller = new RegistrationController();
     App.setController(controller);
@@ -141,6 +150,7 @@ class App {
 
   static makeMainTransparentAgain(): void {
     const mainWrapper = document.querySelector('.main_wrapper') as HTMLDivElement;
+    mainWrapper.classList.remove('all-done');
     mainWrapper.style.backgroundColor = 'transparent';
   }
 
@@ -163,6 +173,9 @@ class App {
           case 'audiocallPage':
             App.renderAudiocallPage();
             break;
+          case 'statPage':
+            App.renderStatPage();
+            break;
           // case 'sprintPage':
           //   App.renderSprintPage();
           //   break;
@@ -182,10 +195,7 @@ class App {
     document.querySelector('.main-page-link')?.addEventListener('click', App.renderMainPage);
     document.querySelector('.book-page-link')?.addEventListener('click', App.renderBookPage);
     document.querySelector('.sign-in-page-link')?.addEventListener('click', App.renderAuthPage);
-    document.querySelector('.stat-page-link')?.addEventListener('click', (): void => {
-      const controller: ApplicationContoller = new StatController();
-      App.setController(controller);
-    });
+    document.querySelector('.stat-page-link')?.addEventListener('click', App.renderStatPage);
 
     document.querySelector('.audio-page-link')?.addEventListener('click', App.renderAudiocallPage);
     // document.querySelector('.sprint-page-link')?.addEventListener('click', App.renderSprintPage);

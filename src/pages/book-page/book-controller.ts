@@ -141,7 +141,6 @@ class BookController extends ApplicationContoller {
     let usersWords = new Array<UserWord>();
     if (App.user) {
       usersWords = await this.bookModel.getUserWords(App.user?.userId, App.user?.token);
-      console.log(allHardWords);
       allHardWords.forEach((word) => {
         const card = new CardView(<Word>word, usersWords);
         this.cardsList.append(card.view);

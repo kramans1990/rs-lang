@@ -11,6 +11,7 @@ import { BookPageView } from './book-view';
 import CardView from './card-view';
 import BookModel from './book-model';
 import App from '../../App';
+// import Api from '../../Api';
 import UserWord from '../../types/userword';
 
 import {
@@ -56,7 +57,7 @@ class BookController extends ApplicationContoller {
 
   constructor() {
     super();
-    this.pageView = new BookPageView();
+    this.pageView = new BookPageView(this.aggregatedNumber);
     this.bookModel = new BookModel();
     this.currentLevel = 0;
     this.currentPage = 0;
@@ -64,8 +65,8 @@ class BookController extends ApplicationContoller {
     if (getDataFromLocalStorage('pageInfo')) {
       this.getPageInfoFromLocalStorage();
     }
-    this.getAggregatedNumber(this.currentLevel, this.currentPage);
-    setBackgroundForBookPage(this.aggregatedNumber);
+
+    this.setBackgroundByAggregatedNumber(this.currentLevel, this.currentPage);
 
     saveDataToLocalStorage(
       'pageInfo',
@@ -79,7 +80,7 @@ class BookController extends ApplicationContoller {
     this.setView();
   }
 
-  async getAggregatedNumber(currentLevel: number, currentPage: number) {
+  async setBackgroundByAggregatedNumber(currentLevel: number, currentPage: number) {
     if (App.user) {
       const responce = await this.bookModel.getUserWordsAgregatedByGroupAndByPage(
         App.user.userId,
@@ -88,13 +89,14 @@ class BookController extends ApplicationContoller {
         `{"$and":[{"group":${currentLevel}},{"page":${currentPage}},{"$or":[{"userWord.difficulty":"hard"},{"userWord.optional.progress":100}]}]}`,
       );
       this.aggregatedNumber = responce.length;
+      setBackgroundForBookPage(this.aggregatedNumber);
       saveDataToLocalStorage('aggregatedNumber', JSON.stringify(this.aggregatedNumber));
     }
     return this.aggregatedNumber;
   }
 
   async setView(): Promise<void> {
-    this.pageView = new BookPageView();
+    this.pageView = new BookPageView(this.aggregatedNumber);
     this.view = this.pageView.view;
     this.levels = this.pageView.levels;
     this.cardsList = this.pageView.cardsList;
@@ -197,7 +199,7 @@ class BookController extends ApplicationContoller {
         this.renderPaginationBlock(group);
       }
 
-      this.getAggregatedNumber(group, 0);
+      this.setBackgroundByAggregatedNumber(group, 0);
 
       saveDataToLocalStorage('aggregatedNumber', JSON.stringify(this.aggregatedNumber));
     }
@@ -279,7 +281,7 @@ class BookController extends ApplicationContoller {
       }),
     );
 
-    this.aggregatedNumber = await this.getAggregatedNumber(group, page);
+    this.aggregatedNumber = await this.setBackgroundByAggregatedNumber(group, page);
     setBackgroundForBookPage(this.aggregatedNumber);
     saveDataToLocalStorage('aggregatedNumber', JSON.stringify(this.aggregatedNumber));
   }

@@ -7,11 +7,17 @@ import {
   progressForDoneWord,
   progressForNoDoneWord,
 } from '../../utils/constants';
-import { saveDataToLocalStorage, getDataFromLocalStorage } from '../../functions/functions';
+import {
+  saveDataToLocalStorage,
+  // getDataFromLocalStorage,
+  setBackgroundForBookPage,
+  getAggregatedNumberFromLS,
+} from '../../functions/functions';
 
 /* eslint-disable import/no-cycle */
 import Api from '../../Api';
 import App from '../../App';
+// import BookController from './book-controller';
 
 class CardView {
   api: Api;
@@ -36,16 +42,6 @@ class CardView {
     this.view.id = wordInfo._id || wordInfo.id;
     this.userWords = userWords;
     this.createCard(wordInfo);
-  }
-
-  static getAggregatedNumber() {
-    let aggregatedNumber;
-    if (getDataFromLocalStorage('aggregatedNumber')) {
-      aggregatedNumber = getDataFromLocalStorage('aggregatedNumber') as number;
-    } else {
-      aggregatedNumber = 0;
-    }
-    return aggregatedNumber;
   }
 
   async createCard(wordInfo: Word, userWordInfo?: UserWord) {
@@ -155,7 +151,7 @@ class CardView {
     if (e) {
       const card = (e.target as HTMLDivElement).closest('.card');
       const cardId = card?.id as string;
-      let aggregatedNumber = CardView.getAggregatedNumber();
+      let aggregatedNumber = getAggregatedNumberFromLS();
 
       if (card?.classList.contains('hard')) {
         aggregatedNumber -= 1;
@@ -173,6 +169,7 @@ class CardView {
       }
 
       saveDataToLocalStorage('aggregatedNumber', JSON.stringify(aggregatedNumber));
+      setBackgroundForBookPage(aggregatedNumber);
     }
   }
 
@@ -180,7 +177,7 @@ class CardView {
     if (e) {
       const card = (e.target as HTMLDivElement).closest('.card');
       const cardId = card?.id as string;
-      let aggregatedNumber = CardView.getAggregatedNumber();
+      let aggregatedNumber = getAggregatedNumberFromLS();
 
       if (card?.classList.contains('done')) {
         aggregatedNumber -= 1;
@@ -200,6 +197,7 @@ class CardView {
       }
 
       saveDataToLocalStorage('aggregatedNumber', JSON.stringify(aggregatedNumber));
+      setBackgroundForBookPage(aggregatedNumber);
     }
   }
 

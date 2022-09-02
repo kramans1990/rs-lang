@@ -54,6 +54,16 @@ function clickMenuHandle(e: Event) {
   }
 }
 
+function getAggregatedNumberFromLS() {
+  let aggregatedNumber;
+  if (getDataFromLocalStorage('aggregatedNumber')) {
+    aggregatedNumber = getDataFromLocalStorage('aggregatedNumber') as number;
+  } else {
+    aggregatedNumber = 0;
+  }
+  return aggregatedNumber;
+}
+
 function setBackgroundForBookPage(aggregatedNumber: number) {
   const mainWrapper = document.querySelector('.main_wrapper') as HTMLDivElement;
   if (aggregatedNumber === 20) {
@@ -74,5 +84,6 @@ export {
   removeDataFromLocalStorage,
   burgerMenuHandle,
   clickMenuHandle,
+  getAggregatedNumberFromLS,
   setBackgroundForBookPage,
 };

@@ -224,6 +224,7 @@ class CardView {
     div.style.width = `${progress}%`;
   }
 
+  // eslint-disable-next-line max-lines-per-function
   async updateUserWordInfo(cardId: string, newDifficulty: string, newProgress?: number) {
     if (App.user?.userId) {
       const usersWords: Array<UserWord> = await this.api.getUserWords(
@@ -244,16 +245,20 @@ class CardView {
         const successfulAttempts = 0;
         const unsuccessfulAttempts = 0;
         const userWord: UserWord = new UserWord();
+        let wasLearned;
+        if (progress === 100) {
+          wasLearned = true;
+        } else {
+          wasLearned = false;
+        }
         userWord.word = word;
         userWord.difficulty = difficulty;
-        userWord.optional.progress = progress;
-        userWord.optional.successfulAttempts = successfulAttempts;
-        userWord.optional.unsuccessfulAttempts = unsuccessfulAttempts;
-        if (progress === 100) {
-          userWord.optional.wasLearned = true;
-        } else {
-          userWord.optional.wasLearned = false;
-        }
+        userWord.optional = {
+          progress,
+          successfulAttempts,
+          unsuccessfulAttempts,
+          wasLearned,
+        };
         this.api.createUserWord(App.user.userId, App.user.token, userWord);
       } else {
         const searchWord = searchWordsArray[0];

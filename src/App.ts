@@ -73,6 +73,7 @@ class App {
     this.user = undefined;
     removeDataFromLocalStorage('rs-lang-user');
     removeDataFromLocalStorage('aggregatedNumber');
+    removeDataFromLocalStorage('pageInfo');
     App.makeMainTransparentAgain();
   }
 

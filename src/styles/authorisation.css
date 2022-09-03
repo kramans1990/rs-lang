@@ -12,6 +12,7 @@
 .sign-in-button,
 .sign-up-button {
   font-size: 21px;
+  color: var(--color-main);
 }
 
 .auth-title,

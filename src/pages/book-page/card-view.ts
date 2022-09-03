@@ -265,14 +265,11 @@ class CardView {
         const searchWord = searchWordsArray[0];
         const progress = newProgress;
         const difficulty = newDifficulty;
-        const { successfulAttempts } = searchWord.optional;
-        const { unsuccessfulAttempts } = searchWord.optional;
-        let wasLearned;
+        const { successfulAttempts, unsuccessfulAttempts } = searchWord.optional;
+        let { wasLearned } = searchWord.optional;
 
         if (progress === 100) {
           wasLearned = true;
-        } else {
-          wasLearned = false;
         }
 
         const userWord: UserWord = new UserWord();

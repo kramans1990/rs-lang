@@ -14,7 +14,7 @@ class MemberCard {
     const memberBlock = document.createElement('div');
     memberBlock.classList.add('member-card__info');
     const memberImg = document.createElement('img');
-    memberImg.setAttribute('url', `${team[memberNum].img}`);
+    memberImg.setAttribute('src', `${team[memberNum].img}`);
     memberImg.setAttribute('alt', 'avatar');
     const memberText = document.createElement('div');
     memberText.classList.add('member-card__text');
@@ -36,6 +36,7 @@ class MemberCard {
     for (let i = 0; i < team[memberNum].points.length; i += 1) {
       const point = document.createElement('p');
       point.classList.add(`point-${i}`);
+      point.innerText = `${team[memberNum].points[i]}`;
       pointsBlock.append(point);
     }
     return pointsBlock;

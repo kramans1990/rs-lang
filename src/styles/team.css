@@ -1,0 +1,96 @@
+.team-page {
+  display: flex;
+  flex-direction: row;
+  /* align-items: center; */
+  justify-content: flex-start;
+  flex-wrap: wrap;
+  column-gap: 6%;
+  row-gap: 60px;
+  /* height: 100vh; */
+  padding: 50px 30px;
+}
+
+.member-card {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  position: relative;
+  width: 630px;
+  height: 260px;
+  padding: 10px 30px 14px;
+  background: #fcf9f2;
+  border: 2px solid var(--color-main);
+  border-radius: 30px 0px 0px 0px;
+}
+
+.member-card img {
+  position: absolute;
+  width: 215px;
+  height: 190px;
+  left: -30px;
+  top: -30px;
+  border: 4px solid var(--color-main);
+  border-radius: 30px 0px 0px 0px;
+  background-image: url("../assets/team/fon.jpg");
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-color: #462524;
+  background-position-x: center;
+}
+
+.member-card__descr {
+  font-weight: 400;
+  font-size: 1.4rem;
+  line-height: 2rem;
+  margin-bottom: 20px;
+  margin-left: 184px;
+}
+
+.member-card__slogan {
+  font-style: italic;
+  font-weight: 500;
+  font-size: 1.4rem;
+  line-height: 2rem;
+  color: #919191;
+  text-align: right;
+}
+
+.member-card__points {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  row-gap: 1rem;
+  column-gap: 2rem;
+}
+
+.member-card__points p {
+  font-weight: 500;
+  font-size: 1.4rem;
+  line-height: 1.8rem;
+  letter-spacing: 0.1rem;
+  text-align: center;
+  text-transform: uppercase;
+  color: #ffffff;
+  padding: 6px 12px;
+  filter: drop-shadow(0px 2.85886px 2.85886px rgba(0, 0, 0, 0.25));
+}
+
+.point-0 {
+  background-color: #b59565;
+}
+
+.point-1 {
+  background-color: #ffcb05;
+}
+
+.point-2 {
+  background-color: #faa61a;
+}
+
+.point-3 {
+  background-color: #725747;
+}
+
+.point-4 {
+  background-color: #ae312b;
+}

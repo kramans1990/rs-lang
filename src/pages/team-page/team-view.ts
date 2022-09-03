@@ -1,5 +1,5 @@
 import ApplicationView from '../application-view';
-import '../../styles/team-page.css';
+import '../../styles/team.css';
 import { team } from '../../utils/constants';
 import MemberCard from './member-card';
 

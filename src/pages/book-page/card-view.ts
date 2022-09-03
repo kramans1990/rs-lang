@@ -1,6 +1,7 @@
+/* eslint-disable import/no-cycle */
 import { Word } from '../../types/Word';
-// eslint-disable-next-line import/no-cycle
 import UserWord from '../../types/userword';
+import Statistic from '../../types/Statistic';
 import {
   baseUrl,
   doneButtonText,
@@ -161,7 +162,7 @@ class CardView {
       if (card?.classList.contains('hard')) {
         aggregatedNumber -= 1;
         card?.classList.remove('hard');
-        this.updateUserWordInfo(cardId, 'no-hard');
+        this.updateUserWordInfo(cardId, 'no-hard', progressForNoDoneWord);
       } else if (card?.classList.contains('done')) {
         card?.classList.remove('done');
         card?.classList.add('hard');
@@ -170,7 +171,7 @@ class CardView {
       } else {
         aggregatedNumber += 1;
         card?.classList.add('hard');
-        this.updateUserWordInfo(cardId, 'hard');
+        this.updateUserWordInfo(cardId, 'hard', progressForNoDoneWord);
       }
 
       if (aggregatedNumber === numberOfCardsPerPage) {
@@ -186,36 +187,38 @@ class CardView {
 
   async doneBtnHandler(e?: Event) {
     if (e) {
-      const card = (e.target as HTMLDivElement).closest('.card');
-      const cardId = card?.id as string;
-      const pageElement = document.querySelector('.pagination-element.active');
-      let aggregatedNumber = getAggregatedNumberFromLS();
+      if (App.user) {
+        const card = (e.target as HTMLDivElement).closest('.card');
+        const cardId = card?.id as string;
+        const pageElement = document.querySelector('.pagination-element.active');
+        let aggregatedNumber = getAggregatedNumberFromLS();
 
-      if (card?.classList.contains('done')) {
-        aggregatedNumber -= 1;
-        card?.classList.remove('done');
-        this.updateProgressBar(progressForNoDoneWord);
-        this.updateUserWordInfo(cardId, 'no-hard', progressForNoDoneWord);
-      } else if (card?.classList.contains('hard')) {
-        card?.classList.remove('hard');
-        card?.classList.add('done');
-        this.updateUserWordInfo(cardId, 'no-hard', progressForDoneWord);
-        this.updateProgressBar(progressForDoneWord);
-      } else {
-        aggregatedNumber += 1;
-        card?.classList.add('done');
-        this.updateProgressBar(progressForDoneWord);
-        this.updateUserWordInfo(cardId, 'no-hard', progressForDoneWord);
+        if (card?.classList.contains('done')) {
+          aggregatedNumber -= 1;
+          card?.classList.remove('done');
+          this.updateProgressBar(progressForNoDoneWord);
+          this.updateUserWordInfo(cardId, 'no-hard', progressForNoDoneWord);
+        } else if (card?.classList.contains('hard')) {
+          card?.classList.remove('hard');
+          card?.classList.add('done');
+          this.updateUserWordInfo(cardId, 'no-hard', progressForDoneWord);
+          this.updateProgressBar(progressForDoneWord);
+        } else {
+          aggregatedNumber += 1;
+          card?.classList.add('done');
+          this.updateProgressBar(progressForDoneWord);
+          this.updateUserWordInfo(cardId, 'no-hard', progressForDoneWord);
+        }
+
+        if (aggregatedNumber === numberOfCardsPerPage) {
+          pageElement?.classList.add('done');
+        } else {
+          pageElement?.classList.remove('done');
+        }
+
+        saveDataToLocalStorage('aggregatedNumber', JSON.stringify(aggregatedNumber));
+        setBackgroundForBookPage(aggregatedNumber);
       }
-
-      if (aggregatedNumber === numberOfCardsPerPage) {
-        pageElement?.classList.add('done');
-      } else {
-        pageElement?.classList.remove('done');
-      }
-
-      saveDataToLocalStorage('aggregatedNumber', JSON.stringify(aggregatedNumber));
-      setBackgroundForBookPage(aggregatedNumber);
     }
   }
 
@@ -225,7 +228,8 @@ class CardView {
   }
 
   // eslint-disable-next-line max-lines-per-function
-  async updateUserWordInfo(cardId: string, newDifficulty: string, newProgress?: number) {
+  async updateUserWordInfo(cardId: string, newDifficulty: string, newProgress: number) {
+    console.log('newProgress', newProgress);
     if (App.user?.userId) {
       const usersWords: Array<UserWord> = await this.api.getUserWords(
         App.user.userId,
@@ -235,22 +239,19 @@ class CardView {
       const word = await this.api.getOneWord(cardId);
 
       if (searchWordsArray.length === 0) {
-        let progress;
-        if (typeof newProgress === 'number') {
-          progress = newProgress;
-        } else {
-          progress = 0;
-        }
+        const progress = newProgress;
         const difficulty = newDifficulty;
         const successfulAttempts = 0;
         const unsuccessfulAttempts = 0;
         const userWord: UserWord = new UserWord();
         let wasLearned;
+
         if (progress === 100) {
           wasLearned = true;
         } else {
           wasLearned = false;
         }
+
         userWord.word = word;
         userWord.difficulty = difficulty;
         userWord.optional = {
@@ -262,21 +263,19 @@ class CardView {
         this.api.createUserWord(App.user.userId, App.user.token, userWord);
       } else {
         const searchWord = searchWordsArray[0];
-        let { progress } = searchWord.optional;
-        if (typeof newProgress === 'number') {
-          progress = newProgress;
-        }
-
+        const progress = newProgress;
         const difficulty = newDifficulty;
         const { successfulAttempts } = searchWord.optional;
         const { unsuccessfulAttempts } = searchWord.optional;
-        const userWord: UserWord = new UserWord();
         let wasLearned;
+
         if (progress === 100) {
           wasLearned = true;
         } else {
           wasLearned = false;
         }
+
+        const userWord: UserWord = new UserWord();
         userWord.word = word;
         userWord.difficulty = difficulty;
         userWord.optional = {
@@ -286,7 +285,10 @@ class CardView {
           wasLearned,
         };
         this.api.updateUserWord(App.user.userId, App.user.token, userWord);
+        console.log(userWord);
       }
+      const stat = new Statistic();
+      stat.addLearnedWordFromBook();
     }
   }
 

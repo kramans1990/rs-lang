@@ -139,6 +139,8 @@ class App {
   static renderStatPage() {
     const controller: ApplicationContoller = new StatController();
     App.setController(controller);
+    const mainButton = document.querySelector('.stat-page-link') as HTMLElement;
+    App.changeActiveClassForNavItemByElement(mainButton);
     App.makeMainTransparentAgain();
     App.pageInfo = { pageName: 'statPage' };
   }

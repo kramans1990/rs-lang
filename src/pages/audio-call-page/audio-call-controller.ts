@@ -108,7 +108,7 @@ class AudioController extends ApplicationContoller {
       randomPages = randomPages.filter((item, index, arr) => index === arr.indexOf(item));
     }
 
-    for (let i = 0; i <= 0; i += 1) {
+    for (let i = 0; i <= this.pagesPerGame; i += 1) {
       progress = (i / this.pagesPerGame) * 100;
       this.model.loadingStatus = progress;
       /* eslint-disable no-await-in-loop */

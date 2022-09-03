@@ -42,6 +42,33 @@ const iconSprintSrc = './assets/svg/icon_sprint.svg';
 const iconAudioGameSrc = './assets/svg/icon_audio_game.svg';
 const iconExtraGameSrc = './assets/svg/icon_audio_game.svg';
 
+const team = [
+  {
+    name: 'Raman Saksonau',
+    description:
+      'Тут можно несколько слов о себе. О том, как докатился до этого. Какие планы на будущее.',
+    slogan: 'Девиз по жизни',
+    img: './assets/team/roma.eps',
+    points: ['тимлид', 'backend', 'архитектура', 'статистика', 'Аудиовызов'],
+  },
+  {
+    name: 'Tatsiana Rusak',
+    description:
+      '"Если ничего не получится, то в результате недели обучения у меня просто образуется несколько новых нейронных связей..." Так я думала в начала Stage-0. Но я уже полгода на этом замысловатом пути. И связей этих образовалось - вооооот столько!',
+    slogan: 'Лучшее время для перемен - сегодня.',
+    img: './assets/team/tanya.eps',
+    points: ['дизайн', 'учебник', 'о команде'],
+  },
+  {
+    name: 'Vladislav Fomenko',
+    description:
+      'Тут можно несколько слов о себе. О том, как докатился до этого. Какие планы на будущее.',
+    slogan: 'Девиз по жизни',
+    img: './assets/team/vlad.eps',
+    points: ['авторизация', 'главная', 'Спринт', 'адский reviewer'],
+  },
+];
+
 export {
   baseUrl,
   signUpButtonText,
@@ -76,4 +103,5 @@ export {
   iconSprintSrc,
   iconAudioGameSrc,
   iconExtraGameSrc,
+  team,
 };

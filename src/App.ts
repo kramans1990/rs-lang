@@ -1,7 +1,8 @@
 /* eslint-disable import/no-cycle */
-import MainPageController from './pages/main-page/main-page-controler';
+import MainPageController from './pages/main-page/main-page-controller';
 import ApplicationContoller from './pages/application-controller';
 import AudioController from './pages/audio-call-page/audio-call-controller';
+import TeamController from './pages/team-page/team-controller';
 import AuthController from './pages/auth-page/auth-controller';
 import RegistrationController from './pages/registration-page/registration-controller';
 import BookController from './pages/book-page/book-controller';
@@ -99,6 +100,14 @@ class App {
     App.pageInfo = { pageName: 'bookPage' };
   }
 
+  static renderTeamPage() {
+    const controller: ApplicationContoller = new TeamController();
+    App.setController(controller);
+    const mainButton = document.querySelector('.team-page-link') as HTMLElement;
+    App.changeActiveClassForNavItemByElement(mainButton);
+    App.pageInfo = { pageName: 'teamPage' };
+  }
+
   static renderAuthPage(): void {
     const controller: ApplicationContoller = new AuthController();
     App.setController(controller);
@@ -121,6 +130,7 @@ class App {
     mainWrapper.style.backgroundColor = 'transparent';
   }
 
+  // eslint-disable-next-line max-lines-per-function
   addEventListeners() {
     window.addEventListener('load', (): void => {
       if (getDataFromLocalStorage('pageInfo')) {
@@ -135,6 +145,9 @@ class App {
             break;
           case 'authPage':
             App.renderAuthPage();
+            break;
+          case 'teamPage':
+            App.renderTeamPage();
             break;
           default:
             App.renderMainPage();
@@ -153,7 +166,7 @@ class App {
     // App.renderMainPage();
     document.querySelector('.main-page-link')?.addEventListener('click', App.renderMainPage);
     document.querySelector('.book-page-link')?.addEventListener('click', App.renderBookPage);
-
+    document.querySelector('.team-page-link')?.addEventListener('click', App.renderTeamPage);
     document.querySelector('.sign-in-page-link')?.addEventListener('click', App.renderAuthPage);
     //   document.querySelector('.words-page-link')?.addEventListener('click', (): void => {
     //     this.page = new WordsPage();

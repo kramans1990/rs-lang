@@ -1,15 +1,30 @@
+/* eslint-disable import/no-cycle */
 import { Word } from '../../types/Word';
+import UserWord from '../../types/userword';
+import Statistic from '../../types/Statistic';
 import {
   baseUrl,
   doneButtonText,
-  doneButtonTextOpposite,
   hardButtonText,
-  hardButtonTextOpposite,
+  progressForDoneWord,
+  progressForNoDoneWord,
+  numberOfCardsPerPage,
 } from '../../utils/constants';
-// eslint-disable-next-line import/no-cycle
+import {
+  saveDataToLocalStorage,
+  // getDataFromLocalStorage,
+  setBackgroundForBookPage,
+  getAggregatedNumberFromLS,
+} from '../../functions/functions';
+
+/* eslint-disable import/no-cycle */
+import Api from '../../Api';
 import App from '../../App';
+// import BookController from './book-controller';
 
 class CardView {
+  api: Api;
+
   view: HTMLDivElement;
 
   baseUrl: string;
@@ -18,35 +33,53 @@ class CardView {
 
   static isAuthUser: boolean;
 
-  constructor(wordInfo: Word) {
+  userWords: UserWord[];
+
+  aggregatedNumber: number | 0;
+
+  constructor(wordInfo: Pick<Word, keyof Word>, userWords: UserWord[]) {
+    this.api = new Api();
     this.baseUrl = baseUrl;
     this.view = document.createElement('div');
     this.view.classList.add('card');
-    this.view.id = wordInfo.id;
-    this.loadingProgress = 20;
-
+    this.view.id = wordInfo._id || wordInfo.id;
+    if (userWords) {
+      this.userWords = userWords;
+    }
     this.createCard(wordInfo);
   }
 
-  set loadingStatus(loading: number) {
-    this.loadingProgress = loading;
-    this.updateProgressBar(this.loadingProgress);
-  }
-
-  createCard(wordInfo: Word) {
+  async createCard(wordInfo: Word, userWordInfo?: UserWord) {
     const wordImg = document.createElement('img');
     wordImg.setAttribute('src', `${this.baseUrl}/${wordInfo.image}`);
     wordImg.setAttribute('alt', 'card photo');
     wordImg.classList.add('card__img');
     const statFrame = document.createElement('div');
     statFrame.classList.add('card__stat');
-    statFrame.innerHTML = '<span>3</span> | 17';
+
+    let userWord;
+    if (userWordInfo) {
+      userWord = userWordInfo;
+    } else {
+      userWord = this.getOneUserWord(this.userWords);
+      if (userWord) {
+        statFrame.innerHTML = `<span>${userWord.optional.successfulAttempts}</span> | ${userWord.optional.unsuccessfulAttempts}`;
+        if (userWord.difficulty === 'hard' && userWord.optional.progress !== 100) {
+          this.view.classList.add('hard');
+        }
+        if (userWord.optional.progress === 100) {
+          this.view.classList.add('done');
+        }
+      } else {
+        statFrame.innerHTML = '<span>0</span> | 0';
+      }
+    }
 
     const cardText = document.createElement('div');
     cardText.classList.add('card__text');
     const wordBlock = this.createWordBlock(wordInfo);
     const cardButtons = this.createCardButtons();
-    const progressBar = this.createWordProgressBar();
+    const progressBar = await this.createWordProgressBar();
 
     if (!App.user) {
       progressBar.style.display = 'none';
@@ -81,19 +114,20 @@ class CardView {
 
   /* eslint-disable class-methods-use-this */
 
-  createWordProgressBar() {
+  async createWordProgressBar() {
     const progressBar = document.createElement('div');
-    const innerdiv = document.createElement('div');
-    innerdiv.className = 'progress-loading';
     progressBar.className = 'card__progress-bar';
     progressBar.id = 'card__progress-bar';
+    const innerdiv = document.createElement('div');
+    innerdiv.className = 'progress-loading';
+
+    const userWord = this.getOneUserWord(this.userWords);
+    if (userWord) {
+      innerdiv.style.width = `${userWord.optional.progress}%`;
+    }
+
     progressBar.appendChild(innerdiv);
     return progressBar;
-  }
-
-  updateProgressBar(loading: number) {
-    const div = this.view.querySelector('.progress-loading') as HTMLDivElement;
-    div.style.width = `${loading}%`;
   }
 
   /* eslint-disable class-methods-use-this */
@@ -104,59 +138,152 @@ class CardView {
     const hardButton = document.createElement('button');
     hardButton.classList.add('btn', 'card__btn', 'hard__btn');
     hardButton.innerText = hardButtonText;
-    hardButton.addEventListener('click', this.hardBtnHandler);
+    hardButton.addEventListener('click', (e) => {
+      this.hardBtnHandler(e);
+    });
     const doneButton = document.createElement('button');
     doneButton.classList.add('btn', 'card__btn', 'done__btn');
     doneButton.innerText = doneButtonText;
-    doneButton.addEventListener('click', this.doneBtnHandler);
+    doneButton.addEventListener('click', (e) => {
+      this.doneBtnHandler(e);
+    });
     cardButtons.append(hardButton, doneButton);
     return cardButtons;
   }
 
-  hardBtnHandler(e?: Event) {
+  // eslint-disable-next-line max-lines-per-function
+  async hardBtnHandler(e?: Event) {
     if (e) {
       const card = (e.target as HTMLDivElement).closest('.card');
-      const hardButton = e.target as HTMLDivElement;
-      const doneButton = hardButton.nextSibling as HTMLDivElement;
+      const cardId = card?.id as string;
+      const pageElement = document.querySelector('.pagination-element.active');
+      let aggregatedNumber = getAggregatedNumberFromLS();
 
-      switch (hardButton.textContent?.toLowerCase()) {
-        case 'сложное':
+      if (card?.classList.contains('hard')) {
+        aggregatedNumber -= 1;
+        card?.classList.remove('hard');
+        this.updateUserWordInfo(cardId, 'no-hard', progressForNoDoneWord);
+      } else if (card?.classList.contains('done')) {
+        card?.classList.remove('done');
+        card?.classList.add('hard');
+        this.updateProgressBar(progressForNoDoneWord);
+        this.updateUserWordInfo(cardId, 'hard', progressForNoDoneWord);
+      } else {
+        aggregatedNumber += 1;
+        card?.classList.add('hard');
+        this.updateUserWordInfo(cardId, 'hard', progressForNoDoneWord);
+      }
+
+      if (aggregatedNumber === numberOfCardsPerPage) {
+        pageElement?.classList.add('done');
+      } else {
+        pageElement?.classList.remove('done');
+      }
+
+      saveDataToLocalStorage('aggregatedNumber', JSON.stringify(aggregatedNumber));
+      setBackgroundForBookPage(aggregatedNumber);
+    }
+  }
+
+  async doneBtnHandler(e?: Event) {
+    if (e) {
+      if (App.user) {
+        const card = (e.target as HTMLDivElement).closest('.card');
+        const cardId = card?.id as string;
+        const pageElement = document.querySelector('.pagination-element.active');
+        let aggregatedNumber = getAggregatedNumberFromLS();
+
+        if (card?.classList.contains('done')) {
+          aggregatedNumber -= 1;
           card?.classList.remove('done');
-          card?.classList.add('hard');
-          hardButton.innerText = hardButtonTextOpposite;
-          doneButton.innerText = doneButtonText;
-          break;
-        case 'несложное':
+          this.updateProgressBar(progressForNoDoneWord);
+          this.updateUserWordInfo(cardId, 'no-hard', progressForNoDoneWord);
+        } else if (card?.classList.contains('hard')) {
           card?.classList.remove('hard');
-          hardButton.innerText = hardButtonText;
-          doneButton.innerText = doneButtonText;
-          break;
-        default:
-          break;
+          card?.classList.add('done');
+          this.updateUserWordInfo(cardId, 'no-hard', progressForDoneWord);
+          this.updateProgressBar(progressForDoneWord);
+        } else {
+          aggregatedNumber += 1;
+          card?.classList.add('done');
+          this.updateProgressBar(progressForDoneWord);
+          this.updateUserWordInfo(cardId, 'no-hard', progressForDoneWord);
+        }
+
+        if (aggregatedNumber === numberOfCardsPerPage) {
+          pageElement?.classList.add('done');
+        } else {
+          pageElement?.classList.remove('done');
+        }
+
+        saveDataToLocalStorage('aggregatedNumber', JSON.stringify(aggregatedNumber));
+        setBackgroundForBookPage(aggregatedNumber);
       }
     }
   }
 
-  doneBtnHandler(e?: Event) {
-    if (e) {
-      const card = (e.target as HTMLDivElement).closest('.card');
-      const doneButton = e.target as HTMLDivElement;
-      const hardButton = doneButton.previousSibling as HTMLDivElement;
+  updateProgressBar(progress: number) {
+    const div = this.view.querySelector('.progress-loading') as HTMLDivElement;
+    div.style.width = `${progress}%`;
+  }
 
-      switch (doneButton.textContent?.toLowerCase()) {
-        case 'изучено':
-          card?.classList.remove('hard');
-          card?.classList.add('done');
-          doneButton.innerText = doneButtonTextOpposite;
-          hardButton.innerText = hardButtonText;
-          break;
-        case 'поучить':
-          card?.classList.remove('done');
-          doneButton.innerText = doneButtonText;
-          hardButton.innerText = hardButtonText;
-          break;
-        default:
-          break;
+  // eslint-disable-next-line max-lines-per-function
+  async updateUserWordInfo(cardId: string, newDifficulty: string, newProgress: number) {
+    if (App.user?.userId) {
+      const usersWords: Array<UserWord> = await this.api.getUserWords(
+        App.user.userId,
+        App.user.token,
+      );
+      const searchWordsArray = usersWords.filter((item) => item.wordId === cardId);
+      const word = await this.api.getOneWord(cardId);
+
+      if (searchWordsArray.length === 0) {
+        const progress = newProgress;
+        const difficulty = newDifficulty;
+        const successfulAttempts = 0;
+        const unsuccessfulAttempts = 0;
+        const userWord: UserWord = new UserWord();
+        let wasLearned;
+
+        if (progress === 100) {
+          wasLearned = true;
+        } else {
+          wasLearned = false;
+        }
+
+        userWord.word = word;
+        userWord.difficulty = difficulty;
+        userWord.optional = {
+          progress,
+          successfulAttempts,
+          unsuccessfulAttempts,
+          wasLearned,
+        };
+        this.api.createUserWord(App.user.userId, App.user.token, userWord);
+
+        const stat = new Statistic();
+        stat.addLearnedWordFromBook();
+      } else {
+        const searchWord = searchWordsArray[0];
+        const progress = newProgress;
+        const difficulty = newDifficulty;
+        const { successfulAttempts, unsuccessfulAttempts } = searchWord.optional;
+        let { wasLearned } = searchWord.optional;
+
+        if (progress === 100) {
+          wasLearned = true;
+        }
+
+        const userWord: UserWord = new UserWord();
+        userWord.word = word;
+        userWord.difficulty = difficulty;
+        userWord.optional = {
+          progress,
+          successfulAttempts,
+          unsuccessfulAttempts,
+          wasLearned,
+        };
+        this.api.updateUserWord(App.user.userId, App.user.token, userWord);
       }
     }
   }
@@ -199,6 +326,10 @@ class CardView {
     audioExample.setAttribute('src', `${this.baseUrl}/${wordInfo.audioExample}`);
     audioIcon.append(audio, audioMeaning, audioExample);
     return audioIcon;
+  }
+
+  getOneUserWord(userWords: UserWord[]) {
+    return userWords.find((item) => item.wordId === this.view.id) as UserWord;
   }
 }
 

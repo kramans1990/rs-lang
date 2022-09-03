@@ -12,6 +12,7 @@
 .sign-in-button,
 .sign-up-button {
   font-size: 21px;
+  color: var(--color-main);
 }
 
 .auth-title,
@@ -35,6 +36,7 @@
   width: 350px;
   height: 50px;
   border: 3px solid #c7bcab;
+  padding: 5px 10px;
 }
 
 .name-input:focus-visible,

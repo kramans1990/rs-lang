@@ -58,7 +58,6 @@ const incorrectResultsText = 'Неверные ответы:';
 const resultsText = 'Результаты';
 
 const sprintTime = 60;
-const startPointsPerCorrectAnswer = 10;
 const correctText = 'Верно';
 const incorrectText = 'Неверно';
 const arrowRight = '→';
@@ -100,7 +99,6 @@ export {
   iconAudioGameSrc,
   iconExtraGameSrc,
   sprintTime,
-  startPointsPerCorrectAnswer,
   correctText,
   incorrectText,
   correctResultsText,

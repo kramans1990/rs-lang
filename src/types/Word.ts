@@ -1,5 +1,6 @@
 export type Word = {
   id: string;
+  _id?: string;
   group: number;
   page: number;
   word: string;
@@ -13,4 +14,11 @@ export type Word = {
   wordTranslate: string;
   textMeaningTranslate: string;
   textExampleTranslate: string;
+};
+
+export type SprintWord = {
+  word: string;
+  correctTranslation: string;
+  currentTranslation: string;
+  audio: string;
 };

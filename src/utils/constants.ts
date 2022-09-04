@@ -19,9 +19,11 @@ const invalidPassword = 'Password should contain digits, letters or both';
 
 /* prettier-ignore */
 
-const mainPageText = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco.';
+const mainPageText1 = 'Перед вами приложение для эффективного изучения иностранных слов в игровой форме. Тратя всего несколько минут в день, вы обогатите словарный запас и приблизитесь к своей цели наконец-то выучить английский.';
 
 /* prettier-ignore */
+
+const mainPageText2 = 'Дополнительно приложение позволяет прокачать навык аудирования и понять, как применять выученные слова и фразы в жизни. Игры превратят изучение языка в удовольствие и позволят с лёгкостью запоминать новые слова. Начни изучать английский прямо сейчас!';
 
 const rsLang = 'RS Lang';
 const learnButtonText = 'Учиться';
@@ -29,18 +31,38 @@ const playButtonText = 'Играть';
 
 const numberOfLevels = 7; // 6 + 1(все сложные слова)
 const numberOfPagesInLevel = 30;
+const numberOfCardsPerPage = 20;
 const btnHardText = 'сложные';
 const btnLevelText = 'уровень ';
-const sprintGameName = 'Спринт';
 const audioGameName = 'Аудиовызов';
+const sprintGameName = 'Спринт';
 const extraGameName = 'Экстра';
 const hardButtonText = 'Сложное';
-const hardButtonTextOpposite = 'несложное';
 const doneButtonText = 'Изучено';
-const doneButtonTextOpposite = 'поучить';
 const iconSprintSrc = './assets/svg/icon_sprint.svg';
 const iconAudioGameSrc = './assets/svg/icon_audio_game.svg';
 const iconExtraGameSrc = './assets/svg/icon_audio_game.svg';
+const progressForDoneWord = 100;
+const progressForNoDoneWord = 0;
+
+const backButtonText = 'Назад';
+const levelText = 'Уровень';
+const levelSelectLabelText = 'Выберите уровень сложности';
+const newAudioGameButtonText = 'Новая игра Аудиовызов (N)';
+const newSprintGameButtonText = 'Новая игра Спринт (N)';
+const skipText = 'Пропустить (Space)';
+const nextText = 'Далее (Space)';
+
+const correctResultsText = 'Верные ответы';
+const incorrectResultsText = 'Неверные ответы:';
+const resultsText = 'Результаты';
+
+const sprintTime = 60;
+const correctText = 'Верно';
+const incorrectText = 'Неверно';
+const arrowRight = '→';
+const arrowLeft = '←';
+// const
 
 const team = [
   {
@@ -84,7 +106,8 @@ export {
   name,
   upperSignUpButtonText,
   upperSignInButtonText,
-  mainPageText,
+  mainPageText1,
+  mainPageText2,
   rsLang,
   learnButtonText,
   playButtonText,
@@ -96,12 +119,28 @@ export {
   extraGameName,
   logOutText,
   hardButtonText,
-  hardButtonTextOpposite,
   doneButtonText,
-  doneButtonTextOpposite,
   numberOfPagesInLevel,
+  numberOfCardsPerPage,
   iconSprintSrc,
   iconAudioGameSrc,
   iconExtraGameSrc,
   team,
+  sprintTime,
+  correctText,
+  incorrectText,
+  correctResultsText,
+  incorrectResultsText,
+  resultsText,
+  backButtonText,
+  levelText,
+  levelSelectLabelText,
+  newAudioGameButtonText,
+  newSprintGameButtonText,
+  arrowRight,
+  arrowLeft,
+  skipText,
+  nextText,
+  progressForDoneWord,
+  progressForNoDoneWord,
 };

@@ -1,10 +1,12 @@
 /* eslint-disable import/no-cycle */
 import AudioModel from './audio-model';
 import AudioView from './audio-view';
-import Api from '../../Api';
-import Word from './Word';
-import ApplicationContoller from '../application-controller';
-import App from '../../App';
+import Api from '../../../Api';
+import { Word } from '../../../types/Word';
+import ApplicationContoller from '../../application-controller';
+import App from '../../../App';
+import UserWord from '../../../types/userword';
+import Statistic from '../../../types/Statistic';
 
 class AudioController extends ApplicationContoller {
   model: AudioModel;
@@ -15,9 +17,15 @@ class AudioController extends ApplicationContoller {
 
   wordsPerPage = 20;
 
+  countQuestions = 6;
+
   initialbarProgress = 3;
 
   pagesPerGame = 3;
+
+  stat: Statistic = new Statistic();
+
+  gameName = 'audiocall';
 
   constructor(words?: Array<Word>) {
     super();
@@ -29,7 +37,7 @@ class AudioController extends ApplicationContoller {
       this.addKeyBoardListener();
     }
     if (words) {
-      /// переход со сттраницы учебника
+      this.model.createQuiz(words, this.countQuestions);
     }
   }
 
@@ -44,12 +52,18 @@ class AudioController extends ApplicationContoller {
         }
       });
     }
-    this.pageView.view.addEventListener('click', (e) => {
+    this.pageView.view.addEventListener('click', async (e) => {
       const target = e.target as HTMLElement;
-      // if (target.className === 'game-button option') {
-      //   this.model.updateGameProgress();//обновление статистики
-      // }
       if (target.id === 'next-question-button') {
+        const test = this.model.audioTests[this.model.currentQuestion];
+        const userWord: UserWord = new UserWord();
+        const updateWordsResult: {
+          isNew: boolean;
+          isCorrect: boolean;
+          isLearned: boolean;
+        } = await userWord.UpdateUserWords(test.correctAnswer, test.isCorrect);
+        this.stat.updateStatistic(updateWordsResult, this.gameName);
+
         this.model.nextQuestion();
       }
       if (target.className === 'audio-icon') {
@@ -101,7 +115,7 @@ class AudioController extends ApplicationContoller {
       const value: Array<Word> = await this.getwords(group, i);
       words = words.concat(value);
     }
-    this.model.createQuiz(words, 20);
+    this.model.createQuiz(words, this.countQuestions);
   }
 
   /* eslint-disable @typescript-eslint/indent */

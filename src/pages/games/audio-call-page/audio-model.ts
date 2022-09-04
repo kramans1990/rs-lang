@@ -1,6 +1,7 @@
+/* eslint-disable import/no-cycle */
 import AudioQuestion from './audio-question-component';
 import AudioView from './audio-view';
-import Word from './Word';
+import { Word } from '../../../types/Word';
 
 class AudioModel {
   pageView: AudioView;
@@ -102,7 +103,15 @@ class AudioModel {
       const count = words.length < countQuestions ? words.length : countQuestions;
       let id = 0;
       while (tests.length < count) {
-        const correctAnswer = words[Math.floor(Math.random() * words.length)];
+        let correctAnswer = words[Math.floor(Math.random() * words.length)];
+        let find: Array<AudioQuestion> = tests.filter(
+          (p) => p.correctAnswer.id === correctAnswer.id,
+        );
+        /* eslint-disable  @typescript-eslint/no-loop-func */
+        while (find.length > 0) {
+          correctAnswer = words[Math.floor(Math.random() * words.length)];
+          find = tests.filter((p) => p.correctAnswer.id === correctAnswer.id);
+        }
         let options: Array<Word> = new Array<Word>();
         options.push(correctAnswer);
         while (options.length < 6) {
@@ -134,9 +143,5 @@ class AudioModel {
     }
     audioTest.isAnswered = 'Yes';
   }
-
-  // updateGameProgress() {
-  //   // обновление статистики
-  // }
 }
 export default AudioModel;

@@ -1,11 +1,23 @@
-import './audio.css';
-import './modal.css';
-import Word from './Word';
-import AudioQuestion from './audio-question-component';
-import Api from '../../Api';
-import * as modalResult from './modal-content';
+/* eslint-disable import/no-cycle */
+import Api from '../../../Api';
+import {
+  incorrectResultsText,
+  correctResultsText,
+  levelText,
+  newSprintGameButtonText,
+  levelSelectLabelText,
+  sprintTime,
+} from '../../../utils/constants';
+import ApplicationView from '../../application-view';
+import GameCommonView from '../game-common-view';
+import SprintQuestion from './sprint-question-component';
+import './sprint.css';
 
-class AudioView {
+class SprintView extends ApplicationView {
+  isSoundOn: boolean;
+
+  timer: HTMLDivElement;
+
   view: HTMLDivElement;
 
   focusIndex = 0;
@@ -13,33 +25,33 @@ class AudioView {
   api: Api = new Api();
 
   constructor() {
+    super();
     this.renderView();
   }
 
+  // view
   renderView() {
     const div = document.createElement('div');
     div.className = 'audio-call-container';
     const buttonNewGame = document.createElement('button');
-    buttonNewGame.innerText = 'Новая игра (N)';
+    buttonNewGame.innerText = newSprintGameButtonText;
     buttonNewGame.id = 'new-game';
     buttonNewGame.className = 'new-game-button';
     const divButtonsContainer = document.createElement('div');
     divButtonsContainer.className = 'buttons-container';
-    div.appendChild(buttonNewGame);
     for (let i = 1; i < 8; i += 1) {
       const button = document.createElement('button');
       button.className = `game-button l${i}`;
       button.value = (i - 1).toString();
-      button.innerText = `Уровень ${i}`;
+      button.innerText = `${levelText} ${i}`;
       divButtonsContainer.appendChild(button);
     }
     const levelSelectLabel = document.createElement('label');
-    levelSelectLabel.innerText = 'Выберите уровень сложности';
+    levelSelectLabel.innerText = levelSelectLabelText;
     const divDifficulty = document.createElement('div');
     divDifficulty.className = 'dif-container hidden';
     divDifficulty.append(levelSelectLabel, divButtonsContainer);
     const progressBar = document.createElement('div');
-    // progressBar.innerHTML = '<div id="loading"  class="loading"></div>';
     const innerdiv = document.createElement('div');
     innerdiv.className = 'loading';
     progressBar.className = 'game-progress-bar hidden';
@@ -47,119 +59,154 @@ class AudioView {
     progressBar.appendChild(innerdiv);
     const gameContainer = document.createElement('div');
     const statusContainer = document.createElement('div');
-    const modal = document.createElement('div');
+    const modal = GameCommonView.createModalContent();
     modal.className = 'game-result hidden';
-    modal.innerHTML = modalResult.modalHtml;
-
     gameContainer.className = 'game-container';
     gameContainer.append(divDifficulty, progressBar, statusContainer);
-    // gameContainer.appendChild(progressBar);
-    // gameContainer.appendChild(statusContainer);
-    div.appendChild(gameContainer);
-    div.appendChild(modal);
+    this.timer = GameCommonView.createTimer();
+    div.append(buttonNewGame, this.timer, gameContainer, modal);
     this.view = div;
   }
 
-  showGameResult(audioTests: Array<AudioQuestion>) {
-    this.view.querySelector('.game-result')?.classList.remove('hidden');
+  // view
+  showGameResult(audioTests: Array<SprintQuestion>) {
+    this.showResults();
     const correctdiv = document.querySelector('.answer-container-correct') as HTMLDivElement;
     const wrongDiv = document.querySelector('.answer-container-wrong') as HTMLDivElement;
     correctdiv.innerHTML = '';
     wrongDiv.innerHTML = '';
-    const corrects = audioTests.filter((p) => p.isCorrect);
-    const wrongs = audioTests.filter((p) => !p.isCorrect);
+    const corrects = audioTests.filter(
+      (p: SprintQuestion): boolean => p.isCorrect && !!p.isAnswered,
+    );
+    const wrongs = audioTests.filter(
+      (p: SprintQuestion): boolean => !p.isCorrect && !!p.isAnswered,
+    );
     for (let i = 0; i < wrongs.length; i += 1) {
       const divResult = document.createElement('div');
-      const divaudioresult = document.createElement('div');
-      divaudioresult.className = 'audio-icon';
-      const audioresult: HTMLAudioElement = document.createElement('audio');
-      audioresult.src = `${this.api.baseUrl}/${wrongs[i].correctAnswer.audio}`;
-      divaudioresult.appendChild(audioresult);
+      const audioResultBox = document.createElement('div');
+      audioResultBox.className = 'audio-icon';
+      const audioResult: HTMLAudioElement = document.createElement('audio');
+      audioResult.src = `${this.api.baseUrl}/${wrongs[i].correctAnswer.audio}`;
+      audioResultBox.appendChild(audioResult);
       const word: HTMLSpanElement = document.createElement('span');
       const wordTranslation: HTMLSpanElement = document.createElement('span');
       const dash: HTMLSpanElement = document.createElement('span');
       dash.innerText = '—';
       word.innerText = wrongs[i].correctAnswer.word;
       wordTranslation.innerText = wrongs[i].correctAnswer.wordTranslate;
-      divResult.append(divaudioresult, word, dash, wordTranslation);
+      divResult.append(audioResultBox, word, dash, wordTranslation);
       wrongDiv.appendChild(divResult);
     }
     for (let i = 0; i < corrects.length; i += 1) {
       const divResult = document.createElement('div');
-      const divaudioresult = document.createElement('div');
-      divaudioresult.className = 'audio-icon';
-      const audioresult: HTMLAudioElement = document.createElement('audio');
-      audioresult.src = `${this.api.baseUrl}/${corrects[i].correctAnswer.audio}`;
-      divaudioresult.appendChild(audioresult);
+      const audioResultBox = document.createElement('div');
+      audioResultBox.className = 'audio-icon';
+      const audioResult: HTMLAudioElement = document.createElement('audio');
+      audioResult.src = `${this.api.baseUrl}/${corrects[i].correctAnswer.audio}`;
+      audioResultBox.appendChild(audioResult);
       const word: HTMLSpanElement = document.createElement('span');
       const wordTranslation: HTMLSpanElement = document.createElement('span');
       const dash: HTMLSpanElement = document.createElement('span');
       dash.innerText = '—';
       word.innerText = corrects[i].correctAnswer.word;
       wordTranslation.innerText = corrects[i].correctAnswer.wordTranslate;
-      divResult.append(divaudioresult, word, dash, wordTranslation);
+      divResult.append(audioResultBox, word, dash, wordTranslation);
       correctdiv.appendChild(divResult);
     }
 
     (
-      this.view.querySelector('.game-span-wrong') as HTMLSpanElement
-    ).innerText = `Неверные ответы (${wrongs.length}) : `;
-    (
       this.view.querySelector('.game-span-correct') as HTMLSpanElement
-    ).innerText = `Верные ответы (${corrects.length}) :`;
+    ).innerText = `${correctResultsText} (${corrects.length}) :`;
+    (
+      this.view.querySelector('.game-span-wrong') as HTMLSpanElement
+    ).innerText = `${incorrectResultsText} (${wrongs.length}) : `;
   }
 
   // renderResultWindow(): HTMLDivElement {
 
   // }
-
+  // view
   showLevelSelection() {
     (this.view.querySelector('.dif-container') as HTMLDivElement).classList.remove('hidden');
   }
 
+  // view
   showQuestion(audioTestView: HTMLDivElement): void {
-    const qustionContainer = this.view.querySelector('.div-quiz-container');
-
-    if (qustionContainer) {
-      qustionContainer.innerHTML = audioTestView.innerHTML;
+    const questionContainer = this.view.querySelector('.div-quiz-container');
+    if (questionContainer) {
+      questionContainer.innerHTML = audioTestView.innerHTML;
     } else {
       this.view.appendChild(audioTestView);
     }
     const divPlay = document.querySelector('.audio-icon');
-
     const audio = divPlay?.firstChild as HTMLAudioElement;
-
     audio.play();
   }
 
+  showTimer() {
+    this.timer.innerText = `${sprintTime}`;
+    this.timer.classList.remove('hidden');
+    this.timer.classList.remove('hidden');
+    let gameTime = 0;
+    let isResultsShown = false;
+    window.setInterval((): void => {
+      if (gameTime <= sprintTime) {
+        this.timer.innerText = `${sprintTime - gameTime}`;
+        gameTime += 1;
+      }
+      if (this.timer.innerText === '0' && !isResultsShown) {
+        const nextQuestionButton = this.view.querySelector(
+          '.next-question-button',
+        ) as HTMLButtonElement;
+        nextQuestionButton.click();
+        this.hideTimer();
+        isResultsShown = true;
+      }
+    }, 1000);
+  }
+
+  hideTimer() {
+    this.timer.classList.add('hidden');
+  }
+
+  // view
   showDifficultySelection(): void {
     (this.view.querySelector('.dif-container') as HTMLDivElement)?.classList.remove('hidden');
   }
 
+  // view
   hideDifficultySelection() {
     (this.view.querySelector('.dif-container') as HTMLDivElement)?.classList.add('hidden');
   }
 
+  // view
   showGame() {
+    this.showTimer();
     (this.view.querySelector('.div-quiz-container') as HTMLDivElement)?.classList.remove('hidden');
   }
 
+  // view
   hideGame() {
+    this.timer.classList.add('hidden');
     (this.view.querySelector('.div-quiz-container') as HTMLDivElement)?.classList.add('hidden');
   }
 
+  // view
   hideProgressBar() {
     (this.view.querySelector('.game-progress-bar') as HTMLDivElement)?.classList.add('hidden');
   }
 
+  // view
   showProgressBar() {
     (this.view.querySelector('.game-progress-bar') as HTMLDivElement)?.classList.remove('hidden');
   }
 
+  // view
   showResults() {
     (this.view.querySelector('.game-result') as HTMLDivElement)?.classList.remove('hidden');
   }
 
+  // view
   hideResults() {
     (this.view.querySelector('.game-result') as HTMLDivElement)?.classList.add('hidden');
 
@@ -169,12 +216,14 @@ class AudioView {
     wrongDiv.innerHTML = '';
   }
 
+  // view
   updateProgressBar(loading: number) {
     const div = this.view.querySelector('.loading') as HTMLDivElement;
     div.style.width = `${loading}%`;
   }
 
-  renderAnswerResult(result: boolean, answer: string, correctAnswer: Word) {
+  // view
+  renderAnswerResult(result: boolean, answer: string) {
     const options = this.view.querySelectorAll('.option');
     if (result) {
       const audio = new Audio('../../assets/answer-correct.wav');
@@ -186,7 +235,7 @@ class AudioView {
     for (let i = 0; i < options.length; i += 1) {
       const button = options[i] as HTMLButtonElement;
       const text = (button.querySelector('.span-value') as HTMLSpanElement).innerText;
-      if (text === correctAnswer.wordTranslate) {
+      if (text === answer) {
         button.classList.add('correct');
       }
       if (!result) {
@@ -195,10 +244,12 @@ class AudioView {
         }
       }
     }
-    const nextButton = this.view.querySelector('#next-question-button') as HTMLButtonElement;
-    nextButton.innerText = 'Далее (Space)';
+    window.setTimeout((): void => {
+      (this.view.querySelector('.next-question-button') as HTMLButtonElement).click();
+    }, 200);
   }
 
+  // view
   handleNavKeys(pressedKey: string) {
     this.handleKeysLevel(pressedKey);
     const buttons = this.view.querySelectorAll('button');
@@ -210,7 +261,6 @@ class AudioView {
         (buttons[0] as HTMLButtonElement).focus();
       } else {
         this.focusIndex = this.focusIndex === i - 1 ? this.focusIndex : (this.focusIndex += 1);
-
         const dif = this.view.querySelector('.game-container')?.firstChild as HTMLDivElement;
         if (dif?.className === 'dif-container hidden') {
           while (buttons[this.focusIndex - 1].className.includes('game-button l')) {
@@ -247,9 +297,9 @@ class AudioView {
     }
   }
 
+  // ctrlr
   handleKeysLevel(pressedKey: string) {
     const key = pressedKey.toLowerCase();
-
     if (key === 'n') {
       const newGame = this.view.querySelector('.new-game-button') as HTMLButtonElement;
       newGame.click();
@@ -265,9 +315,9 @@ class AudioView {
     document.body.focus();
   }
 
+  // ctrlr
   handleKeysOption(pressedKey: string) {
     const key = pressedKey.toLowerCase();
-
     if (key === 'n') {
       const newGame = this.view.querySelector('.new-game-button') as HTMLButtonElement;
       newGame.click();
@@ -276,18 +326,24 @@ class AudioView {
       const playGame = this.view.querySelector('.play-again-button') as HTMLButtonElement;
       playGame.click();
     }
-    if (Number(key) > 0 && Number(key) < 7) {
-      const diff = this.view.querySelectorAll('.option')[Number(key) - 1] as HTMLButtonElement;
+    if (key === 'arrowleft') {
+      const diff = this.view.querySelectorAll('.option')[0] as HTMLButtonElement;
       diff.click();
     }
-    if (key === ' ') {
-      (this.view.querySelector('.next-question-button') as HTMLButtonElement).click();
+    if (key === 'arrowright') {
+      const diff = this.view.querySelectorAll('.option')[1] as HTMLButtonElement;
+      diff.click();
     }
     document.body.focus();
   }
 
+  // ctrlr
   handlePressKey(key: string) {
-    if (['n', '1', '2', '3', '4', '5', '6', '7', 'a', ' '].find((p) => p === key)) {
+    if (
+      ['n', '1', '2', '3', '4', '5', '6', '7', 'a', 'ArrowLeft', 'ArrowRight', ' '].find(
+        (p) => p === key,
+      )
+    ) {
       const dif = this.view.querySelector('.dif-container');
       if (dif?.className === 'dif-container') {
         this.handleKeysLevel(key);
@@ -300,4 +356,45 @@ class AudioView {
     }
   }
 }
-export default AudioView;
+//   constructor() {
+//     super();
+//     this.renderSprintView();
+//     this.isSoundOn = true;
+//   }
+
+//   renderSprintView() {
+//     this.view = document.createElement('div');
+//     this.view.classList.add('sprint');
+//     document.addEventListener('keydown', (e) => console.log(e.key));
+//     const gameBlock = document.createElement('div');
+//     gameBlock.classList.add('sprint-block');
+//     const controlsBlock = document.createElement('div');
+//     controlsBlock.classList.add('sprint-controls-block');
+//     const counter = document.createElement('span');
+//     counter.classList.add('sprint-counter');
+//     const soundButton = document.createElement('button');
+//     soundButton.classList.add('sprint-sound-button');
+//     controlsBlock.append(counter, soundButton);
+//     const wordBlock = document.createElement('div');
+//     wordBlock.classList.add('sprint-word-block');
+
+//     const wordControlsBlock = document.createElement('div');
+//     wordControlsBlock.classList.add('sprint-word-controls-block');
+//     const checkers = document.createElement('div');
+//     checkers.classList.add('sprint-checkers');
+//     [1, 2, 3].forEach((i): void => {
+//       const checker = document.createElement('div');
+//       checker.className = `checker checker-${i}`;
+//       checker.innerText = '✓';
+//       checkers.append(checker);
+//     });
+//     const wordSoundButton = document.createElement('button');
+//     wordSoundButton.classList.add('sprint-word-sound-button');
+//     wordControlsBlock.append(checkers, wordSoundButton);
+//     wordBlock.prepend(wordControlsBlock);
+//     gameBlock.append(controlsBlock, wordBlock);
+//     this.view.append(this.createTimer(), gameBlock);
+//   }
+// }
+
+export default SprintView;

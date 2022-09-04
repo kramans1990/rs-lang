@@ -1,16 +1,25 @@
 .cards_list {
   display: flex;
   flex-wrap: wrap;
-  justify-content: space-between;
+  justify-content: center;
   row-gap: 20px;
+  column-gap: 1%;
+}
+
+@media (max-width: 992px) {
+  .cards_list {
+    justify-content: center;
+    row-gap: 20px;
+    column-gap: 40px;
+  }
 }
 
 .card {
   position: relative;
   width: 285px;
-  height: 510px;
   border: 3px solid var(--color-gray-light);
   border-radius: 30px 0px 0px 0px;
+  background: #ffffff;
   overflow: hidden;
   transition: all 0.3s;
 }
@@ -69,10 +78,10 @@
   height: 27px;
   cursor: pointer;
   background-color: var(--color-gray-light);
-  mask-image: url("../assets/audio.svg");
+  mask-image: url("../assets/svg/audio.svg");
   mask-repeat: no-repeat;
   mask-size: contain;
-  -webkit-mask-image: url("../assets/audio.svg");
+  -webkit-mask-image: url("../assets/svg/audio.svg");
   -webkit-mask-repeat: no-repeat;
   -webkit-mask-size: contain;
   transition: all 0.3s;
@@ -174,7 +183,7 @@
 }
 
 .hard .hard__btn {
-  border: 2px solid var(--color-accent);
+  border: 3px solid var(--color-accent);
   color: var(--color-accent);
 }
 
@@ -197,7 +206,7 @@
 }
 
 .done .done__btn {
-  border: 2px solid var(--color-main);
+  border: 3px solid var(--color-main);
   color: var(--color-main);
 }
 
@@ -217,7 +226,8 @@
 
 .progress-loading {
   height: 100%;
-  width: 25%;
+  width: 0%;
   background-color: var(--color-main);
   border-radius: 4px;
+  transition: all 1.5s;
 }

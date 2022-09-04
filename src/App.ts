@@ -1,7 +1,6 @@
 /* eslint-disable import/no-cycle */
 import MainPageController from './pages/main-page/main-page-controller';
 import ApplicationContoller from './pages/application-controller';
-import AudioController from './pages/audio-call-page/audio-call-controller';
 import TeamController from './pages/team-page/team-controller';
 import AuthController from './pages/auth-page/auth-controller';
 import RegistrationController from './pages/registration-page/registration-controller';
@@ -11,8 +10,16 @@ import {
   getDataFromLocalStorage,
   removeDataFromLocalStorage,
   saveDataToLocalStorage,
+  burgerMenuHandle,
+  clickMenuHandle,
+  setBackgroundForBookPage,
+  getAggregatedNumberFromLS,
 } from './functions/functions';
 import { logOutText, signInButtonText } from './utils/constants';
+import SprintController from './pages/games/sprint-page/sprint-controller';
+import StatController from './pages/stat-page/stat-controller';
+import AudioController from './pages/games/audio-call-page/audio-call-controller';
+import { Word } from './types/Word';
 
 class App {
   static main: HTMLElement | null;
@@ -68,6 +75,9 @@ class App {
     signInButton.addEventListener('click', App.renderAuthPage);
     this.user = undefined;
     removeDataFromLocalStorage('rs-lang-user');
+    removeDataFromLocalStorage('aggregatedNumber');
+    removeDataFromLocalStorage('pageInfo');
+    App.makeMainTransparentAgain();
   }
 
   static changeActiveClassForNavItemByEvent(e: Event): void {
@@ -93,11 +103,30 @@ class App {
 
   static renderBookPage() {
     const controller: ApplicationContoller = new BookController();
-
     App.setController(controller);
     const mainButton = document.querySelector('.book-page-link') as HTMLElement;
     App.changeActiveClassForNavItemByElement(mainButton);
     App.pageInfo = { pageName: 'bookPage' };
+    const aggregatedNumber = getAggregatedNumberFromLS();
+    setBackgroundForBookPage(aggregatedNumber);
+  }
+
+  static renderAudiocallPage(words?: Array<Word>) {
+    const controller: ApplicationContoller = new AudioController(words);
+    App.setController(controller);
+    const mainButton = document.querySelector('.game-page-link') as HTMLElement;
+    App.changeActiveClassForNavItemByElement(mainButton);
+    App.makeMainTransparentAgain();
+    App.pageInfo = { pageName: 'audiocallPage' };
+  }
+
+  static renderSprintPage(words?: Array<Word>) {
+    const controller: ApplicationContoller = new SprintController(words);
+    App.setController(controller);
+    const mainButton = document.querySelector('.game-page-link') as HTMLElement;
+    App.changeActiveClassForNavItemByElement(mainButton);
+    App.makeMainTransparentAgain();
+    App.pageInfo = { pageName: 'sprintPage' };
   }
 
   static renderTeamPage() {
@@ -111,13 +140,19 @@ class App {
   static renderAuthPage(): void {
     const controller: ApplicationContoller = new AuthController();
     App.setController(controller);
-    // if (e) {
-    //   App.changeActiveClassForNavItemByEvent(e);
-    // }
     const mainButton = document.querySelector('.sign-in-page-link') as HTMLElement;
     App.changeActiveClassForNavItemByElement(mainButton);
     App.makeMainTransparentAgain();
     App.pageInfo = { pageName: 'authPage' };
+  }
+
+  static renderStatPage() {
+    const controller: ApplicationContoller = new StatController();
+    App.setController(controller);
+    const mainButton = document.querySelector('.stat-page-link') as HTMLElement;
+    App.changeActiveClassForNavItemByElement(mainButton);
+    App.makeMainTransparentAgain();
+    App.pageInfo = { pageName: 'statPage' };
   }
 
   static renderRegPage(): void {
@@ -127,71 +162,69 @@ class App {
 
   static makeMainTransparentAgain(): void {
     const mainWrapper = document.querySelector('.main_wrapper') as HTMLDivElement;
+    mainWrapper.classList.remove('all-done');
     mainWrapper.style.backgroundColor = 'transparent';
   }
 
   // eslint-disable-next-line max-lines-per-function
   addEventListeners() {
     window.addEventListener('load', (): void => {
-      if (getDataFromLocalStorage('pageInfo')) {
-        const pageInfo = getDataFromLocalStorage('pageInfo') as IPageInfo;
-        const { pageName } = pageInfo;
-        switch (pageName) {
-          case 'mainPage':
-            App.renderMainPage();
-            break;
-          case 'bookPage':
-            App.renderBookPage();
-            break;
-          case 'authPage':
-            App.renderAuthPage();
-            break;
-          case 'teamPage':
-            App.renderTeamPage();
-            break;
-          default:
-            App.renderMainPage();
-            break;
-        }
-      } else {
-        App.renderMainPage();
-      }
       if (getDataFromLocalStorage('rs-lang-user')) {
         const user = getDataFromLocalStorage('rs-lang-user') as ISignIn;
         App.signIn(user);
       }
+      if (getDataFromLocalStorage('pageInfo')) {
+        this.renderPageAfterReload();
+      }
     });
     document.querySelector('.header__logo')?.addEventListener('click', App.renderMainPage);
-
-    // App.renderMainPage();
     document.querySelector('.main-page-link')?.addEventListener('click', App.renderMainPage);
     document.querySelector('.book-page-link')?.addEventListener('click', App.renderBookPage);
     document.querySelector('.team-page-link')?.addEventListener('click', App.renderTeamPage);
+    document
+      .querySelector('.sprint-page-link')
+      ?.addEventListener('click', (): void => App.renderSprintPage());
+    document.querySelector('.book-page-link')?.addEventListener('click', (e: Event): void => {
+      const controller: ApplicationContoller = new BookController();
+      App.setController(controller);
+      App.changeActiveClassForNavItemByEvent(e);
+    });
     document.querySelector('.sign-in-page-link')?.addEventListener('click', App.renderAuthPage);
-    //   document.querySelector('.words-page-link')?.addEventListener('click', (): void => {
-    //     this.page = new WordsPage();
-    //   });
-    //   document.querySelector('.stat-page-link')?.addEventListener('click', (): void => {
-    //     this.page = new StatPage();
-    //   });
+    document.querySelector('.stat-page-link')?.addEventListener('click', App.renderStatPage);
+    document
+      .querySelector('.audio-page-link')
+      ?.addEventListener('click', (): void => App.renderAudiocallPage());
+    document.querySelector('.sign-up-page-link')?.addEventListener('click', App.renderRegPage);
+    document.querySelector('.burger')?.addEventListener('click', burgerMenuHandle);
+    document.querySelector('.nav-list')?.addEventListener('click', clickMenuHandle);
+  }
 
-    document.querySelector('.game-page-link')?.addEventListener('click', (): void => {
-      const controller: ApplicationContoller = new AudioController();
-      App.setController(controller);
-    });
-
-    document.querySelector('.sign-in-page-link')?.addEventListener('click', (): void => {
-      const controller: ApplicationContoller = new AuthController();
-      App.setController(controller);
-    });
-    document.querySelector('.sign-up-page-link')?.addEventListener('click', (): void => {
-      const controller: ApplicationContoller = new RegistrationController();
-      App.setController(controller);
-    });
-
-    //   document.querySelector('.game-page-link')?.addEventListener('click', (): void => {
-    //     this.page = new GamePage();
-    //   });
+  renderPageAfterReload() {
+    const pageInfo = getDataFromLocalStorage('pageInfo') as IPageInfo;
+    const { pageName } = pageInfo;
+    switch (pageName) {
+      case 'mainPage':
+        App.renderMainPage();
+        break;
+      case 'bookPage':
+        App.renderBookPage();
+        break;
+      case 'audiocallPage':
+        App.renderAudiocallPage();
+        break;
+      case 'statPage':
+        App.renderStatPage();
+        break;
+      case 'sprintPage':
+        App.renderSprintPage();
+        break;
+      case 'authPage':
+        App.renderAuthPage();
+        break;
+      default:
+        App.renderMainPage();
+        break;
+    }
   }
 }
 export default App;

@@ -15,3 +15,10 @@ export type Word = {
   textMeaningTranslate: string;
   textExampleTranslate: string;
 };
+
+export type SprintWord = {
+  word: string;
+  correctTranslation: string;
+  currentTranslation: string;
+  audio: string;
+};

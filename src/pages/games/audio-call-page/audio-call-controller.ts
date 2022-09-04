@@ -1,12 +1,12 @@
 /* eslint-disable import/no-cycle */
 import AudioModel from './audio-model';
 import AudioView from './audio-view';
-import Api from '../../Api';
-import { Word } from '../../types/Word';
-import ApplicationContoller from '../application-controller';
-import App from '../../App';
-import UserWord from '../../types/userword';
-import Statistic from '../../types/Statistic';
+import Api from '../../../Api';
+import { Word } from '../../../types/Word';
+import ApplicationContoller from '../../application-controller';
+import App from '../../../App';
+import UserWord from '../../../types/userword';
+import Statistic from '../../../types/Statistic';
 
 class AudioController extends ApplicationContoller {
   model: AudioModel;

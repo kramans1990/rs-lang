@@ -299,6 +299,7 @@ class BookController extends ApplicationContoller {
     const iconSprint = BookPageView.createElementByParams('img', 'game-icon') as HTMLImageElement;
     iconSprint.setAttribute('src', iconSprintSrc);
     sprintGameLink.prepend(iconSprint);
+    sprintGameLink.addEventListener('click', (): void => App.renderSprintPage()); // сюда надо подставитьсписок слов со страницы (Влад)
     const audioGameLink = BookPageView.createElementByParams('div', 'btn') as HTMLDivElement;
     audioGameLink.classList.add('btn_colored');
     audioGameLink.innerText = audioGameName;
@@ -308,7 +309,7 @@ class BookController extends ApplicationContoller {
     ) as HTMLImageElement;
     iconAudioGame.setAttribute('src', iconAudioGameSrc);
     audioGameLink.prepend(iconAudioGame);
-
+    audioGameLink.addEventListener('click', (): void => App.renderAudiocallPage()); // сюда надо подставитьсписок слов со страницы (Влад)
     this.gameButtons.append(audioGameLink, sprintGameLink);
   }
 

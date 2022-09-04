@@ -1,6 +1,6 @@
 /* eslint-disable import/no-cycle */
 import './stat.css';
-import { Chart, registerables } from 'chart.js';
+// import { Chart, registerables } from 'chart.js';
 import Api from '../../Api';
 import ApplicationView from '../application-view';
 import * as constants from './stat-constants';
@@ -15,7 +15,7 @@ class StatView extends ApplicationView {
   constructor() {
     super();
     this.renderView();
-    Chart.register(...registerables);
+    // Chart.register(...registerables);
   }
 
   showEverydayStat(

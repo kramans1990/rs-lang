@@ -1,7 +1,7 @@
 /* eslint-disable import/no-cycle */
 import AudioQuestion from './audio-question-component';
 import AudioView from './audio-view';
-import { Word } from '../../types/Word';
+import { Word } from '../../../types/Word';
 
 class AudioModel {
   pageView: AudioView;

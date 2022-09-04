@@ -16,8 +16,6 @@ import {
   setBackgroundForBookPage,
   getAggregatedNumberFromLS,
 } from '../../functions/functions';
-
-/* eslint-disable import/no-cycle */
 import Api from '../../Api';
 import App from '../../App';
 // import BookController from './book-controller';
@@ -41,6 +39,7 @@ class CardView {
     this.api = new Api();
     this.baseUrl = baseUrl;
     this.view = document.createElement('div');
+    /* eslint-disable no-underscore-dangle */
     this.view.classList.add('card');
     this.view.id = wordInfo._id || wordInfo.id;
     if (userWords) {

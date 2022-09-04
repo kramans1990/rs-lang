@@ -1,6 +1,6 @@
 /* eslint-disable import/no-cycle */
-import { Word } from '../../types/Word';
-import Api from '../../Api';
+import { Word } from '../../../types/Word';
+import Api from '../../../Api';
 
 class AudioQuestion {
   options: Array<Word>;

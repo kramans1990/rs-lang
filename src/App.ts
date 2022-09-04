@@ -1,7 +1,7 @@
 /* eslint-disable import/no-cycle */
 import MainPageController from './pages/main-page/main-page-controller';
 import ApplicationContoller from './pages/application-controller';
-import AudioController from './pages/audio-call-page/audio-call-controller';
+// import AudioController from './pages/games/audio-call-page/audio-call-controller';
 import AuthController from './pages/auth-page/auth-controller';
 import RegistrationController from './pages/registration-page/registration-controller';
 import BookController from './pages/book-page/book-controller';
@@ -16,7 +16,10 @@ import {
   getAggregatedNumberFromLS,
 } from './functions/functions';
 import { logOutText, signInButtonText } from './utils/constants';
+import SprintController from './pages/games/sprint-page/sprint-controller';
 import StatController from './pages/stat-page/stat-controller';
+import AudioController from './pages/games/audio-call-page/audio-call-controller';
+import { Word } from './types/Word';
 
 class App {
   static main: HTMLElement | null;
@@ -108,8 +111,8 @@ class App {
     setBackgroundForBookPage(aggregatedNumber);
   }
 
-  static renderAudiocallPage() {
-    const controller: ApplicationContoller = new AudioController();
+  static renderAudiocallPage(words?: Array<Word>) {
+    const controller: ApplicationContoller = new AudioController(words);
     App.setController(controller);
     const mainButton = document.querySelector('.game-page-link') as HTMLElement;
     App.changeActiveClassForNavItemByElement(mainButton);
@@ -117,20 +120,18 @@ class App {
     App.pageInfo = { pageName: 'audiocallPage' };
   }
 
-  // static renderSprintPage() {
-  //   const controller: ApplicationContoller = new SprintController();
-  //   App.setController(controller);
-  //   const mainButton = document.querySelector('.game-page-link') as HTMLElement;
-  //   App.changeActiveClassForNavItemByElement(mainButton);
-  //   App.pageInfo = { pageName: 'sprintPage' };
-  // }
+  static renderSprintPage(words?: Array<Word>) {
+    const controller: ApplicationContoller = new SprintController(words);
+    App.setController(controller);
+    const mainButton = document.querySelector('.game-page-link') as HTMLElement;
+    App.changeActiveClassForNavItemByElement(mainButton);
+    App.makeMainTransparentAgain();
+    App.pageInfo = { pageName: 'sprintPage' };
+  }
 
   static renderAuthPage(): void {
     const controller: ApplicationContoller = new AuthController();
     App.setController(controller);
-    // if (e) {
-    //   App.changeActiveClassForNavItemByEvent(e);
-    // }
     const mainButton = document.querySelector('.sign-in-page-link') as HTMLElement;
     App.changeActiveClassForNavItemByElement(mainButton);
     App.makeMainTransparentAgain();
@@ -164,55 +165,56 @@ class App {
         App.signIn(user);
       }
       if (getDataFromLocalStorage('pageInfo')) {
-        const pageInfo = getDataFromLocalStorage('pageInfo') as IPageInfo;
-        const { pageName } = pageInfo;
-        switch (pageName) {
-          case 'mainPage':
-            App.renderMainPage();
-            break;
-          case 'bookPage':
-            App.renderBookPage();
-            break;
-          case 'audiocallPage':
-            App.renderAudiocallPage();
-            break;
-          case 'statPage':
-            App.renderStatPage();
-            break;
-          // case 'sprintPage':
-          //   App.renderSprintPage();
-          //   break;
-          case 'authPage':
-            App.renderAuthPage();
-            break;
-          default:
-            App.renderMainPage();
-            break;
-        }
+        this.renderPageAfterReload();
       }
-      // else {
-      //   App.renderMainPage();
-      // }
     });
     document.querySelector('.header__logo')?.addEventListener('click', App.renderMainPage);
     document.querySelector('.main-page-link')?.addEventListener('click', App.renderMainPage);
     document.querySelector('.book-page-link')?.addEventListener('click', App.renderBookPage);
+    document
+      .querySelector('.sprint-page-link')
+      ?.addEventListener('click', (): void => App.renderSprintPage());
+    document.querySelector('.book-page-link')?.addEventListener('click', (e: Event): void => {
+      const controller: ApplicationContoller = new BookController();
+      App.setController(controller);
+      App.changeActiveClassForNavItemByEvent(e);
+    });
     document.querySelector('.sign-in-page-link')?.addEventListener('click', App.renderAuthPage);
     document.querySelector('.stat-page-link')?.addEventListener('click', App.renderStatPage);
-
-    document.querySelector('.audio-page-link')?.addEventListener('click', App.renderAudiocallPage);
-    // document.querySelector('.sprint-page-link')?.addEventListener('click', App.renderSprintPage);
-    document.querySelector('.sign-in-page-link')?.addEventListener('click', (): void => {
-      const controller: ApplicationContoller = new AuthController();
-      App.setController(controller);
-    });
-    document.querySelector('.sign-up-page-link')?.addEventListener('click', (): void => {
-      const controller: ApplicationContoller = new RegistrationController();
-      App.setController(controller);
-    });
-
+    document
+      .querySelector('.audio-page-link')
+      ?.addEventListener('click', (): void => App.renderAudiocallPage());
+    document.querySelector('.sign-up-page-link')?.addEventListener('click', App.renderRegPage);
     document.querySelector('.burger')?.addEventListener('click', burgerMenuHandle);
     document.querySelector('.nav-list')?.addEventListener('click', clickMenuHandle);
+  }
+
+  renderPageAfterReload() {
+    const pageInfo = getDataFromLocalStorage('pageInfo') as IPageInfo;
+    const { pageName } = pageInfo;
+    switch (pageName) {
+      case 'mainPage':
+        App.renderMainPage();
+        break;
+      case 'bookPage':
+        App.renderBookPage();
+        break;
+      case 'audiocallPage':
+        App.renderAudiocallPage();
+        break;
+      case 'statPage':
+        App.renderStatPage();
+        break;
+      case 'sprintPage':
+        App.renderSprintPage();
+        break;
+      case 'authPage':
+        App.renderAuthPage();
+        break;
+      default:
+        App.renderMainPage();
+        break;
+    }
   }
 }
 export default App;

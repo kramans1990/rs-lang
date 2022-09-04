@@ -1,11 +1,21 @@
 /* eslint-disable import/no-cycle */
 import './audio.css';
 import './modal.css';
-import { Word } from '../../types/Word';
+import { Word } from '../../../types/Word';
 import AudioQuestion from './audio-question-component';
+<<<<<<< HEAD:src/pages/audio-call-page/audio-view.ts
 import Api from '../../Api';
 import * as modalResult from './modal-content';
 import ModalMessage from './modalMessage';
+=======
+import Api from '../../../Api';
+import {
+  correctResultsText,
+  incorrectResultsText,
+  newAudioGameButtonText,
+  resultsText,
+} from '../../../utils/constants';
+>>>>>>> bc72f782309f8ce63f42ce3c124b3c5a10a5bef5:src/pages/games/audio-call-page/audio-view.ts
 
 class AudioView {
   view: HTMLDivElement;
@@ -22,7 +32,7 @@ class AudioView {
     const div = document.createElement('div');
     div.className = 'audio-call-container';
     const buttonNewGame = document.createElement('button');
-    buttonNewGame.innerText = 'Новая игра (N)';
+    buttonNewGame.innerText = newAudioGameButtonText;
     buttonNewGame.id = 'new-game';
     buttonNewGame.className = 'new-game-button';
     const divButtonsContainer = document.createElement('div');
@@ -49,10 +59,14 @@ class AudioView {
     progressBar.appendChild(innerdiv);
     const gameContainer = document.createElement('div');
     const statusContainer = document.createElement('div');
-    const modal = document.createElement('div');
+    const modal = this.createModalContent();
     modal.className = 'game-result hidden';
+<<<<<<< HEAD:src/pages/audio-call-page/audio-view.ts
     modal.innerHTML = modalResult.modalHtml;
     const modalMessage = new ModalMessage('Недостаточно слов для игры');
+=======
+
+>>>>>>> bc72f782309f8ce63f42ce3c124b3c5a10a5bef5:src/pages/games/audio-call-page/audio-view.ts
     gameContainer.className = 'game-container';
     gameContainer.append(divDifficulty, progressBar, statusContainer);
     div.appendChild(gameContainer);
@@ -308,10 +322,44 @@ class AudioView {
       this.handleNavKeys(key);
     }
   }
+<<<<<<< HEAD:src/pages/audio-call-page/audio-view.ts
 
   setNotEnouthWordsModal() {
     (this.view.querySelector('.modal-message') as HTMLDivElement).classList.remove('hidden');
     (this.view.querySelector('.modal-message') as HTMLDivElement).classList.add('popup');
+=======
+  /* eslint-disable class-methods-use-this */
+
+  createModalContent(): HTMLDivElement {
+    const modalContent = document.createElement('div');
+    modalContent.classList.add('modal-content');
+    const modalClose = document.createElement('span');
+    modalClose.classList.add('modal-close');
+    modalClose.innerHTML = '&times;';
+    const resultsBox = document.createElement('div');
+    resultsBox.classList.add('div-result-flex');
+    const resilts = document.createElement('span');
+    resilts.innerText = resultsText;
+    const incorrectAnswers = document.createElement('span');
+    incorrectAnswers.classList.add('game-span-wrong');
+    incorrectAnswers.innerText = incorrectResultsText;
+    const correctAnswers = document.createElement('span');
+    correctAnswers.classList.add('game-span-correct');
+    correctAnswers.innerText = correctResultsText;
+    const incorrectAnswersContainer = document.createElement('div');
+    incorrectAnswersContainer.classList.add('answer-container-wrong');
+    const correctAnswersContainer = document.createElement('div');
+    correctAnswersContainer.classList.add('answer-container-correct');
+    resultsBox.append(
+      resilts,
+      incorrectAnswers,
+      incorrectAnswersContainer,
+      correctAnswers,
+      correctAnswersContainer,
+    );
+    modalContent.append(modalClose, resultsBox);
+    return modalContent;
+>>>>>>> bc72f782309f8ce63f42ce3c124b3c5a10a5bef5:src/pages/games/audio-call-page/audio-view.ts
   }
 }
 export default AudioView;

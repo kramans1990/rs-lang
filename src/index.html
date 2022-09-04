@@ -14,15 +14,28 @@
     <a href="./" class="header__logo">
         <img src="./assets/svg/rs_lang_logo.svg" alt="logo">
     </a>
+    
+    <div class="burger">
+      <span class="burger-line"></span>
+    </div>
+
     <nav class="header_nav">
         <ul class="nav-list">
-            <li class="nav-list__item active main-page-link" id="words-page" href="#">Главная</li>
-            <li class="nav-list__item words-page-link" id="words-page"  href="#">Слова</li>
-            <li class="nav-list__item book-page-link" id="book-page"  href="#">Учебник</li>
-            <li class="nav-list__item game-page-link" id="game-page" href="#">Игры</li>
-            <li class="nav-list__item stat-page-link" id="stat-page" href="#">Статистика</li>
-            <li class="nav-list__item team-page-link" id="team-page"  href="#">Команда</li>
-            <li class="nav-list__item sign-in sign-in-page-link" id="auth-page" href="#">Вход</li>
+            <li class="nav-list__item active main-page-link" id="main-page">Главная</li>
+            <li class="nav-list__item book-page-link" id="book-page">Учебник</li>
+            <li class="nav-list__item game-page-link" id="game-page" href="#">Игры
+              <ul class="sub-nav">
+                <li class="sub-nav__item audio-page-link" id="audio-link">
+                  <img src="./assets/svg/icon_audio_game.svg" alt="icon_audio_game">
+                  audiocall</li>
+                <li class="sub-nav__item sprint-page-link" id="sprint-link">
+                  <img src="./assets/svg/icon_sprint.svg" alt="icon_sprint">
+                  sprint</li>
+              </ul>
+            </li>
+            <li class="nav-list__item stat-page-link" id="stat-page">Статистика</li>
+            <li class="nav-list__item team-page-link" id="team-page">Команда</li>
+            <li class="nav-list__item sign-in sign-in-page-link" id="auth-page">Вход</li>
         </ul>
     </nav>
   </header>

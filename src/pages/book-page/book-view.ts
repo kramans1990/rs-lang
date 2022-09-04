@@ -1,4 +1,5 @@
 import ApplicationView from '../application-view';
+import { setBackgroundForBookPage } from '../../functions/functions';
 
 export class BookPageView extends ApplicationView {
   view: HTMLDivElement;
@@ -19,7 +20,7 @@ export class BookPageView extends ApplicationView {
 
   footer: HTMLElement;
 
-  constructor() {
+  constructor(aggregatedNumber: number) {
     super();
     this.view = document.createElement('div');
     this.levels = BookPageView.createElementByParams('div', 'levels') as HTMLDivElement;
@@ -32,7 +33,9 @@ export class BookPageView extends ApplicationView {
     this.body = document.querySelector('body') as HTMLBodyElement;
     this.main = document.querySelector('.main') as HTMLElement;
     this.mainWrapper = document.querySelector('.main_wrapper') as HTMLDivElement;
+
     this.mainWrapper.style.backgroundColor = '#ffffff';
+    setBackgroundForBookPage(aggregatedNumber);
     this.footer = document.querySelector('footer') as HTMLBodyElement;
     this.footer.classList.add('secondary');
   }

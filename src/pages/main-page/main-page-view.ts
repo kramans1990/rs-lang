@@ -1,5 +1,6 @@
 import ApplicationView from '../application-view';
 import '../../styles/main-page.css';
+import '../../styles/burger.css';
 
 /* prettier-ignore */
 
@@ -36,10 +37,10 @@ class MainPageView extends ApplicationView {
     const buttons = document.createElement('div');
     buttons.classList.add('buttons');
     const learnButton = document.createElement('button');
-    learnButton.classList.add('btn_intro', 'btn', 'btn_colored');
+    learnButton.classList.add('btn_intro', 'btn', 'btn_colored', 'learn');
     learnButton.innerText = learnButtonText;
     const playButton = document.createElement('button');
-    playButton.classList.add('btn_intro', 'btn', 'btn_bordered');
+    playButton.classList.add('btn_intro', 'btn', 'btn_bordered', 'play');
     playButton.innerText = playButtonText;
     buttons.append(learnButton, playButton);
     this.view.append(title, introText, buttons);

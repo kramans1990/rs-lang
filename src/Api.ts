@@ -87,7 +87,7 @@ class Api {
     }
   }
 
-  async getOneWord(id: number): Promise<Word> {
+  async getOneWord(id: string): Promise<Word> {
     try {
       const responce = await fetch(`${this.words}/${id}`);
       const card = await responce.json();
@@ -137,7 +137,6 @@ class Api {
     }
   }
 
-  // async updateUserWord(id: string, token: string, userWord: UserWord): Promise<Array<UserWord>> {
   async updateUserWord(id: string, token: string, userWord: UserWord): Promise<UserWord> {
     try {
       const responce = await fetch(`${this.baseUrl}/users/${id}/words/${userWord.word.id}`, {
@@ -156,8 +155,7 @@ class Api {
           authorization: `Bearer ${token}`,
         },
       });
-      // const createdUserword = await responce.json();
-      // return createdUserword;
+
       const updatedUserWord = await responce.json();
       return updatedUserWord;
     } catch {
@@ -165,17 +163,10 @@ class Api {
     }
   }
 
-  async getUserWordsAgregatedAll(
-    id: string,
-    token: string,
-    wordsPerPage: number,
-    page: number,
-    filter: string,
-  ): Promise<Array<UserWord>> {
+  async getUserWordsAllHard(id: string, token: string): Promise<Partial<Word & UserWord>[]> {
     try {
       const responce = await fetch(
-        `${this.baseUrl}/users/${id}/aggregatedWords?page=${page}
-      &wordsPerPage=${wordsPerPage}&filter=${filter}`,
+        `${this.baseUrl}/users/${id}/aggregatedWords?wordsPerPage=600&filter={"userWord.difficulty":"hard"}`,
         {
           method: 'GET',
           headers: {
@@ -183,25 +174,22 @@ class Api {
           },
         },
       );
-      const userword = await responce.json();
-      return userword;
+      const respArr = await responce.json();
+      return respArr[0].paginatedResults;
     } catch {
       throw new Error();
     }
   }
 
-  async getUserWordsAgregatedByGroup(
+  async getUserWordsAgregatedByFilter(
     id: string,
     token: string,
-    group: number,
     wordsPerPage: number,
-    page: number,
     filter: string,
-  ): Promise<Array<UserWord>> {
+  ): Promise<Array<UserWord | Word>> {
     try {
       const responce = await fetch(
-        `${this.baseUrl}/users/${id}/aggregatedWords?group=${group}&page=${page}
-      &wordsPerPage=${wordsPerPage}&filter=${filter}`,
+        `${this.baseUrl}/users/${id}/aggregatedWords?wordsPerPage=${wordsPerPage}&filter=${filter}`,
         {
           method: 'GET',
           headers: {
@@ -210,7 +198,7 @@ class Api {
         },
       );
       const userword = await responce.json();
-      return userword;
+      return userword[0].paginatedResults;
     } catch {
       throw new Error();
     }

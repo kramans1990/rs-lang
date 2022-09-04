@@ -1,3 +1,4 @@
+/* eslint-disable import/no-cycle */
 import ApplicationContoller from '../application-controller';
 import MainPageView from './main-page-view';
 import Api from '../../Api';

@@ -7,7 +7,13 @@
   column-gap: 6%;
   row-gap: 60px;
   /* height: 100vh; */
-  padding: 50px 30px;
+  padding: 50px 0 30px 30px;
+}
+
+@media (max-width: 542px) {
+  .team-page {
+    padding: 10px 0 30px 0;
+  }
 }
 
 .member-card {
@@ -15,7 +21,7 @@
   flex-direction: column;
   justify-content: space-between;
   position: relative;
-  width: 630px;
+  max-width: 615px;
   min-height: 260px;
   padding: 10px 30px 14px;
   background: #fcf9f2;
@@ -38,6 +44,32 @@
   background-position-x: center;
 }
 
+@media (max-width: 542px) {
+  .member-card img {
+    position: static;
+    left: 0;
+    top: 0;
+    width: 100%;
+    margin-bottom: 6px;
+  }
+}
+
+@media (max-width: 480px) {
+  .member-card img {
+    height: 150px;
+  }
+}
+
+.member-card__info {
+  margin-left: 184px;
+}
+
+@media (max-width: 542px) {
+  .member-card__info {
+    margin-left: 0;
+  }
+}
+
 .member-card__name {
   font-weight: 800;
   font-size: 1.9rem;
@@ -46,12 +78,31 @@
   margin-bottom: 10px;
 }
 
+@media (max-width: 542px) {
+  .member-card__name {
+    text-align: center;
+  }
+}
+
+@media (max-width: 480px) {
+  .member-card__name {
+    font-size: 1.6rem;
+  }
+}
+
 .member-card__descr {
   font-weight: 400;
   font-size: 1.4rem;
   line-height: 2rem;
   margin-bottom: 20px;
-  margin-left: 184px;
+}
+
+@media (max-width: 480px) {
+  .member-card__descr {
+    font-size: 1.2rem;
+    line-height: 1.6rem;
+    margin-bottom: 10px;
+  }
 }
 
 .member-card__slogan {
@@ -61,6 +112,14 @@
   line-height: 2rem;
   color: #919191;
   text-align: right;
+  margin-bottom: 10px;
+}
+
+@media (max-width: 480px) {
+  .member-card__slogan {
+    font-size: 1rem;
+    line-height: 1.5rem;
+  }
 }
 
 .member-card__points {
@@ -81,6 +140,13 @@
   color: #ffffff;
   padding: 6px 12px;
   filter: drop-shadow(0px 2.85886px 2.85886px rgba(0, 0, 0, 0.25));
+}
+
+@media (max-width: 480px) {
+  .member-card__points p {
+    font-size: 1rem;
+    line-height: 1.4rem;
+  }
 }
 
 .point-0 {

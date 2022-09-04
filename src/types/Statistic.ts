@@ -60,8 +60,7 @@ class Statistic {
   ) {
     const { isNew } = updateWordsResult;
     const { isCorrect } = updateWordsResult;
-    const { isLearned } = updateWordsResult;
-    console.log('update', gameName);
+    const { isLearned } = updateWordsResult;    
     if (App.user) {
       const today: Date = new Date();
       const currentStat = await this.api.getUserStat(App.user.userId, App.user.token);

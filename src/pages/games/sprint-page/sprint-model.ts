@@ -106,6 +106,7 @@ class SprintModel {
   createQuiz(words: Array<Word>, countQuestions: number) {
     if (words.length < 6) {
       this.gameStatus = 'Select Level';
+      this.pageView.setNotEnouthWordsModal();
     } else {
       const tests: Array<SprintQuestion> = new Array<SprintQuestion>();
       const count = Math.min(words.length, countQuestions);
@@ -163,7 +164,7 @@ class SprintModel {
     }
     audioTest.isAnswered = 'Yes';
   }
-
+ 
   // updateGameProgress() {
   //   // обновление статистики
   // }

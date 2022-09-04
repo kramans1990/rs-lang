@@ -35,11 +35,8 @@ class AudioView {
     const divButtonsContainer = document.createElement('div');
     divButtonsContainer.className = 'buttons-container';
     div.appendChild(buttonNewGame);
-    let a = 8;
-    if (!App.user) {
-      a = 7;
-    }
-    for (let i = 1; i < a; i += 1) {
+   
+    for (let i = 1; i < 7; i += 1) {
       const button = document.createElement('button');
       button.className = `game-button l${i}`;
       button.value = (i - 1).toString();
@@ -74,6 +71,7 @@ class AudioView {
 
   showGameResult(audioTests: Array<AudioQuestion>) {
     this.view.querySelector('.game-result')?.classList.remove('hidden');
+    this.view.querySelector('.game-result')?.classList.add('popup');
     const correctdiv = document.querySelector('.answer-container-correct') as HTMLDivElement;
     const wrongDiv = document.querySelector('.answer-container-wrong') as HTMLDivElement;
     correctdiv.innerHTML = '';
@@ -175,7 +173,7 @@ class AudioView {
   }
 
   showResults() {
-    (this.view.querySelector('.game-result') as HTMLDivElement)?.classList.remove('hidden');
+    (this.view.querySelector('.game-result') as HTMLDivElement)?.classList.remove('hidden');   
     (this.view.querySelector('.modal-message') as HTMLDivElement).classList.add('hidden');
   }
 
@@ -320,36 +318,36 @@ class AudioView {
   }
   /* eslint-disable class-methods-use-this */
 
-  createModalContent(): HTMLDivElement {
-    const modalContent = document.createElement('div');
-    modalContent.classList.add('modal-content');
-    const modalClose = document.createElement('span');
-    modalClose.classList.add('modal-close');
-    modalClose.innerHTML = '&times;';
-    const resultsBox = document.createElement('div');
-    resultsBox.classList.add('div-result-flex');
-    const resilts = document.createElement('span');
-    resilts.innerText = resultsText;
-    const incorrectAnswers = document.createElement('span');
-    incorrectAnswers.classList.add('game-span-wrong');
-    incorrectAnswers.innerText = incorrectResultsText;
-    const correctAnswers = document.createElement('span');
-    correctAnswers.classList.add('game-span-correct');
-    correctAnswers.innerText = correctResultsText;
-    const incorrectAnswersContainer = document.createElement('div');
-    incorrectAnswersContainer.classList.add('answer-container-wrong');
-    const correctAnswersContainer = document.createElement('div');
-    correctAnswersContainer.classList.add('answer-container-correct');
-    resultsBox.append(
-      resilts,
-      incorrectAnswers,
-      incorrectAnswersContainer,
-      correctAnswers,
-      correctAnswersContainer,
-    );
-    modalContent.append(modalClose, resultsBox);
-    return modalContent;
-  }
+  // createModalContent(): HTMLDivElement {
+  //   const modalContent = document.createElement('div');
+  //   modalContent.classList.add('modal-content');
+  //   const modalClose = document.createElement('span');
+  //   modalClose.classList.add('modal-close');
+  //   modalClose.innerHTML = '&times;';
+  //   const resultsBox = document.createElement('div');
+  //   resultsBox.classList.add('div-result-flex');
+  //   const resilts = document.createElement('span');
+  //   resilts.innerText = resultsText;
+  //   const incorrectAnswers = document.createElement('span');
+  //   incorrectAnswers.classList.add('game-span-wrong');
+  //   incorrectAnswers.innerText = incorrectResultsText;
+  //   const correctAnswers = document.createElement('span');
+  //   correctAnswers.classList.add('game-span-correct');
+  //   correctAnswers.innerText = correctResultsText;
+  //   const incorrectAnswersContainer = document.createElement('div');
+  //   incorrectAnswersContainer.classList.add('answer-container-wrong');
+  //   const correctAnswersContainer = document.createElement('div');
+  //   correctAnswersContainer.classList.add('answer-container-correct');
+  //   resultsBox.append(
+  //     resilts,
+  //     incorrectAnswers,
+  //     incorrectAnswersContainer,
+  //     correctAnswers,
+  //     correctAnswersContainer,
+  //   );
+  //   modalContent.append(modalClose, resultsBox);
+  //   return modalContent;
+  // }
 
   setNotEnouthWordsModal() {
     console.log(this.view.querySelector('.modal-message'));

@@ -14,7 +14,7 @@
     border-radius: 5px;
 }
 .stat-button{
-    width: 280px;
+    width: 250px;
     height: 45px;
     background: var(--color-main);
     opacity: 0.9;   
@@ -35,7 +35,7 @@
     cursor: pointer;
   }
   .stat-content{
-    width: 50vW;
+    width: 70vW;
     background-color: rgba(255, 255, 255, 0);
     border-radius: 10px;
     padding-left: 10px;
@@ -93,3 +93,24 @@
     border-radius: 10px;
     margin-bottom: 20px;
   }
+  @media (max-width: 600px) {
+    .stat-container {
+      display: grid;
+      grid-template-rows: 120px 0.95fr;
+      justify-items: center;
+     
+  }.div-buttons-flex .stat-content{
+    width: 100vW;
+  }
+  .stat-content > div {   
+    font-weight: 600;
+    font-size: 1.5em;
+    line-height: 1rem;    
+}
+.stat-content > h3 {
+ font-size: 20px;
+}
+.stat-content{
+  width: 90vw;
+}
+}

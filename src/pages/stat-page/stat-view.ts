@@ -1,6 +1,6 @@
 /* eslint-disable import/no-cycle */
 import './stat.css';
-// import { Chart, registerables } from 'chart.js';
+import { Chart, registerables } from 'chart.js';
 import Api from '../../Api';
 import ApplicationView from '../application-view';
 import * as constants from './stat-constants';
@@ -16,10 +16,7 @@ class StatView extends ApplicationView {
     super();
     this.renderView();
 
-    
-
-    //Chart.register(...registerables);
-
+    Chart.register(...registerables);
   }
 
   showEverydayStat(
@@ -33,6 +30,7 @@ class StatView extends ApplicationView {
     accuracyTotal: number,
   ) {
     const div = this.view.querySelector('.stat-content') as HTMLDivElement;
+   // div.classList.remove('popup');
     div.classList.add('popup');
     div.innerHTML = '';
     const title = document.createElement('div');
@@ -70,58 +68,102 @@ class StatView extends ApplicationView {
     div.append(titleWords, divNewWords, divLearnWords, divAccuracyWords);
   }
 
-  // showAllStat() {
-  //   const div = this.view.querySelector('.stat-content') as HTMLDivElement;
-  //   div.innerHTML = '';
-  //   div.innerText = 'all';
-  //   const canvasLearnedWords = document.createElement('canvas') as HTMLCanvasElement;
-  //   canvasLearnedWords.id = 'learnedWordsChart';
-  //   const canvasLearnedWordsContext = canvasLearnedWords.getContext(
-  //     '2d',
-  //   ) as CanvasRenderingContext2D;
-  //   const myChartlearned = new Chart(canvasLearnedWordsContext, {
-  //     type: 'bar',
-
-  //     data: {
-  //       labels: [1, 2, 3, 4, 5, 6],
-  //       datasets: [{
-  //         {
-  //           label: '# of Votes',
-  //           data: [12, 19, 3, 5, 2, 3],
-
-  //           backgroundColor: [
-  //           'rgba(255, 99, 132, 0.2)',
-  //             'rgba(54, 162, 235, 0.2)',
-  //             'rgba(255, 206, 86, 0.2)',
-  //             'rgba(75, 192, 192, 0.2)',
-  //             'rgba(153, 102, 255, 0.2)',
-  //           'rgba(255, 159, 64, 0.2)'
-  //           ],
-  //         borderColor: [
-  //             'rgba(255, 99, 132, 1)',
-  //             'rgba(54, 162, 235, 1)',
-  //             'rgba(255, 206, 86, 1)',
-  //           'rgba(75, 192, 192, 1)',
-  //             'rgba(153, 102, 255, 1)',
-  //           'rgba(255, 159, 64, 1)'
-  //           ],
-  //           borderWidth: 5,
-
-  //       }],
-  //    },
-  //     options: {
-  //       scales: {
-  //         y: {
-  //           beginAtZero: true,
-  //            }
-
-  //       },
-
-  //     },
-
-  //   });
-  //   div.appendChild(canvasLearnedWords);
-  // }
+  showAllStat(newWords : Array<{ date: Date; count: number }> ,
+     newLearned: Array<{ date: Date; count: number }> ) {   
+    const div = this.view.querySelector('.stat-content') as HTMLDivElement;
+    div.classList.remove('popup');
+    
+    div.innerHTML = '';
+    const canvasNewWords = document.createElement('canvas') as HTMLCanvasElement;
+    canvasNewWords.id = 'newWordsChart';
+    canvasNewWords.style.maxHeight = "300px";    
+    let count = (newWords.map(p=>p.count));
+    let date = newWords.map((item)=>{
+       let month = (item.date.getMonth()+1) <10 ? '0'  +  (item.date.getMonth()+1) :item.date.getMonth()+1 ;
+       return item.date.getDate() + '.' + month;    });
+    const newWordsContext = canvasNewWords.getContext('2d') as CanvasRenderingContext2D;
+    const newWordsChart = new Chart(newWordsContext, {
+      type: 'line',
+      data: {         
+          labels: date,
+          datasets: [{
+              label: 'новых слов',
+              data: count,
+              backgroundColor: [
+                '#ec990e'
+            ],
+            borderColor: [
+                '#ffcb05'
+            ],             
+            borderWidth: 3
+          }]
+      },
+      options: {plugins: {
+        legend: {
+            labels: {               
+                font: {
+                    size: 24,
+                    family : "Arial, sans-serif"
+                },
+                boxWidth : 20,
+                boxHeight :5                
+            },            
+        }
+    },
+          scales: {
+              y: {
+                  beginAtZero: true
+              }
+          }
+      }
+  });  
+   div.appendChild(canvasNewWords);
+   ///
+   const canvasLearnedWords = document.createElement('canvas') as HTMLCanvasElement;
+   canvasLearnedWords.id = 'learnedWordsChart';
+   canvasLearnedWords.style.maxHeight = "300px";    
+    let countLearned = (newLearned.map(p=>p.count));
+    let dateLearned = newLearned.map((item)=>{
+       let month = (item.date.getMonth()+1) <10 ? '0'  +  (item.date.getMonth()+1) :item.date.getMonth()+1 ;
+       return item.date.getDate() + '.' + month;    });
+    const learnedWordsContext = canvasLearnedWords.getContext('2d') as CanvasRenderingContext2D;
+    const learnedWordsChart = new Chart(learnedWordsContext, {
+      type: 'line',
+      data: {         
+          labels: dateLearned,
+          datasets: [{
+              label: 'Выучено слов',
+              data: countLearned,
+              backgroundColor: [
+                  '#ec990e'
+              ],
+              borderColor: [
+                  '#ffcb05'
+              ],             
+              borderWidth: 3
+          }]
+      },
+      options: {plugins: {
+        legend: {
+            labels: {               
+                font: {
+                    size: 24,
+                    family : "Arial, sans-serif"
+                },
+                boxWidth : 20,
+                boxHeight :5                
+            },            
+        }
+    },
+          scales: {
+              y: {
+                  beginAtZero: true
+              }
+          }
+      }
+  }); 
+  div.appendChild(canvasLearnedWords);  
+  }
 
   renderView() {
     const div = document.createElement('div');
@@ -152,7 +194,7 @@ class StatView extends ApplicationView {
     ///
     // div.appendChild(canvasNewWords);
     // div.appendChild(canvasLearnedWords);
-   // this.view = div;
+    // this.view = div;
   }
 }
 export default StatView;

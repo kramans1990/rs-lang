@@ -8,6 +8,7 @@ import StatModel from './stat-model';
 import StatView from './stat-view';
 import Statistic from '../../types/Statistic';
 import StatOptional from '../../types/StatOptional';
+import MainPageController from '../main-page/main-page-controller';
 
 class StatController extends ApplicationContoller {
   model: StatModel;
@@ -19,11 +20,12 @@ class StatController extends ApplicationContoller {
   api: Api = new Api();
 
   constructor() {
-    super();
+    super(); 
     this.pageView = new StatView();
     this.model = new StatModel(this.pageView);
     this.addEventListeners();
     this.getStat();
+  
   }
 
   addEventListeners() {
@@ -124,6 +126,7 @@ class StatController extends ApplicationContoller {
     let newWords = 0;
     dates.forEach((date: string) => {
       const optionals = stat.optional.filter((p) => p.dateShort === date);
+      newWords = 0;
       optionals.forEach((item) => {
         newWords += item.newWords;
         learnded += item.learnedWords;
@@ -132,8 +135,8 @@ class StatController extends ApplicationContoller {
       learnedProgress.push({ date: new Date(date), count: learnded });
     });
 
-    console.log(newWordsProgress, learnedProgress);
-    //this.pageView.showAllStat();
+    //console.log(newWordsProgress, learnedProgress);
+    this.pageView.showAllStat(newWordsProgress,learnedProgress);
     // let learnedWords :  Array<{date:Date , count:number}>
   }
 }

@@ -8,6 +8,7 @@
 .div-buttons-flex{
     display: flex;
     justify-content: center;
+    flex-wrap: wrap;
     column-gap: 20px;
     flex-direction: row;    
     border-radius: 5px;
@@ -34,10 +35,11 @@
     cursor: pointer;
   }
   .stat-content{
+    width: 50vW;
     background-color: rgba(255, 255, 255, 0);
     border-radius: 10px;
-    padding-left: 115px;
-    padding-right: 115px;
+    padding-left: 10px;
+    padding-right: 10px;
     
   }
   .stat-content > div{   
@@ -57,6 +59,7 @@
     font-size: x-large;
     margin-bottom: 10px;
     color : var(--color-main);
+    /* height: 600px; */
   }
   .stat-content:last-child{
     padding-bottom: 20px;
@@ -83,4 +86,10 @@
     100%{
       transform: scale(1);
     }
+    
+  }
+  canvas{
+    background: white;
+    border-radius: 10px;
+    margin-bottom: 20px;
   }

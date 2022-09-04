@@ -164,7 +164,7 @@ class SprintModel {
     }
     audioTest.isAnswered = 'Yes';
   }
- 
+
   // updateGameProgress() {
   //   // обновление статистики
   // }

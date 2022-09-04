@@ -73,7 +73,7 @@ class App {
     signInButton.innerText = signInButtonText;
     signInButton.removeEventListener('click', App.logOut);
     signInButton.addEventListener('click', App.renderAuthPage);
-    this.user = undefined;
+    App.user = undefined;
     removeDataFromLocalStorage('rs-lang-user');
     removeDataFromLocalStorage('aggregatedNumber');
     removeDataFromLocalStorage('pageInfo');
@@ -139,12 +139,17 @@ class App {
   }
 
   static renderStatPage() {
+    //console.log(App.user);
+    if(App.user){
     const controller: ApplicationContoller = new StatController();
     App.setController(controller);
     const mainButton = document.querySelector('.stat-page-link') as HTMLElement;
     App.changeActiveClassForNavItemByElement(mainButton);
     App.makeMainTransparentAgain();
-    App.pageInfo = { pageName: 'statPage' };
+    App.pageInfo = { pageName: 'statPage' };}
+    else{
+      App.renderAuthPage();
+    }
   }
 
   static renderRegPage(): void {

@@ -14,6 +14,7 @@ import SprintQuestion from './sprint-question-component';
 import './sprint.css';
 import * as modalResult from '../audio-call-page/modal-content';
 import ModalMessage from '../audio-call-page/modalMessage';
+
 class SprintView extends ApplicationView {
   isSoundOn: boolean;
 
@@ -66,13 +67,13 @@ class SprintView extends ApplicationView {
     modal.className = 'game-result hidden';
     modal.innerHTML = modalResult.modalHtml;
     ///
-    
+
     const modalMessage = new ModalMessage('Недостаточно слов для игры');
     //
     gameContainer.className = 'game-container';
     gameContainer.append(divDifficulty, progressBar, statusContainer);
     this.timer = GameCommonView.createTimer();
-    div.append(buttonNewGame, this.timer, gameContainer,modalMessage.modal, modal);
+    div.append(buttonNewGame, this.timer, gameContainer, modalMessage.modal, modal);
     this.view = div;
   }
 
@@ -370,7 +371,8 @@ class SprintView extends ApplicationView {
       this.handleNavKeys(key);
     }
   }
-  setNotEnouthWordsModal() {   
+
+  setNotEnouthWordsModal() {
     (this.view.querySelector('.modal-message') as HTMLDivElement).classList.remove('hidden');
     (this.view.querySelector('.modal-message') as HTMLDivElement).classList.add('popup');
   }

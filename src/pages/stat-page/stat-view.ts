@@ -30,7 +30,7 @@ class StatView extends ApplicationView {
     accuracyTotal: number,
   ) {
     const div = this.view.querySelector('.stat-content') as HTMLDivElement;
-   // div.classList.remove('popup');
+    // div.classList.remove('popup');
     div.classList.add('popup');
     div.innerHTML = '';
     const title = document.createElement('div');
@@ -68,101 +68,15 @@ class StatView extends ApplicationView {
     div.append(titleWords, divNewWords, divLearnWords, divAccuracyWords);
   }
 
-  showAllStat(newWords : Array<{ date: Date; count: number }> ,
-     newLearned: Array<{ date: Date; count: number }> ) {   
+  showAllStat(
+    newWords: Array<{ date: Date; count: number }>,
+    newLearned: Array<{ date: Date; count: number }>,
+  ) {
     const div = this.view.querySelector('.stat-content') as HTMLDivElement;
     div.classList.remove('popup');
-    
     div.innerHTML = '';
-    const canvasNewWords = document.createElement('canvas') as HTMLCanvasElement;
-    canvasNewWords.id = 'newWordsChart';
-    canvasNewWords.style.maxHeight = "300px";    
-    let count = (newWords.map(p=>p.count));
-    let date = newWords.map((item)=>{
-       let month = (item.date.getMonth()+1) <10 ? '0'  +  (item.date.getMonth()+1) :item.date.getMonth()+1 ;
-       return item.date.getDate() + '.' + month;    });
-    const newWordsContext = canvasNewWords.getContext('2d') as CanvasRenderingContext2D;
-    const newWordsChart = new Chart(newWordsContext, {
-      type: 'line',
-      data: {         
-          labels: date,
-          datasets: [{
-              label: 'новых слов',
-              data: count,
-              backgroundColor: [
-                '#ec990e'
-            ],
-            borderColor: [
-                '#ffcb05'
-            ],             
-            borderWidth: 3
-          }]
-      },
-      options: {plugins: {
-        legend: {
-            labels: {               
-                font: {
-                    size: 24,
-                    family : "Arial, sans-serif"
-                },
-                boxWidth : 20,
-                boxHeight :5                
-            },            
-        }
-    },
-          scales: {
-              y: {
-                  beginAtZero: true
-              }
-          }
-      }
-  });  
-   div.appendChild(canvasNewWords);
-   ///
-   const canvasLearnedWords = document.createElement('canvas') as HTMLCanvasElement;
-   canvasLearnedWords.id = 'learnedWordsChart';
-   canvasLearnedWords.style.maxHeight = "300px";    
-    let countLearned = (newLearned.map(p=>p.count));
-    let dateLearned = newLearned.map((item)=>{
-       let month = (item.date.getMonth()+1) <10 ? '0'  +  (item.date.getMonth()+1) :item.date.getMonth()+1 ;
-       return item.date.getDate() + '.' + month;    });
-    const learnedWordsContext = canvasLearnedWords.getContext('2d') as CanvasRenderingContext2D;
-    const learnedWordsChart = new Chart(learnedWordsContext, {
-      type: 'line',
-      data: {         
-          labels: dateLearned,
-          datasets: [{
-              label: 'Выучено слов',
-              data: countLearned,
-              backgroundColor: [
-                  '#ec990e'
-              ],
-              borderColor: [
-                  '#ffcb05'
-              ],             
-              borderWidth: 3
-          }]
-      },
-      options: {plugins: {
-        legend: {
-            labels: {               
-                font: {
-                    size: 24,
-                    family : "Arial, sans-serif"
-                },
-                boxWidth : 20,
-                boxHeight :5                
-            },            
-        }
-    },
-          scales: {
-              y: {
-                  beginAtZero: true
-              }
-          }
-      }
-  }); 
-  div.appendChild(canvasLearnedWords);  
+    div.appendChild(this.renderNewWords(newWords));
+    div.appendChild(this.renderLearnedWords(newLearned));
   }
 
   renderView() {
@@ -189,12 +103,106 @@ class StatView extends ApplicationView {
     divDay.className = 'div-day';
     const divAll = document.createElement('div');
     divAll.className = 'div-day';
-    /// //
+  }
 
-    ///
-    // div.appendChild(canvasNewWords);
-    // div.appendChild(canvasLearnedWords);
-    // this.view = div;
+  /* eslint-disable class-methods-use-this */
+  renderNewWords(newWords: Array<{ date: Date; count: number }>): HTMLCanvasElement {
+    const canvasNewWords = document.createElement('canvas') as HTMLCanvasElement;
+    canvasNewWords.id = 'newWordsChart';
+    canvasNewWords.style.maxHeight = '300px';
+    const count = newWords.map((p) => p.count);
+    const date = newWords.map((item) => {
+      const month = item.date.getMonth() + 1;
+      const monthString = month < 10 ? `0${month}` : month;
+      return `${item.date.getDate()}.${monthString}`;
+    });
+    const newWordsContext = canvasNewWords.getContext('2d') as CanvasRenderingContext2D;
+    /* eslint-disable no-new */
+    new Chart(newWordsContext, {
+      type: 'line',
+      data: {
+        labels: date,
+        datasets: [
+          {
+            label: 'новых слов',
+            data: count,
+            backgroundColor: ['#ec990e'],
+            borderColor: ['#ffcb05'],
+            borderWidth: 3,
+          },
+        ],
+      },
+      options: {
+        plugins: {
+          legend: {
+            labels: {
+              font: {
+                size: 24,
+                family: 'Arial, sans-serif',
+              },
+              boxWidth: 20,
+              boxHeight: 5,
+            },
+          },
+        },
+        scales: {
+          y: {
+            beginAtZero: true,
+          },
+        },
+      },
+    });
+    return canvasNewWords;
+  }
+
+  /* eslint-disableclass-methods-use-this */
+  renderLearnedWords(newLearned: Array<{ date: Date; count: number }>): HTMLCanvasElement {
+    const canvasLearnedWords = document.createElement('canvas') as HTMLCanvasElement;
+    canvasLearnedWords.id = 'learnedWordsChart';
+    canvasLearnedWords.style.maxHeight = '300px';
+    const countLearned = newLearned.map((p) => p.count);
+    const dateLearned = newLearned.map((item) => {
+      const month = item.date.getMonth() + 1;
+      const monthString = month < 10 ? `0${month}` : month;
+      return `${item.date.getDate()}.${monthString}`;
+    });
+    const learnedWordsContext = canvasLearnedWords.getContext('2d') as CanvasRenderingContext2D;
+    /* eslint-disable no-new */
+    new Chart(learnedWordsContext, {
+      type: 'line',
+      data: {
+        labels: dateLearned,
+        datasets: [
+          {
+            label: 'Выучено слов',
+            data: countLearned,
+            backgroundColor: ['#ec990e'],
+            borderColor: ['#ffcb05'],
+            borderWidth: 3,
+          },
+        ],
+      },
+      options: {
+        plugins: {
+          legend: {
+            labels: {
+              font: {
+                size: 24,
+                family: 'Arial, sans-serif',
+              },
+              boxWidth: 20,
+              boxHeight: 5,
+            },
+          },
+        },
+        scales: {
+          y: {
+            beginAtZero: true,
+          },
+        },
+      },
+    });
+    return canvasLearnedWords;
   }
 }
 export default StatView;

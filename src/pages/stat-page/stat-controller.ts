@@ -1,5 +1,4 @@
 /* eslint-disable import/no-cycle */
-
 import Api from '../../Api';
 import App from '../../App';
 // import User from "../../types/User";
@@ -8,7 +7,6 @@ import StatModel from './stat-model';
 import StatView from './stat-view';
 import Statistic from '../../types/Statistic';
 import StatOptional from '../../types/StatOptional';
-import MainPageController from '../main-page/main-page-controller';
 
 class StatController extends ApplicationContoller {
   model: StatModel;
@@ -20,12 +18,11 @@ class StatController extends ApplicationContoller {
   api: Api = new Api();
 
   constructor() {
-    super(); 
+    super();
     this.pageView = new StatView();
     this.model = new StatModel(this.pageView);
     this.addEventListeners();
     this.getStat();
-  
   }
 
   addEventListeners() {
@@ -134,9 +131,7 @@ class StatController extends ApplicationContoller {
       newWordsProgress.push({ date: new Date(date), count: newWords });
       learnedProgress.push({ date: new Date(date), count: learnded });
     });
-
-    
-    this.pageView.showAllStat(newWordsProgress,learnedProgress);
+    this.pageView.showAllStat(newWordsProgress, learnedProgress);
     // let learnedWords :  Array<{date:Date , count:number}>
   }
 }

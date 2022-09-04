@@ -48,9 +48,8 @@ class AudioController extends ApplicationContoller {
         const target = e.currentTarget as HTMLButtonElement;
         if (target.classList.contains('game-button')) {
           this.model.gameStatus = 'Set Level';
-          
+
           this.getAllWords(Number(target.value));
-        
         }
       });
     }
@@ -110,12 +109,12 @@ class AudioController extends ApplicationContoller {
       randomPages = randomPages.filter((item, index, arr) => index === arr.indexOf(item));
     }
     // if(group ===6){
-    //   if(App.user){       
+    //   if(App.user){
     //    let userwords = await this.api.getUserWords(App.user?.userId,App.user?.token);
     //    words = userwords.filter(p=>p.difficulty ==='hard').map(p=>p.word);
     //   }
     // }
-    //else{
+    // else{
     for (let i = 0; i <= this.pagesPerGame; i += 1) {
       progress = (i / this.pagesPerGame) * 100;
       this.model.loadingStatus = progress;
@@ -123,7 +122,7 @@ class AudioController extends ApplicationContoller {
       const value: Array<Word> = await this.getwords(group, i);
       words = words.concat(value);
     }
-  //}
+    // }
     this.model.createQuiz(words, this.countQuestions);
   }
 

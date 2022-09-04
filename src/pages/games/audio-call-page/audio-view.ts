@@ -6,13 +6,7 @@ import AudioQuestion from './audio-question-component';
 import Api from '../../../Api';
 import * as modalResult from './modal-content';
 import ModalMessage from './modalMessage';
-import {
-  correctResultsText,
-  incorrectResultsText,
-  newAudioGameButtonText,
-  resultsText,
-} from '../../../utils/constants';
-import App from '../../../App';
+import { newAudioGameButtonText } from '../../../utils/constants';
 
 class AudioView {
   view: HTMLDivElement;
@@ -35,7 +29,7 @@ class AudioView {
     const divButtonsContainer = document.createElement('div');
     divButtonsContainer.className = 'buttons-container';
     div.appendChild(buttonNewGame);
-   
+
     for (let i = 1; i < 7; i += 1) {
       const button = document.createElement('button');
       button.className = `game-button l${i}`;
@@ -173,7 +167,7 @@ class AudioView {
   }
 
   showResults() {
-    (this.view.querySelector('.game-result') as HTMLDivElement)?.classList.remove('hidden');   
+    (this.view.querySelector('.game-result') as HTMLDivElement)?.classList.remove('hidden');
     (this.view.querySelector('.modal-message') as HTMLDivElement).classList.add('hidden');
   }
 

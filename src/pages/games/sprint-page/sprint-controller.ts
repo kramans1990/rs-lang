@@ -109,7 +109,7 @@ class SprintController extends ApplicationContoller {
     this.pageView.showProgressBar();
     this.model.gameStatus = 'Loading';
     let progress = this.initialbarProgress;
-    let words = new Array<Word>();   
+    let words = new Array<Word>();
     let randomPages: Array<number> = new Array<number>();
     while (randomPages.length < this.pagesPerGame) {
       randomPages.push(Math.floor(Math.random() * this.pagesPerGame + 1));

@@ -1,5 +1,5 @@
 .audio-call-container{
-  width: 90%;
+  /* width: 90%; */
   user-select: none;
   row-gap: 20px;
   justify-items: center;
@@ -11,7 +11,7 @@
  
 }
 .buttons-container{
-  width: 90vw;
+  /* width: 90vw; */
   display:flex;
   flex-wrap: wrap;
   align-items: center;

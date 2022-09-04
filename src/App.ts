@@ -55,7 +55,7 @@ class App {
   static signIn(data: string | ISignIn): void {
     if (typeof data === 'object') {
       const userData = data;
-      this.user = userData;
+      App.user = userData;
       saveDataToLocalStorage('rs-lang-user', JSON.stringify(userData));
       App.renderMainPage();
       const signInButton = document.querySelector('.sign-in-page-link') as HTMLAnchorElement;
@@ -139,15 +139,15 @@ class App {
   }
 
   static renderStatPage() {
-    //console.log(App.user);
-    if(App.user){
-    const controller: ApplicationContoller = new StatController();
-    App.setController(controller);
-    const mainButton = document.querySelector('.stat-page-link') as HTMLElement;
-    App.changeActiveClassForNavItemByElement(mainButton);
-    App.makeMainTransparentAgain();
-    App.pageInfo = { pageName: 'statPage' };}
-    else{
+    // console.log(App.user);
+    if (App.user) {
+      const controller: ApplicationContoller = new StatController();
+      App.setController(controller);
+      const mainButton = document.querySelector('.stat-page-link') as HTMLElement;
+      App.changeActiveClassForNavItemByElement(mainButton);
+      App.makeMainTransparentAgain();
+      App.pageInfo = { pageName: 'statPage' };
+    } else {
       App.renderAuthPage();
     }
   }

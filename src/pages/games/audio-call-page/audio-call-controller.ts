@@ -17,7 +17,7 @@ class AudioController extends ApplicationContoller {
 
   wordsPerPage = 20;
 
-  countQuestions = 20;
+  countQuestions = 6;
 
   initialbarProgress = 3;
 

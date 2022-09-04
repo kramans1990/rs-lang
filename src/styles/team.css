@@ -16,7 +16,7 @@
   justify-content: space-between;
   position: relative;
   width: 630px;
-  height: 260px;
+  min-height: 260px;
   padding: 10px 30px 14px;
   background: #fcf9f2;
   border: 2px solid var(--color-main);
@@ -36,6 +36,14 @@
   background-size: cover;
   background-color: #462524;
   background-position-x: center;
+}
+
+.member-card__name {
+  font-weight: 800;
+  font-size: 1.9rem;
+  text-align: right;
+  color: var(--color-accent);
+  margin-bottom: 10px;
 }
 
 .member-card__descr {

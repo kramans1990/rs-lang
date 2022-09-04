@@ -18,13 +18,16 @@ class MemberCard {
     memberImg.setAttribute('alt', 'avatar');
     const memberText = document.createElement('div');
     memberText.classList.add('member-card__text');
+    const memberName = document.createElement('p');
+    memberName.classList.add('member-card__name');
+    memberName.innerText = `${team[memberNum].name}`;
     const memberDescr = document.createElement('p');
     memberDescr.classList.add('member-card__descr');
     memberDescr.innerText = `${team[memberNum].description}`;
     const memberSlogan = document.createElement('p');
     memberSlogan.classList.add('member-card__slogan');
     memberSlogan.innerText = `${team[memberNum].slogan}`;
-    memberText.append(memberDescr, memberSlogan);
+    memberText.append(memberName, memberDescr, memberSlogan);
     memberBlock.append(memberImg, memberText);
     const pointsBlock = MemberCard.createMemberPointsBlock(memberNum);
     pointsBlock.classList.add('member-card__points');

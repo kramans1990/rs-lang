@@ -133,7 +133,7 @@ class StatController extends ApplicationContoller {
     });
 
     console.log(newWordsProgress, learnedProgress);
-    // this.pageView.showAllStat();
+    //this.pageView.showAllStat();
     // let learnedWords :  Array<{date:Date , count:number}>
   }
 }

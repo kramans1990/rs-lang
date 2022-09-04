@@ -18,10 +18,10 @@ class ModalMessage {
     const modalMessage = document.createElement('div');
     modalMessage.className = 'modal-message-content';
     const close = document.createElement('span');
-    close.innerText = 'x';
+    close.innerText = "x";
     close.className = 'modal-message-close';
     const divMessage = document.createElement('div');
-    divMessage.className = 'message-text';
+    divMessage.className = 'message-text'
     divMessage.innerText = messageText;
     modalMessage.append(close, divMessage);
     modal.appendChild(modalMessage);

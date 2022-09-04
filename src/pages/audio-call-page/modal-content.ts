@@ -1,5 +1,5 @@
 export const modalHtml = `<div class="modal-content">
-<span class="modal-close">&times;</span>  
+<span class="modal-close">x</span>  
 <div class="div-result-flex">
 <span>Результаты игры</Span>
  <span class="game-span-wrong">Неверные ответы:</span>

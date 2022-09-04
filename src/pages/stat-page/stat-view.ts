@@ -16,6 +16,7 @@ class StatView extends ApplicationView {
     super();
     this.renderView();
     Chart.register(...registerables);
+    
   }
 
   showEverydayStat(
@@ -29,6 +30,7 @@ class StatView extends ApplicationView {
     accuracyTotal: number,
   ) {
     const div = this.view.querySelector('.stat-content') as HTMLDivElement;
+    div.classList.add('popup');
     div.innerHTML = '';
     const title = document.createElement('div');
     title.innerText = 'Статистика за сегодня';
@@ -147,7 +149,7 @@ class StatView extends ApplicationView {
     ///
     // div.appendChild(canvasNewWords);
     // div.appendChild(canvasLearnedWords);
-    this.view = div;
+   // this.view = div;
   }
 }
 export default StatView;

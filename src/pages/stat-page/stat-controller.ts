@@ -41,7 +41,7 @@ class StatController extends ApplicationContoller {
   async getStat() {
     if (App.user) {
       this.stat = await this.api.getUserStat(App.user?.userId, App.user?.token);
-      // this.pageView.showEverydayStat(this.stat);
+      this.showDay();
     }
   }
 
@@ -133,7 +133,7 @@ class StatController extends ApplicationContoller {
     });
 
     console.log(newWordsProgress, learnedProgress);
-    // this.pageView.showAllStat();
+    //this.pageView.showAllStat();
     // let learnedWords :  Array<{date:Date , count:number}>
   }
 }

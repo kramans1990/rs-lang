@@ -5,6 +5,7 @@ import { Word } from '../../types/Word';
 import AudioQuestion from './audio-question-component';
 import Api from '../../Api';
 import * as modalResult from './modal-content';
+import ModalMessage from './modalMessage';
 
 class AudioView {
   view: HTMLDivElement;
@@ -51,16 +52,18 @@ class AudioView {
     const modal = document.createElement('div');
     modal.className = 'game-result hidden';
     modal.innerHTML = modalResult.modalHtml;
-
+    const modalMessage = new ModalMessage('Недостаточно слов для игры');
     gameContainer.className = 'game-container';
     gameContainer.append(divDifficulty, progressBar, statusContainer);
     div.appendChild(gameContainer);
     div.appendChild(modal);
+    div.appendChild(modalMessage.modal);
     this.view = div;
   }
 
   showGameResult(audioTests: Array<AudioQuestion>) {
     this.view.querySelector('.game-result')?.classList.remove('hidden');
+    this.view.querySelector('.game-result')?.classList.add('popup');
     const correctdiv = document.querySelector('.answer-container-correct') as HTMLDivElement;
     const wrongDiv = document.querySelector('.answer-container-wrong') as HTMLDivElement;
     correctdiv.innerHTML = '';
@@ -114,6 +117,7 @@ class AudioView {
 
   showLevelSelection() {
     (this.view.querySelector('.dif-container') as HTMLDivElement).classList.remove('hidden');
+    (this.view.querySelector('.modal-message') as HTMLDivElement).classList.add('hidden');
   }
 
   showQuestion(audioTestView: HTMLDivElement): void {
@@ -133,26 +137,32 @@ class AudioView {
 
   showDifficultySelection(): void {
     (this.view.querySelector('.dif-container') as HTMLDivElement)?.classList.remove('hidden');
+    (this.view.querySelector('.modal-message') as HTMLDivElement).classList.add('hidden');
   }
 
   hideDifficultySelection() {
     (this.view.querySelector('.dif-container') as HTMLDivElement)?.classList.add('hidden');
+    (this.view.querySelector('.modal-message') as HTMLDivElement).classList.add('hidden');
   }
 
   showGame() {
     (this.view.querySelector('.div-quiz-container') as HTMLDivElement)?.classList.remove('hidden');
+    (this.view.querySelector('.modal-message') as HTMLDivElement).classList.add('hidden');
   }
 
   hideGame() {
     (this.view.querySelector('.div-quiz-container') as HTMLDivElement)?.classList.add('hidden');
+    (this.view.querySelector('.modal-message') as HTMLDivElement).classList.add('hidden');
   }
 
   hideProgressBar() {
     (this.view.querySelector('.game-progress-bar') as HTMLDivElement)?.classList.add('hidden');
+    (this.view.querySelector('.modal-message') as HTMLDivElement).classList.add('hidden');
   }
 
   showProgressBar() {
     (this.view.querySelector('.game-progress-bar') as HTMLDivElement)?.classList.remove('hidden');
+    (this.view.querySelector('.modal-message') as HTMLDivElement).classList.add('hidden');
   }
 
   showResults() {
@@ -297,6 +307,11 @@ class AudioView {
     } else {
       this.handleNavKeys(key);
     }
+  }
+
+  setNotEnouthWordsModal() {
+    (this.view.querySelector('.modal-message') as HTMLDivElement).classList.remove('hidden');
+    (this.view.querySelector('.modal-message') as HTMLDivElement).classList.add('popup');
   }
 }
 export default AudioView;

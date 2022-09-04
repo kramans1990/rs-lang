@@ -143,42 +143,40 @@ class SprintController extends ApplicationContoller {
         (item: UserWord): boolean => item.wordId === test.correctAnswer.id,
       );
       if (find.length === 0) {
-        let progress = 0;
-        progress = test.isCorrect ? (progress = 20) : 0;
-        const difficulty = 'no-hard';
-        const successfulAttempts = test.isCorrect ? 1 : 0;
-        const unsuccessfulAttempts = test.isCorrect ? 0 : 1;
-        const userWord: UserWord = new UserWord(
-          test.correctAnswer,
-          difficulty,
-          progress,
-          successfulAttempts,
-          unsuccessfulAttempts,
-        );
+        // let progress = 0;
+        // progress = test.isCorrect ? (progress = 20) : 0;
+        // const difficulty = 'no-hard';
+        // const successfulAttempts = test.isCorrect ? 1 : 0;
+        // const unsuccessfulAttempts = test.isCorrect ? 0 : 1;
+        const userWord: UserWord = new UserWord();
+        // test.correctAnswer,
+        // difficulty,
+        // progress,
+        // successfulAttempts,
+        // unsuccessfulAttempts,
 
         this.api.createUserWord(App.user.userId, App.user.token, userWord);
       } else {
         const word = find[0];
-        let { progress } = word.optional;
-        progress = test.isCorrect ? (progress += 20) : (progress -= 20);
-        progress = progress >= 100 ? 100 : progress;
-        progress = progress <= 0 ? 0 : progress;
-        const difficulty = progress === 100 ? 'no-hard' : find[0].difficulty;
+        // let { progress } = word.optional;
+        // progress = test.isCorrect ? (progress += 20) : (progress -= 20);
+        // progress = progress >= 100 ? 100 : progress;
+        // progress = progress <= 0 ? 0 : progress;
+        // const difficulty = progress === 100 ? 'no-hard' : find[0].difficulty;
         if (test.isCorrect) {
           word.optional.successfulAttempts += 1;
         }
         if (!test.isCorrect) {
           word.optional.unsuccessfulAttempts += 1;
         }
-        const { successfulAttempts } = word.optional;
-        const { unsuccessfulAttempts } = word.optional;
-        const userWord: UserWord = new UserWord(
-          test.correctAnswer,
-          difficulty,
-          progress,
-          successfulAttempts,
-          unsuccessfulAttempts,
-        );
+        // const { successfulAttempts } = word.optional;
+        // const { unsuccessfulAttempts } = word.optional;
+        const userWord: UserWord = new UserWord();
+        // test.correctAnswer,
+        // difficulty,
+        // progress,
+        // successfulAttempts,
+        // unsuccessfulAttempts,
         userWord.word = test.correctAnswer;
         userWord.wordId = word.wordId;
         this.api.updateUserWord(App.user.userId, App.user.token, userWord);

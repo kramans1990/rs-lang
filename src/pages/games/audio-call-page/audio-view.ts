@@ -4,7 +4,12 @@ import './modal.css';
 import { Word } from '../../../types/Word';
 import AudioQuestion from './audio-question-component';
 import Api from '../../../Api';
-import { correctResultsText, incorrectResultsText, resultsText } from '../../../utils/constants';
+import {
+  correctResultsText,
+  incorrectResultsText,
+  newAudioGameButtonText,
+  resultsText,
+} from '../../../utils/constants';
 
 class AudioView {
   view: HTMLDivElement;
@@ -21,7 +26,7 @@ class AudioView {
     const div = document.createElement('div');
     div.className = 'audio-call-container';
     const buttonNewGame = document.createElement('button');
-    buttonNewGame.innerText = 'Новая игра (N)';
+    buttonNewGame.innerText = newAudioGameButtonText;
     buttonNewGame.id = 'new-game';
     buttonNewGame.className = 'new-game-button';
     const divButtonsContainer = document.createElement('div');

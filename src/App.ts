@@ -10,10 +10,15 @@ import {
   getDataFromLocalStorage,
   removeDataFromLocalStorage,
   saveDataToLocalStorage,
+  burgerMenuHandle,
+  clickMenuHandle,
+  setBackgroundForBookPage,
+  getAggregatedNumberFromLS,
 } from './functions/functions';
 import { logOutText, signInButtonText } from './utils/constants';
 import SprintController from './pages/games/sprint-page/sprint-controller';
-import GamesPageController from './pages/games/games-page-controller';
+import StatController from './pages/stat-page/stat-controller';
+import AudioController from './pages/games/audio-call-page/audio-call-controller';
 
 class App {
   static main: HTMLElement | null;
@@ -69,6 +74,9 @@ class App {
     signInButton.addEventListener('click', App.renderAuthPage);
     this.user = undefined;
     removeDataFromLocalStorage('rs-lang-user');
+    removeDataFromLocalStorage('aggregatedNumber');
+    removeDataFromLocalStorage('pageInfo');
+    App.makeMainTransparentAgain();
   }
 
   static changeActiveClassForNavItemByEvent(e: Event): void {
@@ -94,11 +102,30 @@ class App {
 
   static renderBookPage() {
     const controller: ApplicationContoller = new BookController();
-
     App.setController(controller);
     const mainButton = document.querySelector('.book-page-link') as HTMLElement;
     App.changeActiveClassForNavItemByElement(mainButton);
     App.pageInfo = { pageName: 'bookPage' };
+    const aggregatedNumber = getAggregatedNumberFromLS();
+    setBackgroundForBookPage(aggregatedNumber);
+  }
+
+  static renderAudiocallPage() {
+    const controller: ApplicationContoller = new AudioController();
+    App.setController(controller);
+    const mainButton = document.querySelector('.game-page-link') as HTMLElement;
+    App.changeActiveClassForNavItemByElement(mainButton);
+    App.makeMainTransparentAgain();
+    App.pageInfo = { pageName: 'audiocallPage' };
+  }
+
+  static renderSprintPage() {
+    const controller: ApplicationContoller = new SprintController();
+    App.setController(controller);
+    const mainButton = document.querySelector('.game-page-link') as HTMLElement;
+    App.changeActiveClassForNavItemByElement(mainButton);
+    App.makeMainTransparentAgain();
+    App.pageInfo = { pageName: 'sprintPage' };
   }
 
   static renderAuthPage(): void {
@@ -113,6 +140,15 @@ class App {
     App.pageInfo = { pageName: 'authPage' };
   }
 
+  static renderStatPage() {
+    const controller: ApplicationContoller = new StatController();
+    App.setController(controller);
+    const mainButton = document.querySelector('.stat-page-link') as HTMLElement;
+    App.changeActiveClassForNavItemByElement(mainButton);
+    App.makeMainTransparentAgain();
+    App.pageInfo = { pageName: 'statPage' };
+  }
+
   static renderRegPage(): void {
     const controller: ApplicationContoller = new RegistrationController();
     App.setController(controller);
@@ -120,11 +156,16 @@ class App {
 
   static makeMainTransparentAgain(): void {
     const mainWrapper = document.querySelector('.main_wrapper') as HTMLDivElement;
+    mainWrapper.classList.remove('all-done');
     mainWrapper.style.backgroundColor = 'transparent';
   }
 
   addEventListeners() {
     window.addEventListener('load', (): void => {
+      if (getDataFromLocalStorage('rs-lang-user')) {
+        const user = getDataFromLocalStorage('rs-lang-user') as ISignIn;
+        App.signIn(user);
+      }
       if (getDataFromLocalStorage('pageInfo')) {
         const pageInfo = getDataFromLocalStorage('pageInfo') as IPageInfo;
         const { pageName } = pageInfo;
@@ -135,6 +176,15 @@ class App {
           case 'bookPage':
             App.renderBookPage();
             break;
+          case 'audiocallPage':
+            App.renderAudiocallPage();
+            break;
+          case 'statPage':
+            App.renderStatPage();
+            break;
+          // case 'sprintPage':
+          //   App.renderSprintPage();
+          //   break;
           case 'authPage':
             App.renderAuthPage();
             break;
@@ -142,44 +192,34 @@ class App {
             App.renderMainPage();
             break;
         }
-      } else {
-        App.renderMainPage();
-      }
-      if (getDataFromLocalStorage('rs-lang-user')) {
-        const user = getDataFromLocalStorage('rs-lang-user') as ISignIn;
-        App.signIn(user);
-      }
+      } // else {
+      //   App.renderMainPage();
+      // }
     });
     document.querySelector('.header__logo')?.addEventListener('click', App.renderMainPage);
-    // App.renderMainPage();
     document.querySelector('.main-page-link')?.addEventListener('click', App.renderMainPage);
     document.querySelector('.book-page-link')?.addEventListener('click', App.renderBookPage);
-    //   document.querySelector('.words-page-link')?.addEventListener('click', (): void => {
-    //     this.page = new WordsPage();
-    //   });
-    document.querySelector('.sprint-link')?.addEventListener('click', (): void => {
-      const controller: ApplicationContoller = new SprintController();
-      App.setController(controller);
-    });
+    document.querySelector('#sprint-link')?.addEventListener('click', App.renderSprintPage);
     document.querySelector('.book-page-link')?.addEventListener('click', (e: Event): void => {
       const controller: ApplicationContoller = new BookController();
       App.setController(controller);
       App.changeActiveClassForNavItemByEvent(e);
     });
     document.querySelector('.sign-in-page-link')?.addEventListener('click', App.renderAuthPage);
-    document.querySelector('.game-page-link')?.addEventListener('click', (): void => {
-      const controller: ApplicationContoller = new GamesPageController();
-      App.setController(controller);
-    });
-    document.querySelector('.sign-in-page-link')?.addEventListener('click', (): void => {
-      const controller: ApplicationContoller = new AuthController();
-      App.setController(controller);
-    });
-    document.querySelector('.sign-up-page-link')?.addEventListener('click', (): void => {
-      const controller: ApplicationContoller = new RegistrationController();
-      App.setController(controller);
-    });
+    // document.querySelector('.game-page-link')?.addEventListener('click', (): void => {
+    //   const controller: ApplicationContoller = new GamesPageController();
+    //   App.setController(controller);
+    // });
+    document.querySelector('.stat-page-link')?.addEventListener('click', App.renderStatPage);
+    document.querySelector('.audio-page-link')?.addEventListener('click', App.renderAudiocallPage);
+    document.querySelector('.sign-up-page-link')?.addEventListener('click', App.renderRegPage);
+    document.querySelector('.burger')?.addEventListener('click', burgerMenuHandle);
+    document.querySelector('.nav-list')?.addEventListener('click', clickMenuHandle);
   }
+  //   document.querySelector('.words-page-link')?.addEventListener('click', (): void => {
+  //     this.page = new WordsPage();
+  //   });
+  // document.querySelector('.sprint-page-link')?.addEventListener('click', App.renderSprintPage);
   //   document.querySelector('.words-page-link')?.addEventListener('click', (): void => {
   //     this.page = new WordsPage();
   //   });

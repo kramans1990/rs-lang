@@ -1,0 +1,68 @@
+.stat-container{
+    height: 100%;  
+    display: grid;
+    grid-template-rows: 60px 0.95fr;
+ 
+    /* align-items: center; */
+  
+}
+.div-buttons-flex{
+    display: flex;
+    justify-content: center;
+    column-gap: 20px;
+    flex-direction: row;
+}
+.stat-button{
+    width: 280px;
+    height: 45px;
+    background: var(--color-main);
+    opacity: 0.9;   
+    font-size: 20px;
+    font-weight: 500;
+    border: 0px;
+    border-radius: 5px;
+    color: #FFFFFF;
+    margin-top: 5px;
+   
+  }
+  .stat-button:hover{
+    opacity: 1;
+    font-size: 20px;
+    font-weight: 700;
+    border: 0px;
+    border-radius: 3px;
+    cursor: pointer;
+  }
+  .stat-content{
+    background-color: rgba(211, 210, 210, 0);
+    border-radius: 10px;
+  }
+  .stat-content > div{
+    margin-left: 10%;
+    font-family: "Raleway", sans-serif;
+    color: white;
+    font-style: normal;   
+    margin-bottom: 10px;
+    font-weight: 600;
+    font-size: 2.2em;
+    line-height: 2.2rem;
+    letter-spacing: 1px;
+  }
+  .stat-content > h3{
+    text-align: center;
+    margin-left: 10%;
+    font-family: "Raleway", sans-serif;   
+    font-style: normal;
+    font-size: x-large;
+    margin-bottom: 10px;
+    color : black;
+  }
+  .title{
+    margin-top: 10px;
+    text-align: center;
+    color:rgb(255, 255, 255);
+  }
+
+  .statcontent > .title{
+    color : black;
+  }

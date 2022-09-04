@@ -31,23 +31,25 @@ const playButtonText = 'Играть';
 
 const numberOfLevels = 7; // 6 + 1(все сложные слова)
 const numberOfPagesInLevel = 30;
+const numberOfCardsPerPage = 20;
 const btnHardText = 'сложные';
 const btnLevelText = 'уровень ';
 const audioGameName = 'Аудиовызов';
 const sprintGameName = 'Спринт';
 const extraGameName = 'Экстра';
 const hardButtonText = 'Сложное';
-const hardButtonTextOpposite = 'несложное';
 const doneButtonText = 'Изучено';
-const doneButtonTextOpposite = 'поучить';
 const iconSprintSrc = './assets/svg/icon_sprint.svg';
 const iconAudioGameSrc = './assets/svg/icon_audio_game.svg';
 const iconExtraGameSrc = './assets/svg/icon_audio_game.svg';
+const progressForDoneWord = 100;
+const progressForNoDoneWord = 0;
 
 const backButtonText = 'Назад';
 const levelText = 'Уровень';
 const levelSelectLabelText = 'Выберите уровень сложности';
-const newGameButtonText = 'Новая игра (N)';
+const newAudioGameButtonText = 'Новая игра Аудиовызов (N)';
+const newSprintGameButtonText = 'Новая игра Спринт (N)';
 const skipText = 'Пропустить (Space)';
 const nextText = 'Далее (Space)';
 
@@ -91,10 +93,9 @@ export {
   extraGameName,
   logOutText,
   hardButtonText,
-  hardButtonTextOpposite,
   doneButtonText,
-  doneButtonTextOpposite,
   numberOfPagesInLevel,
+  numberOfCardsPerPage,
   iconSprintSrc,
   iconAudioGameSrc,
   iconExtraGameSrc,
@@ -108,9 +109,12 @@ export {
   backButtonText,
   levelText,
   levelSelectLabelText,
-  newGameButtonText,
+  newAudioGameButtonText,
+  newSprintGameButtonText,
   arrowRight,
   arrowLeft,
   skipText,
   nextText,
+  progressForDoneWord,
+  progressForNoDoneWord,
 };

@@ -16,4 +16,5 @@ export interface IPageInfo {
   pageName: string;
   level?: number;
   pageNumber?: number;
+  aggregatedNumber?: number;
 }

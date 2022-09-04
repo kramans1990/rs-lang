@@ -1,63 +1,8 @@
 /* eslint-disable import/no-cycle */
-import App from '../../App';
-import {
-  backButtonText,
-  correctResultsText,
-  incorrectResultsText,
-  levelText,
-  levelSelectLabelText,
-  newGameButtonText,
-  resultsText,
-} from '../../utils/constants';
-import ApplicationContoller from '../application-controller';
-import GamesPageController from './games-page/games-page-controller';
+import { correctResultsText, incorrectResultsText, resultsText } from '../../utils/constants';
 
 class GameCommonView {
   view: HTMLDivElement;
-
-  static renderGameView(): HTMLDivElement {
-    const gameBlock = document.createElement('div');
-    gameBlock.className = 'game-container';
-    const newGameButton = document.createElement('button');
-    newGameButton.innerText = newGameButtonText;
-    newGameButton.id = 'new-game';
-    newGameButton.className = 'new-game-button';
-    const divButtonsContainer = document.createElement('div');
-    divButtonsContainer.className = 'buttons-container';
-    const backButton = document.createElement('button');
-    backButton.classList.add('back-button');
-    backButton.innerText = backButtonText;
-    backButton.addEventListener('click', (): void => {
-      const controller: ApplicationContoller = new GamesPageController();
-      App.setController(controller);
-    });
-    for (let i = 1; i < 8; i += 1) {
-      const button = document.createElement('button');
-      button.className = `game-button l${i}`;
-      button.value = (i - 1).toString();
-      button.innerText = `${levelText} ${i}`;
-      divButtonsContainer.appendChild(button);
-    }
-    const levelSelectLabel = document.createElement('label');
-    levelSelectLabel.innerText = levelSelectLabelText;
-    const divDifficulty = document.createElement('div');
-    divDifficulty.className = 'dif-container hidden';
-    divDifficulty.append(levelSelectLabel, divButtonsContainer);
-    const progressBar = document.createElement('div');
-    const innerdiv = document.createElement('div');
-    innerdiv.className = 'loading';
-    progressBar.className = 'game-progress-bar hidden';
-    progressBar.id = 'audio-progress-bar';
-    progressBar.appendChild(innerdiv);
-    const gameContainer = document.createElement('div');
-    const statusContainer = document.createElement('div');
-    const modal = GameCommonView.createModalContent();
-    modal.className = 'game-result hidden';
-    gameContainer.className = 'game-container';
-    gameContainer.append(divDifficulty, progressBar, statusContainer);
-    gameBlock.append(newGameButton, backButton, gameContainer, modal);
-    return gameBlock;
-  }
 
   static createModalContent(): HTMLDivElement {
     const modalContent = document.createElement('div');

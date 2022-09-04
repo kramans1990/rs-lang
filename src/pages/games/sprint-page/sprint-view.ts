@@ -4,7 +4,7 @@ import {
   incorrectResultsText,
   correctResultsText,
   levelText,
-  newGameButtonText,
+  newSprintGameButtonText,
   levelSelectLabelText,
   sprintTime,
 } from '../../../utils/constants';
@@ -34,7 +34,7 @@ class SprintView extends ApplicationView {
     const div = document.createElement('div');
     div.className = 'audio-call-container';
     const buttonNewGame = document.createElement('button');
-    buttonNewGame.innerText = newGameButtonText;
+    buttonNewGame.innerText = newSprintGameButtonText;
     buttonNewGame.id = 'new-game';
     buttonNewGame.className = 'new-game-button';
     const divButtonsContainer = document.createElement('div');

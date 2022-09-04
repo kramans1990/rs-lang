@@ -1,5 +1,7 @@
+/* eslint-disable import/no-cycle */
 import ApplicationView from '../application-view';
 import '../../styles/main-page.css';
+import '../../styles/burger.css';
 
 /* prettier-ignore */
 
@@ -10,8 +12,9 @@ import {
   playButtonText,
   rsLang,
 } from '../../utils/constants';
-
-/* prettier-ignore */
+import App from '../../App';
+import ApplicationContoller from '../application-controller';
+import GamesPageController from '../games/games-page-controller';
 
 class MainPageView extends ApplicationView {
   view: HTMLDivElement;
@@ -37,10 +40,18 @@ class MainPageView extends ApplicationView {
     const buttons = document.createElement('div');
     buttons.classList.add('buttons');
     const learnButton = document.createElement('button');
-    learnButton.classList.add('btn_intro', 'btn', 'btn_colored');
+    learnButton.classList.add('btn_intro', 'btn', 'btn_colored', 'learn');
+    learnButton.addEventListener('click', App.renderBookPage);
     learnButton.innerText = learnButtonText;
     const playButton = document.createElement('button');
-    playButton.classList.add('btn_intro', 'btn', 'btn_bordered');
+    playButton.classList.add('btn_intro', 'btn', 'btn_bordered', 'play');
+    playButton.addEventListener('click', (): void => {
+      const gamesController: ApplicationContoller = new GamesPageController();
+      App.setController(gamesController);
+      const mainButton = document.querySelector('.main-page-link') as HTMLElement;
+      mainButton.classList.remove('active');
+      document.querySelector('.game-page-link')?.classList.add('active');
+    });
     playButton.innerText = playButtonText;
     buttons.append(learnButton, playButton);
     this.view.append(title, introText, buttons);

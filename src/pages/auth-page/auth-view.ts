@@ -18,7 +18,7 @@ class AuthView extends ApplicationView {
   }
 
   renderAuthBlock() {
-    this.view = document.createElement('div');
+    this.view = document.createElement('form');
     this.view.classList.add('authorisation');
     const title = document.createElement('p');
     title.classList.add('auth-title');
@@ -36,6 +36,7 @@ class AuthView extends ApplicationView {
     const signInButton = document.createElement('button');
     signInButton.classList.add('sign-in-button');
     signInButton.innerText = upperSignInButtonText;
+    signInButton.addEventListener('click', (e: MouseEvent): void => e.preventDefault());
     const haveNotYetAccount = document.createElement('div');
     haveNotYetAccount.classList.add('have-not-yet-account');
     const haveNotYetAccountSpan = document.createElement('span');

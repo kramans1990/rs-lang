@@ -55,7 +55,7 @@ class App {
   static signIn(data: string | ISignIn): void {
     if (typeof data === 'object') {
       const userData = data;
-      this.user = userData;
+      App.user = userData;
       saveDataToLocalStorage('rs-lang-user', JSON.stringify(userData));
       App.renderMainPage();
       const signInButton = document.querySelector('.sign-in-page-link') as HTMLAnchorElement;
@@ -73,7 +73,7 @@ class App {
     signInButton.innerText = signInButtonText;
     signInButton.removeEventListener('click', App.logOut);
     signInButton.addEventListener('click', App.renderAuthPage);
-    this.user = undefined;
+    App.user = undefined;
     removeDataFromLocalStorage('rs-lang-user');
     removeDataFromLocalStorage('aggregatedNumber');
     removeDataFromLocalStorage('pageInfo');

@@ -1,4 +1,4 @@
 class ApplicationView {
-  view: HTMLDivElement;
+  view: HTMLDivElement | HTMLFormElement;
 }
 export default ApplicationView;

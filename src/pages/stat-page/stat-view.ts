@@ -16,7 +16,6 @@ class StatView extends ApplicationView {
     super();
     this.renderView();
     Chart.register(...registerables);
-    
   }
 
   showEverydayStat(
@@ -149,7 +148,7 @@ class StatView extends ApplicationView {
     ///
     // div.appendChild(canvasNewWords);
     // div.appendChild(canvasLearnedWords);
-   // this.view = div;
+    // this.view = div;
   }
 }
 export default StatView;

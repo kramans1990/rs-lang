@@ -64,6 +64,8 @@ class BookController extends ApplicationContoller {
     this.currentLevel = 0;
     this.currentPage = 0;
 
+    this.setAggregatedNumber(this.currentLevel, this.currentPage);
+
     if (getDataFromLocalStorage('pageInfo')) {
       this.getPageInfoFromLocalStorage();
     }
@@ -82,7 +84,7 @@ class BookController extends ApplicationContoller {
     this.setView();
   }
 
-  async setBackgroundByAggregatedNumber(currentLevel: number, currentPage: number) {
+  async setAggregatedNumber(currentLevel: number, currentPage: number) {
     if (App.user) {
       const responce = await this.bookModel.getUserWordsAgregatedByFilter(
         App.user.userId,
@@ -91,10 +93,18 @@ class BookController extends ApplicationContoller {
         `{"$and":[{"group":${currentLevel}},{"page":${currentPage}},{"$or":[{"userWord.difficulty":"hard"},{"userWord.optional.progress":100}]}]}`,
       );
       this.aggregatedNumber = responce.length;
+    }
+    return this.aggregatedNumber;
+  }
+
+  async setBackgroundByAggregatedNumber(currentLevel: number, currentPage: number) {
+    if (App.user) {
+      this.aggregatedNumber = await this.setAggregatedNumber(currentLevel, currentPage);
       setBackgroundForBookPage(this.aggregatedNumber);
       saveDataToLocalStorage('aggregatedNumber', JSON.stringify(this.aggregatedNumber));
+    } else {
+      this.aggregatedNumber = 0;
     }
-    this.aggregatedNumber = 0;
     saveDataToLocalStorage('aggregatedNumber', JSON.stringify(this.aggregatedNumber));
     return this.aggregatedNumber;
   }

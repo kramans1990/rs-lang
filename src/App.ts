@@ -60,7 +60,6 @@ class App {
       App.renderMainPage();
       const signInButton = document.querySelector('.sign-in-page-link') as HTMLAnchorElement;
       signInButton.innerText = logOutText;
-      signInButton.removeEventListener('click', App.renderAuthPage);
       signInButton.addEventListener('click', App.logOut);
       return;
     }

@@ -4,7 +4,7 @@ import './modal.css';
 import { Word } from '../../../types/Word';
 import AudioQuestion from './audio-question-component';
 import Api from '../../../Api';
-import * as modalResult from './modal-content';
+import *  as modalResult from './modal-content'
 import ModalMessage from './modalMessage';
 import { newAudioGameButtonText } from '../../../utils/constants';
 

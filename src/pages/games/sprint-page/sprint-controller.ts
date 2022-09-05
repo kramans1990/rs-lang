@@ -53,7 +53,7 @@ class SprintController extends ApplicationContoller {
         }
       });
     }
-    this.pageView.view.addEventListener('click', async (e: MouseEvent) => {
+    this.pageView.view.addEventListener('click', async (e: MouseEvent): Promise<void> => {
       const target = e.target as HTMLElement;
       // if (target.className === 'game-button option') {
       //   this.model.updateGameProgress();//обновление статистики

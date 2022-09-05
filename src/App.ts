@@ -14,8 +14,6 @@ import {
   saveDataToLocalStorage,
   burgerMenuHandle,
   clickMenuHandle,
-  setBackgroundForBookPage,
-  getAggregatedNumberFromLS,
 } from './functions/functions';
 import { logOutText, signInButtonText } from './utils/constants';
 import SprintController from './pages/games/sprint-page/sprint-controller';
@@ -109,8 +107,8 @@ class App {
     const mainButton = document.querySelector('.book-page-link') as HTMLElement;
     App.changeActiveClassForNavItemByElement(mainButton);
     App.pageInfo = { pageName: 'bookPage' };
-    const aggregatedNumber = getAggregatedNumberFromLS();
-    setBackgroundForBookPage(aggregatedNumber);
+    // const aggregatedNumber = getAggregatedNumberFromLS();
+    // setBackgroundForBookPage(aggregatedNumber);
   }
 
   static renderAudiocallPage(words?: Array<Word>) {

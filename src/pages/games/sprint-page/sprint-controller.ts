@@ -36,7 +36,10 @@ class SprintController extends ApplicationContoller {
       this.addKeyBoardListeners();
     }
     if (words) {
-      // this.model.gameStatus = 'Game';
+      this.pageView = new SprintView();
+      this.model = new SprintModel(this.pageView);
+      this.addListeners();
+      this.addKeyBoardListeners();
       this.model.createQuiz(words, this.countQuestions);
     }
   }

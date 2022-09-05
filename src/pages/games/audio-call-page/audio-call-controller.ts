@@ -17,7 +17,7 @@ class AudioController extends ApplicationContoller {
 
   wordsPerPage = 20;
 
-  countQuestions = 6;
+  countQuestions = 20;
 
   initialbarProgress = 3;
 
@@ -112,12 +112,7 @@ class AudioController extends ApplicationContoller {
       randomPages.push(Math.floor(Math.random() * this.pagesPerGame + 1));
       randomPages = randomPages.filter((item, index, arr) => index === arr.indexOf(item));
     }
-    // if(group ===6){
-    //   if(App.user){
-    //    let userwords = await this.api.getUserWords(App.user?.userId,App.user?.token);
-    //    words = userwords.filter(p=>p.difficulty ==='hard').map(p=>p.word);
-    //   }
-    // }
+
     // else{
     for (let i = 0; i <= this.pagesPerGame; i += 1) {
       progress = (i / this.pagesPerGame) * 100;

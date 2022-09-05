@@ -4,7 +4,7 @@ import './modal.css';
 import { Word } from '../../../types/Word';
 import AudioQuestion from './audio-question-component';
 import Api from '../../../Api';
-import *  as modalResult from './modal-content'
+import * as modalResult from './modal-content';
 import ModalMessage from './modalMessage';
 import { newAudioGameButtonText } from '../../../utils/constants';
 
@@ -176,8 +176,12 @@ class AudioView {
 
     const correctdiv = document.querySelector('.answer-container-correct') as HTMLDivElement;
     const wrongDiv = document.querySelector('.answer-container-wrong') as HTMLDivElement;
-    correctdiv.innerHTML = '';
-    wrongDiv.innerHTML = '';
+    if (correctdiv) {
+      correctdiv.innerHTML = '';
+    }
+    if (wrongDiv) {
+      wrongDiv.innerHTML = '';
+    }
   }
 
   updateProgressBar(loading: number) {

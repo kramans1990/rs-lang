@@ -228,8 +228,12 @@ class SprintView extends ApplicationView {
 
     const correctdiv = document.querySelector('.answer-container-correct') as HTMLDivElement;
     const wrongDiv = document.querySelector('.answer-container-wrong') as HTMLDivElement;
-    correctdiv.innerHTML = '';
-    wrongDiv.innerHTML = '';
+    if (correctdiv) {
+      correctdiv.innerHTML = '';
+    }
+    if (wrongDiv) {
+      wrongDiv.innerHTML = '';
+    }
   }
 
   // view

@@ -15,10 +15,7 @@ class StatView extends ApplicationView {
   constructor() {
     super();
     this.renderView();
-<<<<<<< HEAD
 
-=======
->>>>>>> 2b95122a44e3e0373fed65e7880891e789382a03
     Chart.register(...registerables);
   }
 
@@ -158,7 +155,7 @@ class StatView extends ApplicationView {
     return canvasNewWords;
   }
 
-  /* eslint-disableclass-methods-use-this */
+  /* eslint-disable class-methods-use-this */
   renderLearnedWords(newLearned: Array<{ date: Date; count: number }>): HTMLCanvasElement {
     const canvasLearnedWords = document.createElement('canvas') as HTMLCanvasElement;
     canvasLearnedWords.id = 'learnedWordsChart';

@@ -26,6 +26,7 @@ class AudioController extends ApplicationContoller {
 
   constructor(words?: Array<Word>) {
     super();
+    this.updateRefreshToken();
 
     if (!words) {
       this.pageView = new AudioView();

@@ -50,7 +50,17 @@ class Api {
     return response;
   }
 
-  async refreshToken(signIn: ISignIn): Promise<Response> {
+  async updateRefreshToken(signIn: ISignIn): Promise<Response> {
+    const response: Response = await fetch(`${this.users}/${signIn.userId}/tokens`, {
+      method: 'GET',
+      headers: {
+        authorization: `Bearer ${signIn.refreshToken}`,
+      },
+    });
+    return response;
+  }
+
+  async updateToken(signIn: ISignIn): Promise<Response> {
     const response: Response = await fetch(`${this.users}/${signIn.userId}/tokens`, {
       method: 'GET',
       headers: {

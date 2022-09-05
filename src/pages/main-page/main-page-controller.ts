@@ -8,6 +8,7 @@ class MainPageController extends ApplicationContoller {
 
   constructor() {
     super();
+    this.updateRefreshToken();
     this.setView();
   }
 

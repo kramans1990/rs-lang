@@ -63,13 +63,14 @@ class BookController extends ApplicationContoller {
     this.bookModel = new BookModel();
     this.currentLevel = 0;
     this.currentPage = 0;
+
     this.setAggregatedNumber(this.currentLevel, this.currentPage);
 
     if (getDataFromLocalStorage('pageInfo')) {
       this.getPageInfoFromLocalStorage();
     }
 
-    this.setBackgroundByAggregatedNumber();
+    this.setBackgroundByAggregatedNumber(this.currentLevel, this.currentPage);
 
     saveDataToLocalStorage(
       'pageInfo',
@@ -83,17 +84,6 @@ class BookController extends ApplicationContoller {
     this.setView();
   }
 
-  async setBackgroundByAggregatedNumber() {
-    if (App.user) {
-      setBackgroundForBookPage(this.aggregatedNumber);
-      saveDataToLocalStorage('aggregatedNumber', JSON.stringify(this.aggregatedNumber));
-    } else {
-      this.aggregatedNumber = 0;
-      saveDataToLocalStorage('aggregatedNumber', JSON.stringify(this.aggregatedNumber));
-    }
-    return this.aggregatedNumber;
-  }
-
   async setAggregatedNumber(currentLevel: number, currentPage: number) {
     if (App.user) {
       const responce = await this.bookModel.getUserWordsAgregatedByFilter(
@@ -103,9 +93,20 @@ class BookController extends ApplicationContoller {
         `{"$and":[{"group":${currentLevel}},{"page":${currentPage}},{"$or":[{"userWord.difficulty":"hard"},{"userWord.optional.progress":100}]}]}`,
       );
       this.aggregatedNumber = responce.length;
+    }
+    return this.aggregatedNumber;
+  }
+
+  async setBackgroundByAggregatedNumber(currentLevel: number, currentPage: number) {
+    if (App.user) {
+      this.aggregatedNumber = await this.setAggregatedNumber(currentLevel, currentPage);
+      setBackgroundForBookPage(this.aggregatedNumber);
+      saveDataToLocalStorage('aggregatedNumber', JSON.stringify(this.aggregatedNumber));
     } else {
       this.aggregatedNumber = 0;
     }
+    saveDataToLocalStorage('aggregatedNumber', JSON.stringify(this.aggregatedNumber));
+    return this.aggregatedNumber;
   }
 
   async setView(): Promise<void> {
@@ -228,8 +229,8 @@ class BookController extends ApplicationContoller {
         this.renderCards(group, this.currentPage);
         this.renderPaginationBlock(group);
       }
-      this.setAggregatedNumber(group, this.currentPage);
-      this.setBackgroundByAggregatedNumber();
+
+      this.setBackgroundByAggregatedNumber(group, 0);
 
       saveDataToLocalStorage('aggregatedNumber', JSON.stringify(this.aggregatedNumber));
     }
@@ -318,7 +319,7 @@ class BookController extends ApplicationContoller {
       }),
     );
 
-    this.setAggregatedNumber(this.currentLevel, this.currentPage);
+    this.aggregatedNumber = await this.setBackgroundByAggregatedNumber(group, page);
     setBackgroundForBookPage(this.aggregatedNumber);
     saveDataToLocalStorage('aggregatedNumber', JSON.stringify(this.aggregatedNumber));
     BookController.changeStatusOfGameButtons();
@@ -358,36 +359,14 @@ class BookController extends ApplicationContoller {
 
   // eslint-disable-next-line max-lines-per-function, consistent-return
   async getWordsForGame(gameName?: string) {
-    // if (App.user && this.currentLevel === 6) {
-    //   const arrOfHardWordsId = allUserWords
-    //     .filter((userWord) => userWord.difficulty === 'hard')
-    //     .reduce((arrOfId, userWord) => {
-    //       arrOfId.push(userWord.wordId);
-    //       return arrOfId;
-    //     }, [] as string[]);
-    //   // console.log('arrOfHardWordsId', arrOfHardWordsId);
-    //   // console.log('allWordsForLevel', allWordsForLevel);
-
-    //   // eslint-disable-next-line array-callback-return
-    //   allUnLearnedWordsForLevel = allWordsForLevel.filter((word) => {
-    //     arrOfHardWordsId.includes(word.id);
-    //   });
-    //   // console.log('allUnLearnedWordsForLevel', allUnLearnedWordsForLevel);
-    // } else {
-    //   allUnLearnedWordsForLevel = allWordsForLevel.filter(
-    //     (word) => !arrOfLearnedWordsId.includes(word.id),
-    //   );
-    // }
-
-    // if (App.user && this.currentLevel === 6) {
-    //   const arrOfHardWords = await this.bookModel.getUserWordsAllHard(
-    //     App.user.userId,
-    //     App.user.token,
-    //   );
-    //   const words = arrOfHardWords as unknown as Word[];
-    //   return words;
-    // }
-
+    if (App.user && this.currentLevel === 6) {
+      const arrOfHardWords = await this.bookModel.getUserWordsAllHard(
+        App.user.userId,
+        App.user.token,
+      );
+      const words = arrOfHardWords as unknown as Word[];
+      return words;
+    }
     const { pageNumber } = getDataFromLocalStorage('pageInfo') as IPageInfo;
     if (pageNumber) {
       this.currentPage = pageNumber;
@@ -446,6 +425,29 @@ class BookController extends ApplicationContoller {
     }
     console.log(arrForSprintGame);
     return arrForSprintGame;
+
+    //   if (App.user && this.currentLevel === 6) {
+    //     // console.log('это уровень 6');
+    //     const arrOfHardWordsId = allUserWords
+    //       .filter((userWord) => userWord.difficulty === 'hard')
+    //       .reduce((arrOfId, userWord) => {
+    //         arrOfId.push(userWord.wordId);
+    //         return arrOfId;
+    //       }, [] as string[]);
+    //     // console.log('arrOfHardWordsId', arrOfHardWordsId);
+    //     // console.log('allWordsForLevel', allWordsForLevel);
+
+    //     // eslint-disable-next-line array-callback-return
+    //     allUnLearnedWordsForLevel = allWordsForLevel.filter((word) => {
+    //       arrOfHardWordsId.includes(word.id);
+    //     });
+    //     // console.log('allUnLearnedWordsForLevel', allUnLearnedWordsForLevel);
+    //   } else {
+    //     allUnLearnedWordsForLevel = allWordsForLevel.filter(
+    //       (word) => !arrOfLearnedWordsId.includes(word.id),
+    //     );
+    //   }
+    // }
   }
 
   // eslint-disable-next-line class-methods-use-this

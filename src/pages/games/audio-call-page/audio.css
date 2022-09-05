@@ -1,5 +1,5 @@
 .audio-call-container{
-  width: 90%;
+  /* width: 90%; */
   user-select: none;
   row-gap: 20px;
   justify-items: center;
@@ -11,7 +11,7 @@
  
 }
 .buttons-container{
-  width: 90vw;
+  /* width: 90vw; */
   display:flex;
   flex-wrap: wrap;
   align-items: center;
@@ -20,8 +20,7 @@
   user-select: none;
 }
 .div-quiz-container{
-  justify-self: center;
-  width: 500px;
+  justify-self: center; 
   display: grid;
   grid-template-rows: auto auto auto;
   align-self: center;
@@ -196,4 +195,18 @@ label{
   pointer-events: none;
   display: grid;
   grid-template-columns: 20px auto;
+}
+@media (max-width: 500px) {
+  .game-progress-bar{
+    width: 250px; 
+  }
+ 
+  .game-result{
+    width: 300px;
+  }
+  /* .div-result-flex{
+    width: 100vw;
+  } */
+
+
 }

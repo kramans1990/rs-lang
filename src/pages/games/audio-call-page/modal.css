@@ -1,29 +1,55 @@
+
+
 .modal-content {
-    background-color: rgba(116, 115, 115, 0.46);
+    background-color: rgb(255, 255, 255);
     margin: auto;
-    padding: 5px 40px 5px 40px;
+    padding: 5px 10px 5px 10px;
     border: 1px solid rgb(255, 255, 255);
-    width: 60vw;
+    width: 550px;
     border-radius: 15px;
     margin-bottom : 10px;
 }
-
-.modal-close {
-    color: rgba(0, 0, 0, 0.46);
+.modal-message-content {
+    background-color: rgb(255, 255, 255);   
+    padding: 0px 5px 5px 5px;    
+    width: 300px;
+    height: 100px;    
+    border-radius: 15px;
+    margin-bottom : 100x;
+}
+.modal-close {   
     float: right;
     font-size: 40px;
-    font-weight: bold;
-    
+    font-weight: bold;        
 }
-
+.message-text{
+    position: relative;
+    top: 40%;
+    font-size: 18px;
+    color: black;
+    text-align: center;
+    align-self: center;
+    font-weight: bold;
+    height: 40px;
+   
+}
+.modal-message-close {
+    color: black;
+    float: right;
+    font-size: 20px;
+    font-weight: bold; 
+    margin-bottom: 10px;   
+}
 .modal-close:hover,
-.modal-close:focus {
+.modal-close:focus,
+.modal-message-close:hover {
     color: var(--color-accent);
     text-decoration: none;
     cursor: pointer;
 }
 
 .div-result-flex {
+    width: 500px;
     display: flex;
     flex-direction: column;
 }
@@ -84,3 +110,42 @@
 .audio-icon.disabled {
     pointer-events: none;
 }
+.popup{
+    animation: popup 0.7s;
+    border-radius: 15px;
+  }
+  
+  @keyframes popup {
+    0%{
+      transform: scale(0.2);
+    }
+   
+    100%{
+      transform: scale(1);
+    }
+  }
+  @media (max-width: 600px) {
+    .answer-container-correct>div>span,
+    .answer-container-wrong>div>span {
+        margin-left: 0px;
+        font-size: 14px;
+        font-weight: bold;
+        align-self: center;
+        margin-top: 30px;
+    }
+    .div-result-flex{
+        width:300px;
+    }
+    .div-result-flex>span {
+        font-size: 16px;
+        text-align: center;
+        /* font-family: Arial, Helvetica, sans-serif; */
+        margin-bottom: 5px;
+    }
+    .modal-content {
+        
+        width: 300px;
+       
+    }
+  }
+ 

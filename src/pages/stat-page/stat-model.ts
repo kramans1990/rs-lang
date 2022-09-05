@@ -1,5 +1,4 @@
 /* eslint-disable import/no-cycle */
-
 import StatView from './stat-view';
 
 class StatModel {

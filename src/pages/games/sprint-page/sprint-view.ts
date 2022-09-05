@@ -41,7 +41,7 @@ class SprintView extends ApplicationView {
     buttonNewGame.className = 'new-game-button';
     const divButtonsContainer = document.createElement('div');
     divButtonsContainer.className = 'buttons-container';
-    for (let i = 1; i < 8; i += 1) {
+    for (let i = 1; i < 7; i += 1) {
       const button = document.createElement('button');
       button.className = `game-button l${i}`;
       button.value = (i - 1).toString();

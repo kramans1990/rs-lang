@@ -141,6 +141,7 @@ class App {
     App.setController(controller);
     const mainButton = document.querySelector('.team-page-link') as HTMLElement;
     App.changeActiveClassForNavItemByElement(mainButton);
+    App.makeMainTransparentAgain();
     App.pageInfo = { pageName: 'teamPage' };
   }
 

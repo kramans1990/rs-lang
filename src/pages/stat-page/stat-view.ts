@@ -15,6 +15,7 @@ class StatView extends ApplicationView {
   constructor() {
     super();
     this.renderView();
+
     Chart.register(...registerables);
   }
 
@@ -29,6 +30,8 @@ class StatView extends ApplicationView {
     accuracyTotal: number,
   ) {
     const div = this.view.querySelector('.stat-content') as HTMLDivElement;
+    // div.classList.remove('popup');
+    div.classList.add('popup');
     div.innerHTML = '';
     const title = document.createElement('div');
     title.innerText = 'Статистика за сегодня';
@@ -65,58 +68,16 @@ class StatView extends ApplicationView {
     div.append(titleWords, divNewWords, divLearnWords, divAccuracyWords);
   }
 
-  // showAllStat() {
-  //   const div = this.view.querySelector('.stat-content') as HTMLDivElement;
-  //   div.innerHTML = '';
-  //   div.innerText = 'all';
-  //   const canvasLearnedWords = document.createElement('canvas') as HTMLCanvasElement;
-  //   canvasLearnedWords.id = 'learnedWordsChart';
-  //   const canvasLearnedWordsContext = canvasLearnedWords.getContext(
-  //     '2d',
-  //   ) as CanvasRenderingContext2D;
-  //   const myChartlearned = new Chart(canvasLearnedWordsContext, {
-  //     type: 'bar',
-
-  //     data: {
-  //       labels: [1, 2, 3, 4, 5, 6],
-  //       datasets: [{
-  //         {
-  //           label: '# of Votes',
-  //           data: [12, 19, 3, 5, 2, 3],
-
-  //           backgroundColor: [
-  //           'rgba(255, 99, 132, 0.2)',
-  //             'rgba(54, 162, 235, 0.2)',
-  //             'rgba(255, 206, 86, 0.2)',
-  //             'rgba(75, 192, 192, 0.2)',
-  //             'rgba(153, 102, 255, 0.2)',
-  //           'rgba(255, 159, 64, 0.2)'
-  //           ],
-  //         borderColor: [
-  //             'rgba(255, 99, 132, 1)',
-  //             'rgba(54, 162, 235, 1)',
-  //             'rgba(255, 206, 86, 1)',
-  //           'rgba(75, 192, 192, 1)',
-  //             'rgba(153, 102, 255, 1)',
-  //           'rgba(255, 159, 64, 1)'
-  //           ],
-  //           borderWidth: 5,
-
-  //       }],
-  //    },
-  //     options: {
-  //       scales: {
-  //         y: {
-  //           beginAtZero: true,
-  //            }
-
-  //       },
-
-  //     },
-
-  //   });
-  //   div.appendChild(canvasLearnedWords);
-  // }
+  showAllStat(
+    newWords: Array<{ date: Date; count: number }>,
+    newLearned: Array<{ date: Date; count: number }>,
+  ) {
+    const div = this.view.querySelector('.stat-content') as HTMLDivElement;
+    div.classList.remove('popup');
+    div.innerHTML = '';
+    div.appendChild(this.renderNewWords(newWords));
+    div.appendChild(this.renderLearnedWords(newLearned));
+  }
 
   renderView() {
     const div = document.createElement('div');
@@ -142,12 +103,106 @@ class StatView extends ApplicationView {
     divDay.className = 'div-day';
     const divAll = document.createElement('div');
     divAll.className = 'div-day';
-    /// //
+  }
 
-    ///
-    // div.appendChild(canvasNewWords);
-    // div.appendChild(canvasLearnedWords);
-    this.view = div;
+  /* eslint-disable class-methods-use-this */
+  renderNewWords(newWords: Array<{ date: Date; count: number }>): HTMLCanvasElement {
+    const canvasNewWords = document.createElement('canvas') as HTMLCanvasElement;
+    canvasNewWords.id = 'newWordsChart';
+    canvasNewWords.style.maxHeight = '300px';
+    const count = newWords.map((p) => p.count);
+    const date = newWords.map((item) => {
+      const month = item.date.getMonth() + 1;
+      const monthString = month < 10 ? `0${month}` : month;
+      return `${item.date.getDate()}.${monthString}`;
+    });
+    const newWordsContext = canvasNewWords.getContext('2d') as CanvasRenderingContext2D;
+    /* eslint-disable no-new */
+    new Chart(newWordsContext, {
+      type: 'line',
+      data: {
+        labels: date,
+        datasets: [
+          {
+            label: 'новых слов',
+            data: count,
+            backgroundColor: ['#ec990e'],
+            borderColor: ['#ffcb05'],
+            borderWidth: 3,
+          },
+        ],
+      },
+      options: {
+        plugins: {
+          legend: {
+            labels: {
+              font: {
+                size: 24,
+                family: 'Arial, sans-serif',
+              },
+              boxWidth: 20,
+              boxHeight: 5,
+            },
+          },
+        },
+        scales: {
+          y: {
+            beginAtZero: true,
+          },
+        },
+      },
+    });
+    return canvasNewWords;
+  }
+
+  /* eslint-disable class-methods-use-this */
+  renderLearnedWords(newLearned: Array<{ date: Date; count: number }>): HTMLCanvasElement {
+    const canvasLearnedWords = document.createElement('canvas') as HTMLCanvasElement;
+    canvasLearnedWords.id = 'learnedWordsChart';
+    canvasLearnedWords.style.maxHeight = '300px';
+    const countLearned = newLearned.map((p) => p.count);
+    const dateLearned = newLearned.map((item) => {
+      const month = item.date.getMonth() + 1;
+      const monthString = month < 10 ? `0${month}` : month;
+      return `${item.date.getDate()}.${monthString}`;
+    });
+    const learnedWordsContext = canvasLearnedWords.getContext('2d') as CanvasRenderingContext2D;
+    /* eslint-disable no-new */
+    new Chart(learnedWordsContext, {
+      type: 'line',
+      data: {
+        labels: dateLearned,
+        datasets: [
+          {
+            label: 'Выучено слов',
+            data: countLearned,
+            backgroundColor: ['#ec990e'],
+            borderColor: ['#ffcb05'],
+            borderWidth: 3,
+          },
+        ],
+      },
+      options: {
+        plugins: {
+          legend: {
+            labels: {
+              font: {
+                size: 24,
+                family: 'Arial, sans-serif',
+              },
+              boxWidth: 20,
+              boxHeight: 5,
+            },
+          },
+        },
+        scales: {
+          y: {
+            beginAtZero: true,
+          },
+        },
+      },
+    });
+    return canvasLearnedWords;
   }
 }
 export default StatView;

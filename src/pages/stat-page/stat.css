@@ -1,88 +1,116 @@
-.stat-container {
-  height: 100%;
+.stat-container{
   display: grid;
-  grid-template-rows: 60px 0.95fr;
+grid-template-rows: 60px 0.95fr;
 
-  /* align-items: center; */
+justify-items: center;
+
 }
-.div-buttons-flex,
-.games-block {
-  display: flex;
-  justify-content: center;
-  column-gap: 20px;
-  flex-direction: row;
+.div-buttons-flex{
+display: flex;
+justify-content: center;
+flex-wrap: wrap;
+column-gap: 20px;
+flex-direction: row;    
+border-radius: 5px;
+}
+.stat-button{
+width: 250px;
+height: 45px;
+background: var(--color-main);
+opacity: 0.9;   
+font-size: 20px;
+font-weight: 500;
+border: 0px;
+border-radius: 5px;
+color: #FFFFFF;
+margin-top: 5px;
+
+}
+.stat-button:hover{
+opacity: 1;
+font-size: 20px;
+font-weight: 700;
+border: 0px;
+border-radius: 3px;
+cursor: pointer;
+}
+.stat-content{
+width: 70vW;
+background-color: rgba(255, 255, 255, 0);
+border-radius: 10px;
+padding-left: 10px;
+padding-right: 10px;
+
+}
+.stat-content > div{   
+font-family: "Raleway", sans-serif;
+color: black;
+font-style: normal;   
+margin-bottom: 10px;
+font-weight: 600;
+font-size: 2.2em;
+line-height: 2.2rem;
+letter-spacing: 1px;
+}
+.stat-content > h3{
+text-align: center;    
+font-family: "Raleway", sans-serif;   
+font-style: normal;
+font-size: x-large;
+margin-bottom: 10px;
+color : var(--color-main);
+/* height: 600px; */
+}
+.stat-content:last-child{
+padding-bottom: 20px;
+}
+.title{
+margin-top: 10px;
+text-align: center;
+
 }
 
-@media (max-width: 992px) {
-  .div-buttons-flex,
-  .games-block {
-    flex-direction: column;
-    align-items: center;
-  }
+.statcontent > .title{
+color : black;
+}
+.popup{
+animation: popup 0.7s;
+background-color: white;
 }
 
-.stat-button,
-.audio-call-button,
-.sprint-button {
-  width: 280px;
-  height: 45px;
-  background: var(--color-main);
-  opacity: 0.9;
-  font-size: 20px;
-  font-weight: 500;
-  border: 0px;
-  border-radius: 5px;
-  color: #ffffff;
-  margin-top: 5px;
+@keyframes popup {
+0%{
+transform: scale(0.2);
 }
 
-@media (max-width: 992px) {
-  .stat-button,
-  .audio-call-button,
-  .sprint-button {
-    padding-top: 6px;
-    padding-bottom: 6px;
-  }
+100%{
+transform: scale(1);
 }
 
-.stat-button:hover {
-  opacity: 1;
-  font-size: 20px;
-  font-weight: 700;
-  border: 0px;
-  border-radius: 3px;
-  cursor: pointer;
 }
-.stat-content {
-  background-color: rgba(211, 210, 210, 0);
-  border-radius: 10px;
+canvas{
+background: white;
+border-radius: 10px;
+margin-bottom: 20px;
 }
-.stat-content > div {
-  margin-left: 10%;
-  font-family: "Raleway", sans-serif;
-  color: white;
-  font-style: normal;
-  margin-bottom: 10px;
-  font-weight: 600;
-  font-size: 2.2em;
-  line-height: 2.2rem;
-  letter-spacing: 1px;
+@media (max-width: 600px) {
+.stat-container {
+display: grid;
+grid-template-rows: 120px 0.95fr;
+justify-items: center;
+
+}.div-buttons-flex .stat-content{
+width: 100vW;
+}
+.stat-content > div {   
+font-weight: 600;
+font-size: 1.5em;
+line-height: 1rem;    
 }
 .stat-content > h3 {
-  text-align: center;
-  margin-left: 10%;
-  font-family: "Raleway", sans-serif;
-  font-style: normal;
-  font-size: x-large;
-  margin-bottom: 10px;
-  color: black;
+font-size: 20px;
 }
-.title {
-  margin-top: 10px;
-  text-align: center;
-  color: rgb(255, 255, 255);
+.stat-content{
+width: 90vw;
 }
-
-.statcontent > .title {
-  color: black;
 }

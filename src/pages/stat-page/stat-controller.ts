@@ -1,5 +1,4 @@
 /* eslint-disable import/no-cycle */
-
 import Api from '../../Api';
 import App from '../../App';
 // import User from "../../types/User";
@@ -41,7 +40,7 @@ class StatController extends ApplicationContoller {
   async getStat() {
     if (App.user) {
       this.stat = await this.api.getUserStat(App.user?.userId, App.user?.token);
-      // this.pageView.showEverydayStat(this.stat);
+      this.showDay();
     }
   }
 
@@ -124,6 +123,7 @@ class StatController extends ApplicationContoller {
     let newWords = 0;
     dates.forEach((date: string) => {
       const optionals = stat.optional.filter((p) => p.dateShort === date);
+      newWords = 0;
       optionals.forEach((item) => {
         newWords += item.newWords;
         learnded += item.learnedWords;
@@ -131,9 +131,7 @@ class StatController extends ApplicationContoller {
       newWordsProgress.push({ date: new Date(date), count: newWords });
       learnedProgress.push({ date: new Date(date), count: learnded });
     });
-
-    console.log(newWordsProgress, learnedProgress);
-    // this.pageView.showAllStat();
+    this.pageView.showAllStat(newWordsProgress, learnedProgress);
     // let learnedWords :  Array<{date:Date , count:number}>
   }
 }

@@ -98,6 +98,8 @@ class AudioModel {
   createQuiz(words: Array<Word>, countQuestions: number) {
     if (words.length < 6) {
       this.gameStatus = 'Select Level';
+
+      this.pageView.setNotEnouthWordsModal();
     } else {
       const tests: Array<AudioQuestion> = new Array<AudioQuestion>();
       const count = words.length < countQuestions ? words.length : countQuestions;
@@ -127,6 +129,7 @@ class AudioModel {
       }
       this.audioTests = tests;
       this.Question = 0;
+      // this.gameStatus = 'Select Level';
       this.gameStatus = 'Game';
     }
   }

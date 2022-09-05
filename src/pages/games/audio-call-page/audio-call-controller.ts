@@ -17,7 +17,7 @@ class AudioController extends ApplicationContoller {
 
   wordsPerPage = 20;
 
-  countQuestions = 6;
+  countQuestions = 20;
 
   initialbarProgress = 3;
 
@@ -52,6 +52,7 @@ class AudioController extends ApplicationContoller {
         const target = e.currentTarget as HTMLButtonElement;
         if (target.classList.contains('game-button')) {
           this.model.gameStatus = 'Set Level';
+
           this.getAllWords(Number(target.value));
         }
       });
@@ -112,6 +113,7 @@ class AudioController extends ApplicationContoller {
       randomPages = randomPages.filter((item, index, arr) => index === arr.indexOf(item));
     }
 
+    // else{
     for (let i = 0; i <= this.pagesPerGame; i += 1) {
       progress = (i / this.pagesPerGame) * 100;
       this.model.loadingStatus = progress;
@@ -119,6 +121,7 @@ class AudioController extends ApplicationContoller {
       const value: Array<Word> = await this.getwords(group, i);
       words = words.concat(value);
     }
+    // }
     this.model.createQuiz(words, this.countQuestions);
   }
 

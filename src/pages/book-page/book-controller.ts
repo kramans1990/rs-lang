@@ -349,42 +349,65 @@ class BookController extends ApplicationContoller {
     this.gameButtons.append(audioGameLink, sprintGameLink);
   }
 
+  // eslint-disable-next-line max-lines-per-function
   async getWordsForGame(gameName?: string) {
-    let allUserWords;
+    let allUserWords: UserWord[];
     const arrForGame: Array<Word[]> = [];
+    if (App.user && this.currentLevel === 6) {
+      const arrOfHardWords = await this.makeArrOfHardWords();
+      return arrOfHardWords as Word[];
+    }
 
     if (App.user) {
       allUserWords = await this.bookModel.getUserWords(App.user.userId, App.user.token);
+      // console.log('allUserWords', allUserWords);
 
       const allPromises = [];
-      for (let i = 0; i < 30; i += 1) {
+      for (let i = 0; i < 3; i += 1) {
         const wordsForPage = this.bookModel.getWords(this.currentLevel, i);
         allPromises.push(wordsForPage);
       }
-
       const responce = await Promise.all(allPromises);
+      // console.log('responce', responce);
       const allWordsForLevel: Word[] = [];
       for (let i = 0; i < responce.length; i += 1) {
         allWordsForLevel.push(...responce[i]);
+        // console.log('allWordsForLevel', allWordsForLevel);
       }
-
-      const arrOfLearnedId = allUserWords
+      const arrOfLearnedWordsId = allUserWords
         .filter((userWord) => userWord.optional.progress === 100)
         .reduce((arrOfId, userWord) => {
           arrOfId.push(userWord.wordId);
           return arrOfId;
         }, [] as string[]);
 
-      // eslint-disable-next-line max-len, prettier/prettier
-      const allUnLearnedWordsForLevel = allWordsForLevel
-        // eslint-disable-next-line prettier/prettier
-        .filter((userWord) => !arrOfLearnedId.includes(userWord.id));
+      let allUnLearnedWordsForLevel: Word[];
+      if (App.user && this.currentLevel === 6) {
+        // console.log('это уровень 6');
+        const arrOfHardWordsId = allUserWords
+          .filter((userWord) => userWord.difficulty === 'hard')
+          .reduce((arrOfId, userWord) => {
+            arrOfId.push(userWord.wordId);
+            return arrOfId;
+          }, [] as string[]);
+        // console.log('arrOfHardWordsId', arrOfHardWordsId);
+        // console.log('allWordsForLevel', allWordsForLevel);
+
+        // eslint-disable-next-line array-callback-return
+        allUnLearnedWordsForLevel = allWordsForLevel.filter((word) => {
+          arrOfHardWordsId.includes(word.id);
+        });
+        // console.log('allUnLearnedWordsForLevel', allUnLearnedWordsForLevel);
+      } else {
+        allUnLearnedWordsForLevel = allWordsForLevel.filter(
+          (word) => !arrOfLearnedWordsId.includes(word.id),
+        );
+      }
 
       for (let i = this.currentPage; i >= 0; i -= 1) {
-        const wordsForSpecialPage = allUnLearnedWordsForLevel.filter(
-          (userWord) => userWord.page === i,
-        );
+        const wordsForSpecialPage = allUnLearnedWordsForLevel.filter((word) => word.page === i);
         arrForGame.push(wordsForSpecialPage);
+        // console.log('arrForGame', arrForGame);
       }
     }
 
@@ -398,8 +421,42 @@ class BookController extends ApplicationContoller {
       }
       return arrForAudioGame;
     }
-
     return arrForGame;
+  }
+
+  async makeArrOfHardWords() {
+    let arrOfAggregatedHardWords: Partial<Word & UserWord>[] = [];
+    if (App.user) {
+      arrOfAggregatedHardWords = await this.bookModel.getUserWordsAllHard(
+        App.user.userId,
+        App.user.token,
+      );
+
+      const words = arrOfAggregatedHardWords as unknown as Word[];
+      return words;
+
+      // arrOfAggregatedHardWords.reduce((arrOfHardWords, userWord) => {
+      //   const word: Word = {
+      //     id: userWord.id,
+      //     group: userWord.group,
+      //     page: userWord.page,
+      //     word: userWord.word,
+      //     image: userWord.image,
+      //     audio: userWord.audio,
+      //     audioMeaning: userWord.audioMeaning,
+      //     audioExample: userWord.audioExample,
+      //     textMeaning: userWord.textMeaning,
+      //     textExample: userWord.textExample,
+      //     transcription: userWord.transcription,
+      //     wordTranslate: userWord.wordTranslate,
+      //     textMeaningTranslate: userWord.textMeaningTranslate,
+      //     textExampleTranslate: userWord.textExampleTranslate,
+      //   };
+      //   arrOfHardWords.push(word);
+      //   return arrOfHardWords;
+      // }, []);
+    }
+    return arrOfAggregatedHardWords;
   }
 
   getPageInfoFromLocalStorage() {

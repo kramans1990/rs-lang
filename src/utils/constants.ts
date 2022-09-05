@@ -39,6 +39,7 @@ const sprintGameName = 'Спринт';
 const extraGameName = 'Экстра';
 const hardButtonText = 'Сложное';
 const doneButtonText = 'Изучено';
+const NoHardWordsText = '<p>У вас пока нет сложных слов.<p>';
 const iconSprintSrc = './assets/svg/icon_sprint.svg';
 const iconAudioGameSrc = './assets/svg/icon_audio_game.svg';
 const iconExtraGameSrc = './assets/svg/icon_audio_game.svg';
@@ -143,4 +144,5 @@ export {
   nextText,
   progressForDoneWord,
   progressForNoDoneWord,
+  NoHardWordsText,
 };

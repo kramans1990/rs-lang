@@ -23,6 +23,7 @@ import {
   audioGameName,
   iconSprintSrc,
   iconAudioGameSrc,
+  NoHardWordsText,
 } from '../../utils/constants';
 import {
   disableAudioBtns,
@@ -201,12 +202,17 @@ class BookController extends ApplicationContoller {
       this.currentPage = 0;
       this.cardsList.innerHTML = '';
       this.pagination.innerHTML = '';
+
       if (App.user && group === 6) {
         const allHardWords = await this.bookModel.getUserWordsAllHard(
           App.user?.userId,
           App.user?.token,
         );
-        this.renderHardCards(allHardWords);
+        if (!allHardWords.length) {
+          this.cardsList.innerHTML = NoHardWordsText;
+        } else {
+          this.renderHardCards(allHardWords);
+        }
       } else {
         this.renderCards(group, this.currentPage);
         this.renderPaginationBlock(group);

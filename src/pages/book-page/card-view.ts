@@ -12,13 +12,11 @@ import {
 } from '../../utils/constants';
 import {
   saveDataToLocalStorage,
-  // getDataFromLocalStorage,
   setBackgroundForBookPage,
   getAggregatedNumberFromLS,
 } from '../../functions/functions';
 import Api from '../../Api';
 import App from '../../App';
-// import BookController from './book-controller';
 
 class CardView {
   api: Api;

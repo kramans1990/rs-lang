@@ -94,6 +94,8 @@ class BookController extends ApplicationContoller {
       setBackgroundForBookPage(this.aggregatedNumber);
       saveDataToLocalStorage('aggregatedNumber', JSON.stringify(this.aggregatedNumber));
     }
+    this.aggregatedNumber = 0;
+    saveDataToLocalStorage('aggregatedNumber', JSON.stringify(this.aggregatedNumber));
     return this.aggregatedNumber;
   }
 
@@ -320,11 +322,9 @@ class BookController extends ApplicationContoller {
     const iconSprint = BookPageView.createElementByParams('img', 'game-icon') as HTMLImageElement;
     iconSprint.setAttribute('src', iconSprintSrc);
     sprintGameLink.prepend(iconSprint);
-    const wordsForsprintGame = await this.getWordsForGame();
-    sprintGameLink.addEventListener('click', (): void => {
-      if (wordsForsprintGame) {
-        App.renderSprintPage(wordsForsprintGame[0] as Word[]);
-      }
+    sprintGameLink.addEventListener('click', async (): Promise<void> => {
+      const wordsForsprintGame = await this.getWordsForGame();
+      App.renderSprintPage(wordsForsprintGame[0] as Word[]);
     });
     const audioGameLink = BookPageView.createElementByParams('div', 'btn') as HTMLDivElement;
     audioGameLink.classList.add('btn_colored');
@@ -335,11 +335,9 @@ class BookController extends ApplicationContoller {
     ) as HTMLImageElement;
     iconAudioGame.setAttribute('src', iconAudioGameSrc);
     audioGameLink.prepend(iconAudioGame);
-    const wordsForAudioGame = await this.getWordsForGame('audio');
-    audioGameLink.addEventListener('click', (): void => {
-      if (wordsForAudioGame) {
-        App.renderAudiocallPage(wordsForAudioGame as Word[]);
-      }
+    audioGameLink.addEventListener('click', async (): Promise<void> => {
+      const wordsForAudioGame = await this.getWordsForGame('audio');
+      App.renderAudiocallPage(wordsForAudioGame as Word[]);
     });
 
     const arrOfDonePages = await this.makeArrOfDonePages(this.currentLevel);
@@ -349,114 +347,121 @@ class BookController extends ApplicationContoller {
     this.gameButtons.append(audioGameLink, sprintGameLink);
   }
 
-  // eslint-disable-next-line max-lines-per-function
+  // eslint-disable-next-line max-lines-per-function, consistent-return
   async getWordsForGame(gameName?: string) {
-    let allUserWords: UserWord[];
-    const arrForGame: Array<Word[]> = [];
     if (App.user && this.currentLevel === 6) {
-      const arrOfHardWords = await this.makeArrOfHardWords();
-      return arrOfHardWords as Word[];
-    }
-
-    if (App.user) {
-      allUserWords = await this.bookModel.getUserWords(App.user.userId, App.user.token);
-      // console.log('allUserWords', allUserWords);
-
-      const allPromises = [];
-      for (let i = 0; i < 3; i += 1) {
-        const wordsForPage = this.bookModel.getWords(this.currentLevel, i);
-        allPromises.push(wordsForPage);
-      }
-      const responce = await Promise.all(allPromises);
-      // console.log('responce', responce);
-      const allWordsForLevel: Word[] = [];
-      for (let i = 0; i < responce.length; i += 1) {
-        allWordsForLevel.push(...responce[i]);
-        // console.log('allWordsForLevel', allWordsForLevel);
-      }
-      const arrOfLearnedWordsId = allUserWords
-        .filter((userWord) => userWord.optional.progress === 100)
-        .reduce((arrOfId, userWord) => {
-          arrOfId.push(userWord.wordId);
-          return arrOfId;
-        }, [] as string[]);
-
-      let allUnLearnedWordsForLevel: Word[];
-      if (App.user && this.currentLevel === 6) {
-        // console.log('это уровень 6');
-        const arrOfHardWordsId = allUserWords
-          .filter((userWord) => userWord.difficulty === 'hard')
-          .reduce((arrOfId, userWord) => {
-            arrOfId.push(userWord.wordId);
-            return arrOfId;
-          }, [] as string[]);
-        // console.log('arrOfHardWordsId', arrOfHardWordsId);
-        // console.log('allWordsForLevel', allWordsForLevel);
-
-        // eslint-disable-next-line array-callback-return
-        allUnLearnedWordsForLevel = allWordsForLevel.filter((word) => {
-          arrOfHardWordsId.includes(word.id);
-        });
-        // console.log('allUnLearnedWordsForLevel', allUnLearnedWordsForLevel);
-      } else {
-        allUnLearnedWordsForLevel = allWordsForLevel.filter(
-          (word) => !arrOfLearnedWordsId.includes(word.id),
-        );
-      }
-
-      for (let i = this.currentPage; i >= 0; i -= 1) {
-        const wordsForSpecialPage = allUnLearnedWordsForLevel.filter((word) => word.page === i);
-        arrForGame.push(wordsForSpecialPage);
-        // console.log('arrForGame', arrForGame);
-      }
-    }
-
-    if (gameName) {
-      let arrForAudioGame: Word[] = [];
-      for (let i = 0; i < arrForGame.length; i += 1) {
-        arrForAudioGame.push(...arrForGame[i]);
-      }
-      if (arrForAudioGame.length > numberOfCardsPerPage) {
-        arrForAudioGame = arrForAudioGame.slice(0, 20);
-      }
-      return arrForAudioGame;
-    }
-    return arrForGame;
-  }
-
-  async makeArrOfHardWords() {
-    let arrOfAggregatedHardWords: Partial<Word & UserWord>[] = [];
-    if (App.user) {
-      arrOfAggregatedHardWords = await this.bookModel.getUserWordsAllHard(
+      const arrOfHardWords = await this.bookModel.getUserWordsAllHard(
         App.user.userId,
         App.user.token,
       );
-
-      const words = arrOfAggregatedHardWords as unknown as Word[];
+      const words = arrOfHardWords as unknown as Word[];
       return words;
-
-      // arrOfAggregatedHardWords.reduce((arrOfHardWords, userWord) => {
-      //   const word: Word = {
-      //     id: userWord.id,
-      //     group: userWord.group,
-      //     page: userWord.page,
-      //     word: userWord.word,
-      //     image: userWord.image,
-      //     audio: userWord.audio,
-      //     audioMeaning: userWord.audioMeaning,
-      //     audioExample: userWord.audioExample,
-      //     textMeaning: userWord.textMeaning,
-      //     textExample: userWord.textExample,
-      //     transcription: userWord.transcription,
-      //     wordTranslate: userWord.wordTranslate,
-      //     textMeaningTranslate: userWord.textMeaningTranslate,
-      //     textExampleTranslate: userWord.textExampleTranslate,
-      //   };
-      //   arrOfHardWords.push(word);
-      //   return arrOfHardWords;
-      // }, []);
     }
-    return arrOfAggregatedHardWords;
+    const { pageNumber } = getDataFromLocalStorage('pageInfo') as IPageInfo;
+    if (pageNumber) {
+      this.currentPage = pageNumber;
+    }
+    console.log('this.currentPage', this.currentPage);
+
+    let allUserWords: UserWord[] = [];
+    let allUnLearnedWordsForLevel: Word[] = [];
+
+    // все слова уровня с текущей страницы и до 0-й
+    const allPromises = [];
+    for (let i = this.currentPage; i >= 0; i -= 1) {
+      const wordsForPage = this.bookModel.getWords(this.currentLevel, i);
+      allPromises.push(wordsForPage);
+    }
+    const responce = await Promise.all(allPromises);
+    const allWordsSinceBeginTillCurrentPage: Word[] = [];
+    for (let i = 0; i < responce.length; i += 1) {
+      allWordsSinceBeginTillCurrentPage.push(...responce[i]);
+    }
+    console.log('allWordsSinceBeginTillCurrentPage', allWordsSinceBeginTillCurrentPage);
+
+    // массив изученных айдишников
+    if (App.user) {
+      allUserWords = await this.bookModel.getUserWords(App.user.userId, App.user.token);
+    }
+    const arrOfLearnedWordsId = allUserWords
+      .filter((userWord) => userWord.optional.progress === 100)
+      .reduce((arrOfId, userWord) => {
+        arrOfId.push(userWord.wordId);
+        return arrOfId;
+      }, [] as string[]);
+
+    // отфильтровать только неизученные слова
+    allUnLearnedWordsForLevel = allWordsSinceBeginTillCurrentPage.filter(
+      (word) => !arrOfLearnedWordsId.includes(word.id),
+    );
+
+    console.log('allUnLearnedWordsForLevel', allUnLearnedWordsForLevel);
+
+    // набор слов на аудиовызова
+    if (gameName) {
+      if (allUnLearnedWordsForLevel.length > numberOfCardsPerPage) {
+        const arrForAudioGame = allUnLearnedWordsForLevel.slice(0, 20);
+        console.log(arrForAudioGame);
+        return arrForAudioGame;
+      }
+      return allUnLearnedWordsForLevel;
+    }
+
+    // разбить на подмассивы в в соот-вии с номером страницы для спринта
+    const arrForSprintGame: Array<Word[]> = [];
+    for (let i = this.currentPage; i >= 0; i -= 1) {
+      const wordsForSpecialPage = allUnLearnedWordsForLevel.filter((word) => word.page === i);
+      arrForSprintGame.push(wordsForSpecialPage);
+    }
+    console.log(arrForSprintGame);
+    return arrForSprintGame;
+
+    //   if (App.user && this.currentLevel === 6) {
+    //     // console.log('это уровень 6');
+    //     const arrOfHardWordsId = allUserWords
+    //       .filter((userWord) => userWord.difficulty === 'hard')
+    //       .reduce((arrOfId, userWord) => {
+    //         arrOfId.push(userWord.wordId);
+    //         return arrOfId;
+    //       }, [] as string[]);
+    //     // console.log('arrOfHardWordsId', arrOfHardWordsId);
+    //     // console.log('allWordsForLevel', allWordsForLevel);
+
+    //     // eslint-disable-next-line array-callback-return
+    //     allUnLearnedWordsForLevel = allWordsForLevel.filter((word) => {
+    //       arrOfHardWordsId.includes(word.id);
+    //     });
+    //     // console.log('allUnLearnedWordsForLevel', allUnLearnedWordsForLevel);
+    //   } else {
+    //     allUnLearnedWordsForLevel = allWordsForLevel.filter(
+    //       (word) => !arrOfLearnedWordsId.includes(word.id),
+    //     );
+    //   }
+    // }
+  }
+
+  // eslint-disable-next-line class-methods-use-this
+  async makeArrOfHardWords() {
+    // arrOfAggregatedHardWords.reduce((arrOfHardWords, userWord) => {
+    //   const word: Word = {
+    //     id: userWord.id,
+    //     group: userWord.group,
+    //     page: userWord.page,
+    //     word: userWord.word,
+    //     image: userWord.image,
+    //     audio: userWord.audio,
+    //     audioMeaning: userWord.audioMeaning,
+    //     audioExample: userWord.audioExample,
+    //     textMeaning: userWord.textMeaning,
+    //     textExample: userWord.textExample,
+    //     transcription: userWord.transcription,
+    //     wordTranslate: userWord.wordTranslate,
+    //     textMeaningTranslate: userWord.textMeaningTranslate,
+    //     textExampleTranslate: userWord.textExampleTranslate,
+    //   };
+    //   arrOfHardWords.push(word);
+    //   return arrOfHardWords;
+    // }, []);
   }
 
   getPageInfoFromLocalStorage() {

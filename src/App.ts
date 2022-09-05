@@ -4,6 +4,7 @@ import ApplicationContoller from './pages/application-controller';
 import TeamController from './pages/team-page/team-controller';
 import AuthController from './pages/auth-page/auth-controller';
 import RegistrationController from './pages/registration-page/registration-controller';
+import GamesController from './pages/games/games-page-controller';
 import BookController from './pages/book-page/book-controller';
 import { ISignIn, IPageInfo } from './types/interfaces';
 import {
@@ -129,6 +130,12 @@ class App {
     App.pageInfo = { pageName: 'sprintPage' };
   }
 
+  static renderGamesPage() {
+    const controller: ApplicationContoller = new GamesController();
+    App.setController(controller);
+    App.pageInfo = { pageName: 'gamesPage' };
+  }
+
   static renderTeamPage() {
     const controller: ApplicationContoller = new TeamController();
     App.setController(controller);
@@ -215,11 +222,17 @@ class App {
       case 'statPage':
         App.renderStatPage();
         break;
+      case 'gamesPage':
+        App.renderGamesPage();
+        break;
       case 'sprintPage':
         App.renderSprintPage();
         break;
       case 'authPage':
         App.renderAuthPage();
+        break;
+      case 'teamPage':
+        App.renderTeamPage();
         break;
       default:
         App.renderMainPage();

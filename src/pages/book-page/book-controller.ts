@@ -318,6 +318,11 @@ class BookController extends ApplicationContoller {
         App.renderAudiocallPage(wordsForGame[0]);
       }
     });
+
+    const arrOfDonePages = await this.makeArrOfDonePages(this.currentLevel);
+    if (arrOfDonePages.includes(this.currentPage)) {
+      this.gameButtons.classList.add('inactive');
+    }
     this.gameButtons.append(audioGameLink, sprintGameLink);
   }
 
@@ -356,7 +361,6 @@ class BookController extends ApplicationContoller {
         const wordsForSpecialPage = allUnLearnedWordsForLevel.filter(
           (userWord) => userWord.page === i,
         );
-        // console.log(this.currentPage, i, allUnLearnedWordsForLevel);
         arrForGame.push(wordsForSpecialPage);
       }
     }

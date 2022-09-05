@@ -51,6 +51,7 @@ class MainPageView extends ApplicationView {
       const mainButton = document.querySelector('.main-page-link') as HTMLElement;
       mainButton.classList.remove('active');
       document.querySelector('.game-page-link')?.classList.add('active');
+      App.pageInfo = { pageName: 'gamesPage' };
     });
     playButton.innerText = playButtonText;
     buttons.append(learnButton, playButton);

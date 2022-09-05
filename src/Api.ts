@@ -1,5 +1,5 @@
 /* eslint-disable import/no-cycle */
-import { IUser } from './types/interfaces';
+import { ISignIn, IUser } from './types/interfaces';
 import { Word } from './types/Word';
 import { baseUrl } from './utils/constants';
 import UserWord from './types/userword';
@@ -45,6 +45,26 @@ class Api {
       body: JSON.stringify({ email: user.email, password: user.password }),
       headers: {
         'Content-Type': 'application/json',
+      },
+    });
+    return response;
+  }
+
+  async updateRefreshToken(signIn: ISignIn): Promise<Response> {
+    const response: Response = await fetch(`${this.users}/${signIn.userId}/tokens`, {
+      method: 'GET',
+      headers: {
+        authorization: `Bearer ${signIn.refreshToken}`,
+      },
+    });
+    return response;
+  }
+
+  async updateToken(signIn: ISignIn): Promise<Response> {
+    const response: Response = await fetch(`${this.users}/${signIn.userId}/tokens`, {
+      method: 'GET',
+      headers: {
+        authorization: `Bearer ${signIn.token}`,
       },
     });
     return response;

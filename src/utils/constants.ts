@@ -29,7 +29,7 @@ const rsLang = 'RS Lang';
 const learnButtonText = 'Учиться';
 const playButtonText = 'Играть';
 
-const numberOfLevels = 7; // 6 + 1(все сложные слова)
+const numberOfLevels = 7; // 6 + 1 (все сложные слова)
 const numberOfPagesInLevel = 30;
 const numberOfCardsPerPage = 20;
 const btnHardText = 'сложные';
@@ -49,7 +49,7 @@ const progressForNoDoneWord = 0;
 const backButtonText = 'Назад';
 const levelText = 'Уровень';
 const levelSelectLabelText = 'Выберите уровень сложности';
-const newAudioGameButtonText = 'Новая игра (N)';
+const newAudioGameButtonText = 'Новая игра Аудиовызов (N)';
 const newSprintGameButtonText = 'Новая игра Спринт (N)';
 const skipText = 'Пропустить (Space)';
 const nextText = 'Далее (Space)';
@@ -58,12 +58,13 @@ const correctResultsText = 'Верные ответы';
 const incorrectResultsText = 'Неверные ответы:';
 const resultsText = 'Результаты';
 
-// const sprintTime = 60;
-const sprintTime = 10; // test
+const sprintTime = 60;
 const correctText = 'Верно';
 const incorrectText = 'Неверно';
 const arrowRight = '→';
 const arrowLeft = '←';
+const millisecondsInHour = 3600000;
+
 // const
 
 const team = [
@@ -73,15 +74,15 @@ const team = [
       'Тут можно несколько слов о себе. О том, как докатился до этого. Какие планы на будущее.',
     slogan: 'Девиз по жизни',
     img: './assets/team/roma.svg',
-    points: ['backend', 'архитектура', 'статистика', 'Аудиовызов', 'тимлид'],
+    points: ['backend', 'архитектура', 'статистика', 'аудиовызов', 'тимлид'],
   },
   {
     name: 'Владислав Фоменко',
     description:
-      'Тут можно несколько слов о себе. О том, как докатился до этого. Какие планы на будущее.',
-    slogan: 'Девиз по жизни',
+      'Год назад в твиттере увидел отзыв о школе - и понеслось. Мечтаю переехать из России.',
+    slogan: 'Россия будет свободной!',
     img: './assets/team/vlad.svg',
-    points: ['авторизация', 'главная', 'Спринт', 'адский reviewer'],
+    points: ['авторизация', 'главная', 'спринт', 'адский reviewer'],
   },
   {
     name: 'Татьяна Русак',
@@ -146,4 +147,5 @@ export {
   progressForDoneWord,
   progressForNoDoneWord,
   NoHardWordsText,
+  millisecondsInHour,
 };

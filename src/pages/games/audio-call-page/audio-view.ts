@@ -348,7 +348,6 @@ class AudioView {
   // }
 
   setNotEnouthWordsModal() {
-    console.log(this.view.querySelector('.modal-message'));
     (this.view.querySelector('.modal-message') as HTMLDivElement).classList.remove('hidden');
     (this.view.querySelector('.modal-message') as HTMLDivElement).classList.add('popup');
   }

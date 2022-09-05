@@ -1,7 +1,5 @@
 /* eslint-disable import/no-cycle */
-import Api from '../../Api';
 import App from '../../App';
-// import User from "../../types/User";
 import ApplicationContoller from '../application-controller';
 import StatModel from './stat-model';
 import StatView from './stat-view';
@@ -15,14 +13,13 @@ class StatController extends ApplicationContoller {
 
   stat: Statistic = new Statistic();
 
-  api: Api = new Api();
-
   constructor() {
     super();
     this.pageView = new StatView();
     this.model = new StatModel(this.pageView);
     this.addEventListeners();
     this.getStat();
+    this.updateRefreshToken();
   }
 
   addEventListeners() {

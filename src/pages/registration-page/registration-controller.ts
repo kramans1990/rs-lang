@@ -8,14 +8,11 @@ import Statistic from '../../types/Statistic';
 /* eslint-disable import/no-cycle */
 import RegistrationView from './registration-view';
 import App from '../../App';
-import Api from '../../Api';
 
 class RegistrationController extends ApplicationContoller {
   regPageView: RegistrationView;
 
   regModel: RegModel;
-
-  api: Api = new Api();
 
   constructor() {
     super();

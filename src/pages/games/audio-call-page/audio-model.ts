@@ -37,6 +37,7 @@ class AudioModel {
     this.status = status;
 
     if (this.status === 'Set Level') {
+      this.pageView.hideTimer();
       this.pageView.hideDifficultySelection();
       this.pageView.hideGame();
       this.pageView.hideResults();
@@ -79,6 +80,7 @@ class AudioModel {
     if (this.currentQuestion === this.audioTests.length) {
       this.pageView.showGameResult(this.audioTests);
       this.pageView.hideGame();
+      this.pageView.hideTimer();
     } else {
       this.pageView.showQuestion(this.audioTests[this.currentQuestion].audioTestView);
     }
@@ -91,7 +93,6 @@ class AudioModel {
     this.rigthAnswers = 0;
     this.pageView.hideResults();
     this.audioTests = new Array<AudioQuestion>();
-    //
   }
 
   // сформировать список вопросов и начать игру
@@ -129,7 +130,6 @@ class AudioModel {
       }
       this.audioTests = tests;
       this.Question = 0;
-      // this.gameStatus = 'Select Level';
       this.gameStatus = 'Game';
     }
   }

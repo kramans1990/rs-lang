@@ -58,7 +58,7 @@ const correctResultsText = 'Верные ответы';
 const incorrectResultsText = 'Неверные ответы:';
 const resultsText = 'Результаты';
 
-const sprintTime = 60;
+const sprintTime = 10;
 const correctText = 'Верно';
 const incorrectText = 'Неверно';
 const arrowRight = '→';

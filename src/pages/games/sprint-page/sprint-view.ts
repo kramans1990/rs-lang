@@ -198,7 +198,7 @@ class SprintView extends ApplicationView {
 
   // view
   hideGame() {
-    this.timer.classList.add('hidden');
+    this.hideTimer();
     (this.view.querySelector('.div-quiz-container') as HTMLDivElement)?.classList.add('hidden');
     (this.view.querySelector('.modal-message') as HTMLDivElement).classList.add('hidden');
   }
@@ -347,11 +347,11 @@ class SprintView extends ApplicationView {
       playGame.click();
     }
     if (key === 'arrowleft') {
-      const diff = this.view.querySelectorAll('.option')[0] as HTMLButtonElement;
+      const diff = document.querySelectorAll('.option')[0] as HTMLButtonElement;
       diff.click();
     }
     if (key === 'arrowright') {
-      const diff = this.view.querySelectorAll('.option')[1] as HTMLButtonElement;
+      const diff = document.querySelectorAll('.option')[1] as HTMLButtonElement;
       diff.click();
     }
     document.body.focus();

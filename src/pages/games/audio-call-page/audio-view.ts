@@ -6,7 +6,8 @@ import AudioQuestion from './audio-question-component';
 import Api from '../../../Api';
 import * as modalResult from './modal-content';
 import ModalMessage from './modalMessage';
-import { newAudioGameButtonText } from '../../../utils/constants';
+import { newAudioGameButtonText, sprintTime } from '../../../utils/constants';
+import GameCommonView from '../game-common-view';
 
 class AudioView {
   view: HTMLDivElement;
@@ -14,6 +15,8 @@ class AudioView {
   focusIndex = 0;
 
   api: Api = new Api();
+
+  timer: HTMLDivElement;
 
   constructor() {
     this.renderView();
@@ -28,7 +31,6 @@ class AudioView {
     buttonNewGame.className = 'new-game-button';
     const divButtonsContainer = document.createElement('div');
     divButtonsContainer.className = 'buttons-container';
-    div.appendChild(buttonNewGame);
 
     for (let i = 1; i < 7; i += 1) {
       const button = document.createElement('button');
@@ -57,9 +59,8 @@ class AudioView {
     const modalMessage = new ModalMessage('Недостаточно слов для игры');
     gameContainer.className = 'game-container';
     gameContainer.append(divDifficulty, progressBar, statusContainer);
-    div.appendChild(gameContainer);
-    div.appendChild(modal);
-    div.appendChild(modalMessage.modal);
+    this.timer = GameCommonView.createTimer();
+    div.append(buttonNewGame, this.timer, gameContainer, modal, modalMessage.modal);
     this.view = div;
   }
 
@@ -113,9 +114,31 @@ class AudioView {
     ).innerText = `Верные ответы (${corrects.length}) :`;
   }
 
-  // renderResultWindow(): HTMLDivElement {
+  showTimer() {
+    this.timer.innerText = `${sprintTime}`;
+    this.timer.classList.remove('hidden');
+    this.timer.classList.remove('hidden');
+    let gameTime = 0;
+    let isResultsShown = false;
+    window.setInterval((): void => {
+      if (gameTime <= sprintTime) {
+        this.timer.innerText = `${sprintTime - gameTime}`;
+        gameTime += 1;
+      }
+      if (this.timer.innerText === '0' && !isResultsShown) {
+        const nextQuestionButton = this.view.querySelector(
+          '.next-question-button',
+        ) as HTMLButtonElement;
+        nextQuestionButton.click();
+        this.hideTimer();
+        isResultsShown = true;
+      }
+    }, 1000);
+  }
 
-  // }
+  hideTimer() {
+    this.timer.classList.add('hidden');
+  }
 
   showLevelSelection() {
     (this.view.querySelector('.dif-container') as HTMLDivElement).classList.remove('hidden');
@@ -147,11 +170,13 @@ class AudioView {
   }
 
   showGame() {
+    this.showTimer();
     (this.view.querySelector('.div-quiz-container') as HTMLDivElement)?.classList.remove('hidden');
     (this.view.querySelector('.modal-message') as HTMLDivElement).classList.add('hidden');
   }
 
   hideGame() {
+    this.hideTimer();
     (this.view.querySelector('.div-quiz-container') as HTMLDivElement)?.classList.add('hidden');
     (this.view.querySelector('.modal-message') as HTMLDivElement).classList.add('hidden');
   }
@@ -210,8 +235,10 @@ class AudioView {
         }
       }
     }
-    const nextButton = this.view.querySelector('#next-question-button') as HTMLButtonElement;
-    nextButton.innerText = 'Далее (Space)';
+    const nextButton = this.view.querySelector('.next-question-button') as HTMLButtonElement;
+    window.setTimeout((): void => {
+      nextButton.click();
+    }, 200);
   }
 
   handleNavKeys(pressedKey: string) {

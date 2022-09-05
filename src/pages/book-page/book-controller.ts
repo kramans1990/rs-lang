@@ -314,10 +314,10 @@ class BookController extends ApplicationContoller {
     const iconSprint = BookPageView.createElementByParams('img', 'game-icon') as HTMLImageElement;
     iconSprint.setAttribute('src', iconSprintSrc);
     sprintGameLink.prepend(iconSprint);
-    const wordsForGame = await this.getWordsForGame();
+    const wordsForsprintGame = await this.getWordsForGame();
     sprintGameLink.addEventListener('click', (): void => {
-      if (wordsForGame) {
-        App.renderSprintPage(wordsForGame[0]);
+      if (wordsForsprintGame) {
+        App.renderSprintPage(wordsForsprintGame[0] as Word[]);
       }
     });
     const audioGameLink = BookPageView.createElementByParams('div', 'btn') as HTMLDivElement;
@@ -329,9 +329,10 @@ class BookController extends ApplicationContoller {
     ) as HTMLImageElement;
     iconAudioGame.setAttribute('src', iconAudioGameSrc);
     audioGameLink.prepend(iconAudioGame);
+    const wordsForAudioGame = await this.getWordsForGame('audio');
     audioGameLink.addEventListener('click', (): void => {
-      if (wordsForGame) {
-        App.renderAudiocallPage(wordsForGame[0]);
+      if (wordsForAudioGame) {
+        App.renderAudiocallPage(wordsForAudioGame as Word[]);
       }
     });
 
@@ -342,9 +343,9 @@ class BookController extends ApplicationContoller {
     this.gameButtons.append(audioGameLink, sprintGameLink);
   }
 
-  async getWordsForGame() {
+  async getWordsForGame(gameName?: string) {
     let allUserWords;
-    const arrForGame = [];
+    const arrForGame: Array<Word[]> = [];
 
     if (App.user) {
       allUserWords = await this.bookModel.getUserWords(App.user.userId, App.user.token);
@@ -380,6 +381,18 @@ class BookController extends ApplicationContoller {
         arrForGame.push(wordsForSpecialPage);
       }
     }
+
+    if (gameName) {
+      let arrForAudioGame: Word[] = [];
+      for (let i = 0; i < arrForGame.length; i += 1) {
+        arrForAudioGame.push(...arrForGame[i]);
+      }
+      if (arrForAudioGame.length > numberOfCardsPerPage) {
+        arrForAudioGame = arrForAudioGame.slice(0, 20);
+      }
+      return arrForAudioGame;
+    }
+
     return arrForGame;
   }
 

@@ -37,6 +37,10 @@ class AudioController extends ApplicationContoller {
       this.addKeyBoardListener();
     }
     if (words) {
+      this.pageView = new AudioView();
+      this.model = new AudioModel(this.pageView);
+      this.addListeners();
+      this.addKeyBoardListener();
       this.model.createQuiz(words, this.countQuestions);
     }
   }

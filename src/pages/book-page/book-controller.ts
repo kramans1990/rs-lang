@@ -30,6 +30,7 @@ import {
   getDataFromLocalStorage,
   saveDataToLocalStorage,
   setBackgroundForBookPage,
+  getAggregatedNumberFromLS,
 } from '../../functions/functions';
 
 class BookController extends ApplicationContoller {
@@ -173,6 +174,18 @@ class BookController extends ApplicationContoller {
       btn.addEventListener('click', async (e): Promise<void> => this.levelBtnHandler(e));
       this.levels.append(btn);
     }
+
+    BookController.changeStatusOfGameButtons();
+  }
+
+  static changeStatusOfGameButtons() {
+    const aggregatedNumber = getAggregatedNumberFromLS();
+    const gameButtons = document.querySelector('.game__buttons');
+    if (aggregatedNumber === numberOfCardsPerPage) {
+      gameButtons?.classList.add('inactive');
+    } else {
+      gameButtons?.classList.remove('inactive');
+    }
   }
 
   async levelBtnHandler(e: MouseEvent) {
@@ -212,6 +225,8 @@ class BookController extends ApplicationContoller {
         pageNumber: this.currentPage,
       }),
     );
+
+    BookController.changeStatusOfGameButtons();
   }
 
   static setEventListenersForCard(e: Event) {
@@ -289,6 +304,7 @@ class BookController extends ApplicationContoller {
     this.aggregatedNumber = await this.setBackgroundByAggregatedNumber(group, page);
     setBackgroundForBookPage(this.aggregatedNumber);
     saveDataToLocalStorage('aggregatedNumber', JSON.stringify(this.aggregatedNumber));
+    BookController.changeStatusOfGameButtons();
   }
 
   async renderGameButtons() {

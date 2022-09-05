@@ -12,6 +12,8 @@ import ApplicationView from '../../application-view';
 import GameCommonView from '../game-common-view';
 import SprintQuestion from './sprint-question-component';
 import './sprint.css';
+import * as modalResult from '../audio-call-page/modal-content';
+import ModalMessage from '../audio-call-page/modalMessage';
 
 class SprintView extends ApplicationView {
   isSoundOn: boolean;
@@ -59,12 +61,19 @@ class SprintView extends ApplicationView {
     progressBar.appendChild(innerdiv);
     const gameContainer = document.createElement('div');
     const statusContainer = document.createElement('div');
-    const modal = GameCommonView.createModalContent();
+    // const modal = GameCommonView.createModalContent();
+    // modal.className = 'game-result hidden';
+    const modal = document.createElement('div');
     modal.className = 'game-result hidden';
+    modal.innerHTML = modalResult.modalHtml;
+    ///
+
+    const modalMessage = new ModalMessage('Недостаточно слов для игры');
+    //
     gameContainer.className = 'game-container';
     gameContainer.append(divDifficulty, progressBar, statusContainer);
     this.timer = GameCommonView.createTimer();
-    div.append(buttonNewGame, this.timer, gameContainer, modal);
+    div.append(buttonNewGame, this.timer, gameContainer, modalMessage.modal, modal);
     this.view = div;
   }
 
@@ -177,43 +186,54 @@ class SprintView extends ApplicationView {
   // view
   hideDifficultySelection() {
     (this.view.querySelector('.dif-container') as HTMLDivElement)?.classList.add('hidden');
+    (this.view.querySelector('.modal-message') as HTMLDivElement).classList.add('hidden');
   }
 
   // view
   showGame() {
     this.showTimer();
     (this.view.querySelector('.div-quiz-container') as HTMLDivElement)?.classList.remove('hidden');
+    (this.view.querySelector('.modal-message') as HTMLDivElement).classList.add('hidden');
   }
 
   // view
   hideGame() {
     this.timer.classList.add('hidden');
     (this.view.querySelector('.div-quiz-container') as HTMLDivElement)?.classList.add('hidden');
+    (this.view.querySelector('.modal-message') as HTMLDivElement).classList.add('hidden');
   }
 
   // view
   hideProgressBar() {
     (this.view.querySelector('.game-progress-bar') as HTMLDivElement)?.classList.add('hidden');
+    (this.view.querySelector('.modal-message') as HTMLDivElement).classList.add('hidden');
   }
 
   // view
   showProgressBar() {
     (this.view.querySelector('.game-progress-bar') as HTMLDivElement)?.classList.remove('hidden');
+    (this.view.querySelector('.modal-message') as HTMLDivElement).classList.add('hidden');
   }
 
   // view
   showResults() {
     (this.view.querySelector('.game-result') as HTMLDivElement)?.classList.remove('hidden');
+    this.view.querySelector('.game-result')?.classList.add('popup');
   }
 
   // view
   hideResults() {
     (this.view.querySelector('.game-result') as HTMLDivElement)?.classList.add('hidden');
+    (this.view.querySelector('.modal-message') as HTMLDivElement).classList.add('hidden');
 
     const correctdiv = document.querySelector('.answer-container-correct') as HTMLDivElement;
     const wrongDiv = document.querySelector('.answer-container-wrong') as HTMLDivElement;
-    correctdiv.innerHTML = '';
-    wrongDiv.innerHTML = '';
+    if (correctdiv) {
+      correctdiv.innerHTML = '';
+    }
+    if (wrongDiv) {
+      wrongDiv.innerHTML = '';
+    }
   }
 
   // view
@@ -354,6 +374,11 @@ class SprintView extends ApplicationView {
     } else {
       this.handleNavKeys(key);
     }
+  }
+
+  setNotEnouthWordsModal() {
+    (this.view.querySelector('.modal-message') as HTMLDivElement).classList.remove('hidden');
+    (this.view.querySelector('.modal-message') as HTMLDivElement).classList.add('popup');
   }
 }
 //   constructor() {

@@ -156,6 +156,7 @@ class CardView {
       const card = (e.target as HTMLDivElement).closest('.card');
       const cardId = card?.id as string;
       const pageElement = document.querySelector('.pagination-element.active');
+      const gameButtons = document.querySelector('.game__buttons');
       let aggregatedNumber = getAggregatedNumberFromLS();
 
       if (card?.classList.contains('hard')) {
@@ -175,8 +176,10 @@ class CardView {
 
       if (aggregatedNumber === numberOfCardsPerPage) {
         pageElement?.classList.add('done');
+        gameButtons?.classList.add('inactive');
       } else {
         pageElement?.classList.remove('done');
+        gameButtons?.classList.remove('inactive');
       }
 
       saveDataToLocalStorage('aggregatedNumber', JSON.stringify(aggregatedNumber));
@@ -190,6 +193,7 @@ class CardView {
         const card = (e.target as HTMLDivElement).closest('.card');
         const cardId = card?.id as string;
         const pageElement = document.querySelector('.pagination-element.active');
+        const gameButtons = document.querySelector('.game__buttons');
         let aggregatedNumber = getAggregatedNumberFromLS();
 
         if (card?.classList.contains('done')) {
@@ -211,8 +215,10 @@ class CardView {
 
         if (aggregatedNumber === numberOfCardsPerPage) {
           pageElement?.classList.add('done');
+          gameButtons?.classList.add('inactive');
         } else {
           pageElement?.classList.remove('done');
+          gameButtons?.classList.remove('inactive');
         }
 
         saveDataToLocalStorage('aggregatedNumber', JSON.stringify(aggregatedNumber));

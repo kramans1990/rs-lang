@@ -20,6 +20,7 @@ import SprintController from './pages/games/sprint-page/sprint-controller';
 import StatController from './pages/stat-page/stat-controller';
 import AudioController from './pages/games/audio-call-page/audio-call-controller';
 import { Word } from './types/Word';
+import TeamController from './pages/team-page/team-controller';
 
 class App {
   static main: HTMLElement | null;
@@ -111,6 +112,7 @@ class App {
   }
 
   static renderAudiocallPage(words?: Array<Word>) {
+    console.log(words);
     const controller: ApplicationContoller = new AudioController(words);
     App.setController(controller);
     const mainButton = document.querySelector('.game-page-link') as HTMLElement;
@@ -138,12 +140,22 @@ class App {
   }
 
   static renderStatPage() {
-    const controller: ApplicationContoller = new StatController();
+    // console.log(App.user);
+    if (App.user) {
+      const controller: ApplicationContoller = new StatController();
+      App.setController(controller);
+      const mainButton = document.querySelector('.stat-page-link') as HTMLElement;
+      App.changeActiveClassForNavItemByElement(mainButton);
+      App.makeMainTransparentAgain();
+      App.pageInfo = { pageName: 'statPage' };
+    } else {
+      App.renderAuthPage();
+    }
+  }
+
+  static renderTeamPage() {
+    const controller: ApplicationContoller = new TeamController();
     App.setController(controller);
-    const mainButton = document.querySelector('.stat-page-link') as HTMLElement;
-    App.changeActiveClassForNavItemByElement(mainButton);
-    App.makeMainTransparentAgain();
-    App.pageInfo = { pageName: 'statPage' };
   }
 
   static renderRegPage(): void {
@@ -180,6 +192,7 @@ class App {
     });
     document.querySelector('.sign-in-page-link')?.addEventListener('click', App.renderAuthPage);
     document.querySelector('.stat-page-link')?.addEventListener('click', App.renderStatPage);
+    document.querySelector('.team-page-link')?.addEventListener('click', App.renderTeamPage);
     document
       .querySelector('.audio-page-link')
       ?.addEventListener('click', (): void => App.renderAudiocallPage());

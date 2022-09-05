@@ -16,8 +16,10 @@ class ApplicationContoller {
   async refreshToken() {
     if (getDataFromLocalStorage('rs-lang-user') !== null) {
       const signIn = getDataFromLocalStorage('rs-lang-user') as unknown as ISignIn;
-      const id = signIn.userId;
-      const newSignIn = (await (await this.api.refreshToken(id)).json()) as ISignIn;
+      const newSignIn = (await (await this.api.refreshToken(signIn)).json()) as ISignIn;
+      newSignIn.message = signIn.message;
+      newSignIn.userId = signIn.userId;
+      newSignIn.name = signIn.name;
       saveDataToLocalStorage('rs-lang-user', JSON.stringify(newSignIn));
     }
   }

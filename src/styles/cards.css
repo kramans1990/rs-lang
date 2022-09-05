@@ -6,6 +6,11 @@
   column-gap: 1%;
 }
 
+.cards_list > p {
+  font-size: 3rem;
+  color: var(--color-accent);
+}
+
 @media (max-width: 992px) {
   .cards_list {
     justify-content: center;

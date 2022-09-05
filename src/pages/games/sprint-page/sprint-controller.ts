@@ -5,8 +5,9 @@ import { Word } from '../../../types/Word';
 // import { sprintTime } from '../../../utils/constants';
 import ApplicationContoller from '../../application-controller';
 import SprintModel from './sprint-model';
-import SprintQuestion from './sprint-question-component';
+// import SprintQuestion from './sprint-question-component';
 import SprintView from './sprint-view';
+import Statistic from '../../../types/Statistic';
 
 class SprintController extends ApplicationContoller {
   model: SprintModel;
@@ -21,15 +22,21 @@ class SprintController extends ApplicationContoller {
 
   pagesPerGame = 9;
 
+  stat: Statistic = new Statistic();
+
   constructor(words?: Array<Word>) {
     super();
+    this.pageView = new SprintView();
+    this.model = new SprintModel(this.pageView);
     if (!words) {
-      this.pageView = new SprintView();
-      this.model = new SprintModel(this.pageView);
       this.addListeners();
       this.addKeyBoardListeners();
     }
     if (words) {
+      this.pageView = new SprintView();
+      this.model = new SprintModel(this.pageView);
+      this.addListeners();
+      this.addKeyBoardListeners();
       this.model.createQuiz(words, this.countQuestions);
     }
   }
@@ -47,13 +54,23 @@ class SprintController extends ApplicationContoller {
         }
       });
     }
-    this.pageView.view.addEventListener('click', (e: MouseEvent): void => {
+    this.pageView.view.addEventListener('click', async (e: MouseEvent): Promise<void> => {
       const target = e.target as HTMLElement;
       // if (target.className === 'game-button option') {
       //   this.model.updateGameProgress();//обновление статистики
       // }
       if (target.id === 'next-question-button') {
-        this.UpdateUserWords(this.model.audioTests[this.model.currentQuestion]);
+        // this.UpdateUserWords(this.model.audioTests[this.model.currentQuestion]);
+        // обновить userwords и статистику
+        const test = this.model.audioTests[this.model.currentQuestion];
+        const userWord: UserWord = new UserWord();
+        const updateWordsResult: {
+          isNew: boolean;
+          isCorrect: boolean;
+          isLearned: boolean;
+        } = await userWord.UpdateUserWords(test.correctAnswer, test.isCorrect);
+
+        this.stat.updateStatistic(updateWordsResult, 'sprint');
         this.model.nextQuestion();
       }
       if (target.className === 'audio-icon') {
@@ -94,7 +111,6 @@ class SprintController extends ApplicationContoller {
     this.model.gameStatus = 'Loading';
     let progress = this.initialbarProgress;
     let words = new Array<Word>();
-
     let randomPages: Array<number> = new Array<number>();
     while (randomPages.length < this.pagesPerGame) {
       randomPages.push(Math.floor(Math.random() * this.pagesPerGame + 1));
@@ -129,56 +145,6 @@ class SprintController extends ApplicationContoller {
           rej(err);
         });
     });
-  }
-
-  async UpdateUserWords(test: SprintQuestion) {
-    let userWords: Array<UserWord> = new Array<UserWord>();
-    if (App.user?.userId) {
-      const value: Array<UserWord> = await this.api.getUserWords(App.user.userId, App.user.token);
-      userWords = value;
-      const find = userWords.filter(
-        (item: UserWord): boolean => item.wordId === test.correctAnswer.id,
-      );
-      if (find.length === 0) {
-        // let progress = 0;
-        // progress = test.isCorrect ? (progress = 20) : 0;
-        // const difficulty = 'no-hard';
-        // const successfulAttempts = test.isCorrect ? 1 : 0;
-        // const unsuccessfulAttempts = test.isCorrect ? 0 : 1;
-        const userWord: UserWord = new UserWord();
-        // test.correctAnswer,
-        // difficulty,
-        // progress,
-        // successfulAttempts,
-        // unsuccessfulAttempts,
-
-        this.api.createUserWord(App.user.userId, App.user.token, userWord);
-      } else {
-        const word = find[0];
-        // let { progress } = word.optional;
-        // progress = test.isCorrect ? (progress += 20) : (progress -= 20);
-        // progress = progress >= 100 ? 100 : progress;
-        // progress = progress <= 0 ? 0 : progress;
-        // const difficulty = progress === 100 ? 'no-hard' : find[0].difficulty;
-        if (test.isCorrect) {
-          word.optional.successfulAttempts += 1;
-        }
-        if (!test.isCorrect) {
-          word.optional.unsuccessfulAttempts += 1;
-        }
-        // const { successfulAttempts } = word.optional;
-        // const { unsuccessfulAttempts } = word.optional;
-        const userWord: UserWord = new UserWord();
-        // test.correctAnswer,
-        // difficulty,
-        // progress,
-        // successfulAttempts,
-        // unsuccessfulAttempts,
-        userWord.word = test.correctAnswer;
-        userWord.wordId = word.wordId;
-        this.api.updateUserWord(App.user.userId, App.user.token, userWord);
-      }
-    }
   }
 }
 

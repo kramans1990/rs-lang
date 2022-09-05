@@ -11,7 +11,6 @@ import { BookPageView } from './book-view';
 import CardView from './card-view';
 import BookModel from './book-model';
 import App from '../../App';
-// import Api from '../../Api';
 import UserWord from '../../types/userword';
 
 import {
@@ -292,14 +291,19 @@ class BookController extends ApplicationContoller {
     saveDataToLocalStorage('aggregatedNumber', JSON.stringify(this.aggregatedNumber));
   }
 
-  renderGameButtons() {
+  async renderGameButtons() {
     const sprintGameLink = BookPageView.createElementByParams('div', 'btn') as HTMLDivElement;
     sprintGameLink.classList.add('btn_colored');
     sprintGameLink.innerText = sprintGameName;
     const iconSprint = BookPageView.createElementByParams('img', 'game-icon') as HTMLImageElement;
     iconSprint.setAttribute('src', iconSprintSrc);
     sprintGameLink.prepend(iconSprint);
-    sprintGameLink.addEventListener('click', (): void => App.renderSprintPage()); // сюда надо подставитьсписок слов со страницы (Влад)
+    const wordsForGame = await this.getWordsForGame();
+    sprintGameLink.addEventListener('click', (): void => {
+      if (wordsForGame) {
+        App.renderSprintPage(wordsForGame[0]);
+      }
+    });
     const audioGameLink = BookPageView.createElementByParams('div', 'btn') as HTMLDivElement;
     audioGameLink.classList.add('btn_colored');
     audioGameLink.innerText = audioGameName;
@@ -309,8 +313,54 @@ class BookController extends ApplicationContoller {
     ) as HTMLImageElement;
     iconAudioGame.setAttribute('src', iconAudioGameSrc);
     audioGameLink.prepend(iconAudioGame);
-    audioGameLink.addEventListener('click', (): void => App.renderAudiocallPage()); // сюда надо подставитьсписок слов со страницы (Влад)
+    audioGameLink.addEventListener('click', (): void => {
+      if (wordsForGame) {
+        App.renderAudiocallPage(wordsForGame[0]);
+      }
+    });
     this.gameButtons.append(audioGameLink, sprintGameLink);
+  }
+
+  async getWordsForGame() {
+    let allUserWords;
+    const arrForGame = [];
+
+    if (App.user) {
+      allUserWords = await this.bookModel.getUserWords(App.user.userId, App.user.token);
+
+      const allPromises = [];
+      for (let i = 0; i < 30; i += 1) {
+        const wordsForPage = this.bookModel.getWords(this.currentLevel, i);
+        allPromises.push(wordsForPage);
+      }
+
+      const responce = await Promise.all(allPromises);
+      const allWordsForLevel: Word[] = [];
+      for (let i = 0; i < responce.length; i += 1) {
+        allWordsForLevel.push(...responce[i]);
+      }
+
+      const arrOfLearnedId = allUserWords
+        .filter((userWord) => userWord.optional.progress === 100)
+        .reduce((arrOfId, userWord) => {
+          arrOfId.push(userWord.wordId);
+          return arrOfId;
+        }, [] as string[]);
+
+      // eslint-disable-next-line max-len, prettier/prettier
+      const allUnLearnedWordsForLevel = allWordsForLevel
+        // eslint-disable-next-line prettier/prettier
+        .filter((userWord) => !arrOfLearnedId.includes(userWord.id));
+
+      for (let i = this.currentPage; i >= 0; i -= 1) {
+        const wordsForSpecialPage = allUnLearnedWordsForLevel.filter(
+          (userWord) => userWord.page === i,
+        );
+        // console.log(this.currentPage, i, allUnLearnedWordsForLevel);
+        arrForGame.push(wordsForSpecialPage);
+      }
+    }
+    return arrForGame;
   }
 
   getPageInfoFromLocalStorage() {

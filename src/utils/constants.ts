@@ -63,6 +63,8 @@ const correctText = 'Верно';
 const incorrectText = 'Неверно';
 const arrowRight = '→';
 const arrowLeft = '←';
+const millisecondsInHour = 3600000;
+
 // const
 
 const team = [
@@ -145,4 +147,5 @@ export {
   progressForDoneWord,
   progressForNoDoneWord,
   NoHardWordsText,
+  millisecondsInHour,
 };

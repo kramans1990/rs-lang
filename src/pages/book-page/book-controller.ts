@@ -58,7 +58,6 @@ class BookController extends ApplicationContoller {
 
   constructor() {
     super();
-    this.updateRefreshToken();
     this.pageView = new BookPageView(this.aggregatedNumber);
     this.bookModel = new BookModel();
     this.currentLevel = 0;
@@ -78,7 +77,6 @@ class BookController extends ApplicationContoller {
         pageNumber: this.currentPage,
       }),
     );
-
     this.setView();
   }
 

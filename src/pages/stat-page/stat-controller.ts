@@ -15,11 +15,11 @@ class StatController extends ApplicationContoller {
 
   constructor() {
     super();
-    this.updateRefreshToken();
     this.pageView = new StatView();
     this.model = new StatModel(this.pageView);
     this.addEventListeners();
     this.getStat();
+    this.updateRefreshToken();
   }
 
   addEventListeners() {

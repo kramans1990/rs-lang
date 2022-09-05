@@ -50,6 +50,13 @@ class Api {
     return response;
   }
 
+  async refreshToken(id: string): Promise<Response> {
+    const response: Response = await fetch(`${this.users}/${id}/tokens`, {
+      method: 'GET',
+    });
+    return response;
+  }
+
   async deleteUser(id: string): Promise<Response> {
     const response: Response = await fetch(`${this.users}/${id}`, {
       method: 'DELETE',

@@ -1,4 +1,3 @@
-/* eslint-disable import/no-cycle */
 import '../../styles/cards.css';
 import '../../styles/level-buttons.css';
 import '../../styles/main.css';
@@ -11,7 +10,6 @@ import { BookPageView } from './book-view';
 import CardView from './card-view';
 import BookModel from './book-model';
 import App from '../../App';
-// import Api from '../../Api';
 import UserWord from '../../types/userword';
 
 import {

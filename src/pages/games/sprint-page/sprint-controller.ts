@@ -1,5 +1,4 @@
 /* eslint-disable import/no-cycle */
-import Api from '../../../Api';
 import App from '../../../App';
 import UserWord from '../../../types/userword';
 import { Word } from '../../../types/Word';
@@ -13,8 +12,6 @@ class SprintController extends ApplicationContoller {
   model: SprintModel;
 
   pageView: SprintView;
-
-  api: Api = new Api();
 
   wordsPerPage = 20;
 

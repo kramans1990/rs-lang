@@ -6,8 +6,6 @@ import Api from '../../Api';
 class MainPageController extends ApplicationContoller {
   mainPageView: MainPageView;
 
-  api: Api;
-
   constructor() {
     super();
     this.setView();

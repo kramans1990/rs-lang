@@ -1,9 +1,10 @@
 /* eslint-disable import/no-cycle */
 import MainPageController from './pages/main-page/main-page-controller';
 import ApplicationContoller from './pages/application-controller';
-// import AudioController from './pages/games/audio-call-page/audio-call-controller';
+import TeamController from './pages/team-page/team-controller';
 import AuthController from './pages/auth-page/auth-controller';
 import RegistrationController from './pages/registration-page/registration-controller';
+import GamesController from './pages/games/games-page-controller';
 import BookController from './pages/book-page/book-controller';
 import { ISignIn, IPageInfo } from './types/interfaces';
 import {
@@ -129,6 +130,21 @@ class App {
     App.pageInfo = { pageName: 'sprintPage' };
   }
 
+  static renderGamesPage() {
+    const controller: ApplicationContoller = new GamesController();
+    App.setController(controller);
+    App.pageInfo = { pageName: 'gamesPage' };
+  }
+
+  static renderTeamPage() {
+    const controller: ApplicationContoller = new TeamController();
+    App.setController(controller);
+    const mainButton = document.querySelector('.team-page-link') as HTMLElement;
+    App.changeActiveClassForNavItemByElement(mainButton);
+    App.makeMainTransparentAgain();
+    App.pageInfo = { pageName: 'teamPage' };
+  }
+
   static renderAuthPage(): void {
     const controller: ApplicationContoller = new AuthController();
     App.setController(controller);
@@ -163,6 +179,7 @@ class App {
     mainWrapper.style.backgroundColor = 'transparent';
   }
 
+  // eslint-disable-next-line max-lines-per-function
   addEventListeners() {
     window.addEventListener('load', (): void => {
       if (getDataFromLocalStorage('rs-lang-user')) {
@@ -176,6 +193,7 @@ class App {
     document.querySelector('.header__logo')?.addEventListener('click', App.renderMainPage);
     document.querySelector('.main-page-link')?.addEventListener('click', App.renderMainPage);
     document.querySelector('.book-page-link')?.addEventListener('click', App.renderBookPage);
+    document.querySelector('.team-page-link')?.addEventListener('click', App.renderTeamPage);
     document
       .querySelector('.sprint-page-link')
       ?.addEventListener('click', (): void => App.renderSprintPage());
@@ -210,11 +228,17 @@ class App {
       case 'statPage':
         App.renderStatPage();
         break;
+      case 'gamesPage':
+        App.renderGamesPage();
+        break;
       case 'sprintPage':
         App.renderSprintPage();
         break;
       case 'authPage':
         App.renderAuthPage();
+        break;
+      case 'teamPage':
+        App.renderTeamPage();
         break;
       default:
         App.renderMainPage();

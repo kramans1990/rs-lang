@@ -15,7 +15,10 @@ class StatView extends ApplicationView {
   constructor() {
     super();
     this.renderView();
+<<<<<<< HEAD
 
+=======
+>>>>>>> 2b95122a44e3e0373fed65e7880891e789382a03
     Chart.register(...registerables);
   }
 

@@ -1,116 +1,116 @@
 .stat-container{
-        display: grid;
-    grid-template-rows: 60px 0.95fr;
-  
-    justify-items: center;
-  
+  display: grid;
+grid-template-rows: 60px 0.95fr;
+
+justify-items: center;
+
 }
 .div-buttons-flex{
-    display: flex;
-    justify-content: center;
-    flex-wrap: wrap;
-    column-gap: 20px;
-    flex-direction: row;    
-    border-radius: 5px;
+display: flex;
+justify-content: center;
+flex-wrap: wrap;
+column-gap: 20px;
+flex-direction: row;    
+border-radius: 5px;
 }
 .stat-button{
-    width: 250px;
-    height: 45px;
-    background: var(--color-main);
-    opacity: 0.9;   
-    font-size: 20px;
-    font-weight: 500;
-    border: 0px;
-    border-radius: 5px;
-    color: #FFFFFF;
-    margin-top: 5px;
-   
-  }
-  .stat-button:hover{
-    opacity: 1;
-    font-size: 20px;
-    font-weight: 700;
-    border: 0px;
-    border-radius: 3px;
-    cursor: pointer;
-  }
-  .stat-content{
-    width: 70vW;
-    background-color: rgba(255, 255, 255, 0);
-    border-radius: 10px;
-    padding-left: 10px;
-    padding-right: 10px;
-    
-  }
-  .stat-content > div{   
-    font-family: "Raleway", sans-serif;
-    color: black;
-    font-style: normal;   
-    margin-bottom: 10px;
-    font-weight: 600;
-    font-size: 2.2em;
-    line-height: 2.2rem;
-    letter-spacing: 1px;
-  }
-  .stat-content > h3{
-    text-align: center;    
-    font-family: "Raleway", sans-serif;   
-    font-style: normal;
-    font-size: x-large;
-    margin-bottom: 10px;
-    color : var(--color-main);
-    /* height: 600px; */
-  }
-  .stat-content:last-child{
-    padding-bottom: 20px;
-  }
-  .title{
-    margin-top: 10px;
-    text-align: center;
-   
-  }
+width: 250px;
+height: 45px;
+background: var(--color-main);
+opacity: 0.9;   
+font-size: 20px;
+font-weight: 500;
+border: 0px;
+border-radius: 5px;
+color: #FFFFFF;
+margin-top: 5px;
 
-  .statcontent > .title{
-    color : black;
-  }
-  .popup{
-    animation: popup 0.7s;
-    background-color: white;
-  }
-  
-  @keyframes popup {
-    0%{
-      transform: scale(0.2);
-    }
-   
-    100%{
-      transform: scale(1);
-    }
-    
-  }
-  canvas{
-    background: white;
-    border-radius: 10px;
-    margin-bottom: 20px;
-  }
-  @media (max-width: 600px) {
-    .stat-container {
-      display: grid;
-      grid-template-rows: 120px 0.95fr;
-      justify-items: center;
-     
-  }.div-buttons-flex .stat-content{
-    width: 100vW;
-  }
-  .stat-content > div {   
-    font-weight: 600;
-    font-size: 1.5em;
-    line-height: 1rem;    
 }
-.stat-content > h3 {
- font-size: 20px;
+.stat-button:hover{
+opacity: 1;
+font-size: 20px;
+font-weight: 700;
+border: 0px;
+border-radius: 3px;
+cursor: pointer;
 }
 .stat-content{
-  width: 90vw;
+width: 70vW;
+background-color: rgba(255, 255, 255, 0);
+border-radius: 10px;
+padding-left: 10px;
+padding-right: 10px;
+
+}
+.stat-content > div{   
+font-family: "Raleway", sans-serif;
+color: black;
+font-style: normal;   
+margin-bottom: 10px;
+font-weight: 600;
+font-size: 2.2em;
+line-height: 2.2rem;
+letter-spacing: 1px;
+}
+.stat-content > h3{
+text-align: center;    
+font-family: "Raleway", sans-serif;   
+font-style: normal;
+font-size: x-large;
+margin-bottom: 10px;
+color : var(--color-main);
+/* height: 600px; */
+}
+.stat-content:last-child{
+padding-bottom: 20px;
+}
+.title{
+margin-top: 10px;
+text-align: center;
+
+}
+
+.statcontent > .title{
+color : black;
+}
+.popup{
+animation: popup 0.7s;
+background-color: white;
+}
+
+@keyframes popup {
+0%{
+transform: scale(0.2);
+}
+
+100%{
+transform: scale(1);
+}
+
+}
+canvas{
+background: white;
+border-radius: 10px;
+margin-bottom: 20px;
+}
+@media (max-width: 600px) {
+.stat-container {
+display: grid;
+grid-template-rows: 120px 0.95fr;
+justify-items: center;
+
+}.div-buttons-flex .stat-content{
+width: 100vW;
+}
+.stat-content > div {   
+font-weight: 600;
+font-size: 1.5em;
+line-height: 1rem;    
+}
+.stat-content > h3 {
+font-size: 20px;
+}
+.stat-content{
+width: 90vw;
 }
 }

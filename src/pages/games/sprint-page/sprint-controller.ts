@@ -29,13 +29,14 @@ class SprintController extends ApplicationContoller {
 
   constructor(words?: Array<Word>) {
     super();
+    this.pageView = new SprintView();
+    this.model = new SprintModel(this.pageView);
     if (!words) {
-      this.pageView = new SprintView();
-      this.model = new SprintModel(this.pageView);
       this.addListeners();
       this.addKeyBoardListeners();
     }
     if (words) {
+      // this.model.gameStatus = 'Game';
       this.model.createQuiz(words, this.countQuestions);
     }
   }

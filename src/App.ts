@@ -112,7 +112,6 @@ class App {
   }
 
   static renderAudiocallPage(words?: Array<Word>) {
-    console.log(words);
     const controller: ApplicationContoller = new AudioController(words);
     App.setController(controller);
     const mainButton = document.querySelector('.game-page-link') as HTMLElement;
@@ -140,7 +139,6 @@ class App {
   }
 
   static renderStatPage() {
-    // console.log(App.user);
     if (App.user) {
       const controller: ApplicationContoller = new StatController();
       App.setController(controller);

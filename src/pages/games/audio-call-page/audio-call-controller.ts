@@ -28,7 +28,7 @@ class AudioController extends ApplicationContoller {
   gameName = 'audiocall';
 
   constructor(words?: Array<Word>) {
-    super();
+    super('audiocall');
 
     if (!words) {
       this.pageView = new AudioView();
@@ -45,14 +45,13 @@ class AudioController extends ApplicationContoller {
     }
   }
 
-  addListeners() {
+  async addListeners() {
     const btns = this.pageView.view.querySelectorAll('button');
     for (let i = 0; i < btns.length; i += 1) {
       btns[i].addEventListener('click', (e: MouseEvent) => {
         const target = e.currentTarget as HTMLButtonElement;
         if (target.classList.contains('game-button')) {
           this.model.gameStatus = 'Set Level';
-
           this.getAllWords(Number(target.value));
         }
       });

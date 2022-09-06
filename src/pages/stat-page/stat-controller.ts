@@ -98,7 +98,7 @@ class StatController extends ApplicationContoller {
       accuracySprint,
       serieAudio,
       serieSprint,
-      `${learnedTotal} + ${learnedFromBook}`,
+      (learnedTotal + learnedFromBook).toString(),
       accuracyTotal,
     );
   }

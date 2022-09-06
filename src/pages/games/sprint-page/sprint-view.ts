@@ -75,8 +75,6 @@ class SprintView extends ApplicationView {
     this.timer = GameCommonView.createTimer();
     div.append(buttonNewGame, this.timer, gameContainer, modalMessage.modal, modal);
     this.view = div;
-
-    document.querySelector('footer')?.classList.add('hidden');
   }
 
   // view

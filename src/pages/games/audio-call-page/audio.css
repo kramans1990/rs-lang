@@ -69,14 +69,12 @@ label {
   height: 45px;
   background: #ec990e;
   opacity: 0.9;
-  /* font-family:Georgia, 'Times New Roman', Times, serif; */
   font-size: 22px;
   font-weight: 500;
   border: 0px;
   border-radius: 5px;
   color: #ffffff;
-  margin-top: 20px;
-  margin-bottom: 5px;
+  margin: 20px auto 5px;
 }
 
 @media (max-width: 480px) {

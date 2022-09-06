@@ -56,8 +56,6 @@ class MainPageView extends ApplicationView {
     playButton.innerText = playButtonText;
     buttons.append(learnButton, playButton);
     this.view.append(title, introText, buttons);
-
-    (document.querySelector('footer') as HTMLElement).className = '';
   }
 }
 export default MainPageView;

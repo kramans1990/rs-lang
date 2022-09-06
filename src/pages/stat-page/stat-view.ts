@@ -102,8 +102,6 @@ class StatView extends ApplicationView {
     divDay.className = 'div-day';
     const divAll = document.createElement('div');
     divAll.className = 'div-day';
-
-    (document.querySelector('footer') as HTMLElement).className = '';
   }
 
   /* eslint-disable class-methods-use-this */

@@ -263,9 +263,6 @@ class CardView {
           wasLearned,
         };
         this.api.createUserWord(App.user.userId, App.user.token, userWord);
-
-        const stat = new Statistic();
-        stat.addLearnedWordFromBook();
       } else {
         const searchWord = searchWordsArray[0];
         const progress = newProgress;
@@ -288,6 +285,9 @@ class CardView {
         };
         this.api.updateUserWord(App.user.userId, App.user.token, userWord);
       }
+
+      const stat = new Statistic();
+      stat.addLearnedWordFromBook();
     }
   }
 

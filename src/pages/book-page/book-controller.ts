@@ -363,19 +363,17 @@ class BookController extends ApplicationContoller {
       if (gameName && arrOfHardWords && arrOfHardWords.length > numberOfCardsPerPage) {
         arrOfHardWords = arrOfHardWords?.slice(0, 20);
       }
-      return arrOfHardWords || [];
+      return [arrOfHardWords] || [[]];
     }
 
     const { pageNumber } = getDataFromLocalStorage('pageInfo') as IPageInfo;
     if (pageNumber) {
       this.currentPage = pageNumber;
     }
-    console.log('this.currentPage', this.currentPage);
 
     let allUserWords: UserWord[] = [];
     let allUnLearnedWordsForLevel: Word[] = [];
 
-    // все слова уровня с текущей страницы и до 0-й
     const allPromises = [];
     for (let i = this.currentPage; i >= 0; i -= 1) {
       const wordsForPage = this.bookModel.getWords(this.currentLevel, i);
@@ -386,9 +384,7 @@ class BookController extends ApplicationContoller {
     for (let i = 0; i < responce.length; i += 1) {
       allWordsSinceBeginTillCurrentPage.push(...responce[i]);
     }
-    console.log('allWordsSinceBeginTillCurrentPage', allWordsSinceBeginTillCurrentPage);
 
-    // массив изученных айдишников
     if (App.user) {
       allUserWords = await this.bookModel.getUserWords(App.user.userId, App.user.token);
     }
@@ -399,30 +395,23 @@ class BookController extends ApplicationContoller {
         return arrOfId;
       }, [] as string[]);
 
-    // отфильтровать только неизученные слова
     allUnLearnedWordsForLevel = allWordsSinceBeginTillCurrentPage.filter(
       (word) => !arrOfLearnedWordsId.includes(word.id),
     );
 
-    console.log('allUnLearnedWordsForLevel', allUnLearnedWordsForLevel);
-
-    // набор слов на аудиовызова
     if (gameName) {
       if (allUnLearnedWordsForLevel.length > numberOfCardsPerPage) {
         const arrForAudioGame = allUnLearnedWordsForLevel.slice(0, 20);
-        console.log(arrForAudioGame);
         return arrForAudioGame;
       }
       return allUnLearnedWordsForLevel;
     }
 
-    // разбить на подмассивы в в соот-вии с номером страницы для спринта
     const arrForSprintGame: Array<Word[]> = [];
     for (let i = this.currentPage; i >= 0; i -= 1) {
       const wordsForSpecialPage = allUnLearnedWordsForLevel.filter((word) => word.page === i);
       arrForSprintGame.push(wordsForSpecialPage);
     }
-    console.log(arrForSprintGame);
     return arrForSprintGame;
   }
 
@@ -434,7 +423,6 @@ class BookController extends ApplicationContoller {
         App.user.userId,
         App.user.token,
       );
-      console.log('allHardUserWords', allHardUserWords);
       const allHardWords = allHardUserWords.map((userWord) => {
         const word: Word = {
           // eslint-disable-next-line no-underscore-dangle

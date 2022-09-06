@@ -37,8 +37,6 @@ class AudioController extends ApplicationContoller {
       this.addKeyBoardListener();
     }
     if (words) {
-      
-      
       this.pageView = new AudioView();
       this.model = new AudioModel(this.pageView);
       this.addListeners();
@@ -47,7 +45,7 @@ class AudioController extends ApplicationContoller {
     }
   }
 
- async addListeners() {   
+  async addListeners() {
     const btns = this.pageView.view.querySelectorAll('button');
     for (let i = 0; i < btns.length; i += 1) {
       btns[i].addEventListener('click', (e: MouseEvent) => {
@@ -73,7 +71,7 @@ class AudioController extends ApplicationContoller {
         this.model.nextQuestion();
       }
       if (target.className === 'audio-icon') {
-        const audio = target.firstChild as HTMLAudioElement;      
+        const audio = target.firstChild as HTMLAudioElement;
         audio.play();
       }
       if (target.id === 'play-again') {

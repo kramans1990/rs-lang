@@ -62,7 +62,7 @@ class UserWord {
         };
         userWord.word = correctAnswer;
         userWord.wordId = find.wordId;
-        isNew = find.optional.successfulAttempts + find.optional.successfulAttempts === 1;        
+        isNew = find.optional.successfulAttempts + find.optional.successfulAttempts === 1;
         this.api.updateUserWord(App.user.userId, App.user.token, userWord);
       }
     }

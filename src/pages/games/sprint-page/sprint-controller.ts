@@ -25,7 +25,6 @@ class SprintController extends ApplicationContoller {
   stat: Statistic = new Statistic();
 
   constructor(words?: Array<Word>) {
-
     super('sprint');
     this.updateRefreshToken();
 

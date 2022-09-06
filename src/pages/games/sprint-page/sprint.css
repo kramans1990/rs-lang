@@ -69,7 +69,7 @@
 /*========================*/
 
 .sprint-question-container {
-  display : flex;
+  display: flex;
   flex-direction: column;
   align-content: center;
   align-items: center;
@@ -92,26 +92,25 @@
 }
 
 .sprint-variation-word {
-  color: #ffffff
+  color: #ffffff;
 }
 
 /*  */
 .modal-message-content {
-  background-color: rgb(255, 255, 255);   
-  padding: 0px 15px 5px 5px;    
+  background-color: rgb(255, 255, 255);
+  padding: 0px 15px 5px 5px;
   width: 300px;
-  height: 100px;    
+  height: 100px;
   border-radius: 15px;
-  margin-bottom : 100x;
+  margin-bottom: 100x;
 }
-.modal-close { 
-  
+.modal-close {
   float: right;
   font-size: 40px;
   font-weight: bold;
-          
+  text-align: right;
 }
-.message-text{
+.message-text {
   position: relative;
   top: 40%;
   font-size: 18px;
@@ -120,14 +119,13 @@
   align-self: center;
   font-weight: bold;
   height: 40px;
- 
 }
 .modal-message-close {
   color: black;
   float: right;
   font-size: 20px;
-  font-weight: bold; 
-  margin-bottom: 10px;   
+  font-weight: bold;
+  margin-bottom: 10px;
 }
 .modal-close:hover,
 .modal-close:focus,
@@ -136,27 +134,26 @@
   text-decoration: none;
   cursor: pointer;
 }
-.popup{
+.popup {
   animation: popup 0.7s;
   border-radius: 15px;
 }
 
 @keyframes popup {
-  0%{
+  0% {
     transform: scale(0.2);
   }
- 
-  100%{
+
+  100% {
     transform: scale(1);
   }
 }
 
 @media (max-width: 500px) {
-  .game-progress-bar{
-    width: 250px; 
+  .game-progress-bar {
+    width: 250px;
   }
-  .answers-box > .game-button{
+  .answers-box > .game-button {
     width: 150px;
   }
 }
-

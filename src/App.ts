@@ -2,8 +2,10 @@
 import MainPageController from './pages/main-page/main-page-controller';
 import ApplicationContoller from './pages/application-controller';
 // import AudioController from './pages/games/audio-call-page/audio-call-controller';
+import TeamController from './pages/team-page/team-controller';
 import AuthController from './pages/auth-page/auth-controller';
 import RegistrationController from './pages/registration-page/registration-controller';
+import GamesController from './pages/games/games-page-controller';
 import BookController from './pages/book-page/book-controller';
 import { ISignIn, IPageInfo } from './types/interfaces';
 import {
@@ -12,15 +14,12 @@ import {
   saveDataToLocalStorage,
   burgerMenuHandle,
   clickMenuHandle,
-  setBackgroundForBookPage,
-  getAggregatedNumberFromLS,
 } from './functions/functions';
 import { logOutText, signInButtonText } from './utils/constants';
 import SprintController from './pages/games/sprint-page/sprint-controller';
 import StatController from './pages/stat-page/stat-controller';
 import AudioController from './pages/games/audio-call-page/audio-call-controller';
 import { Word } from './types/Word';
-import TeamController from './pages/team-page/team-controller';
 
 class App {
   static main: HTMLElement | null;
@@ -107,8 +106,8 @@ class App {
     const mainButton = document.querySelector('.book-page-link') as HTMLElement;
     App.changeActiveClassForNavItemByElement(mainButton);
     App.pageInfo = { pageName: 'bookPage' };
-    const aggregatedNumber = getAggregatedNumberFromLS();
-    setBackgroundForBookPage(aggregatedNumber);
+    // const aggregatedNumber = getAggregatedNumberFromLS();
+    // setBackgroundForBookPage(aggregatedNumber);
   }
 
   static renderAudiocallPage(words?: Array<Word>) {
@@ -127,6 +126,21 @@ class App {
     App.changeActiveClassForNavItemByElement(mainButton);
     App.makeMainTransparentAgain();
     App.pageInfo = { pageName: 'sprintPage' };
+  }
+
+  static renderGamesPage() {
+    const controller: ApplicationContoller = new GamesController();
+    App.setController(controller);
+    App.pageInfo = { pageName: 'gamesPage' };
+  }
+
+  static renderTeamPage() {
+    const controller: ApplicationContoller = new TeamController();
+    App.setController(controller);
+    const mainButton = document.querySelector('.team-page-link') as HTMLElement;
+    App.changeActiveClassForNavItemByElement(mainButton);
+    App.makeMainTransparentAgain();
+    App.pageInfo = { pageName: 'teamPage' };
   }
 
   static renderAuthPage(): void {
@@ -149,15 +163,6 @@ class App {
     } else {
       App.renderAuthPage();
     }
-  }
-
-  static renderTeamPage() {
-    const controller: ApplicationContoller = new TeamController();
-    App.setController(controller);
-    const mainButton = document.querySelector('.team-page-link') as HTMLElement;
-    App.changeActiveClassForNavItemByElement(mainButton);
-    App.makeMainTransparentAgain();
-    App.pageInfo = { pageName: 'teamPage' };
   }
 
   static renderRegPage(): void {
@@ -184,6 +189,7 @@ class App {
     document.querySelector('.header__logo')?.addEventListener('click', App.renderMainPage);
     document.querySelector('.main-page-link')?.addEventListener('click', App.renderMainPage);
     document.querySelector('.book-page-link')?.addEventListener('click', App.renderBookPage);
+    document.querySelector('.team-page-link')?.addEventListener('click', App.renderTeamPage);
     document
       .querySelector('.sprint-page-link')
       ?.addEventListener('click', (): void => App.renderSprintPage());
@@ -219,11 +225,17 @@ class App {
       case 'statPage':
         App.renderStatPage();
         break;
+      case 'gamesPage':
+        App.renderGamesPage();
+        break;
       case 'sprintPage':
         App.renderSprintPage();
         break;
       case 'authPage':
         App.renderAuthPage();
+        break;
+      case 'teamPage':
+        App.renderTeamPage();
         break;
       default:
         App.renderMainPage();

@@ -22,8 +22,8 @@
 }
 
 html {
-  height: 100vh;
-  overflow: none;
+  min-height: 100vh;
+  /* overflow: none; */
   width: 100vw;
   overflow-x: hidden;
 }
@@ -31,7 +31,7 @@ html {
 body {
   margin: 0 auto;
   width: 100%;
-  min-height: 100%;
+  min-height: 100vh;
   display: grid;
   grid-template-rows: auto 1fr auto;
   background-image: url("../assets/img/bg_main.jpg");
@@ -91,7 +91,9 @@ header {
     gap: 15px;
   }
 }
-
+.hidden{
+  display:none;
+}
 .nav-list__item {
   position: relative;
   padding-bottom: 6px;
@@ -107,15 +109,10 @@ header {
   user-select: none;
 }
 
-@media (max-width: 992px) {
-  .nav-list__item {
-    font-size: 1.8rem;
-  }
-}
-
 @media (max-width: 920px) {
   .nav-list__item {
-    font-size: 1.4rem;
+    font-size: 2rem;
+    line-height: 2.6rem;
   }
 }
 
@@ -253,6 +250,10 @@ header {
   scale: 96%;
 }
 
+.main_wrapper {
+  padding-bottom: 20px;
+}
+
 .main_wrapper.all-done {
   background-image: linear-gradient(180deg, rgba(236, 153, 14, 0.37) 0%, rgba(236, 153, 14, 0) 100%),
     url("../assets/svg/flags.svg");
@@ -311,6 +312,7 @@ header {
 
 footer {
   background-color: rgba(0, 0, 0, 0.5);
+  margin-top: auto;
 }
 
 footer.secondary {
@@ -319,6 +321,10 @@ footer.secondary {
   background-repeat: no-repeat;
   background-attachment: fixed;
   background-image: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url("../assets/img/bg_main.jpg");
+}
+
+footer.hidden {
+  display: none;
 }
 
 .footer__wrapper {
@@ -438,4 +444,46 @@ footer.secondary {
   font-size: 30px;
   line-height: 0px;
   color: #ffffff;
+}
+
+/* ============ */
+
+.games-block {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+}
+
+@media (max-width: 600px) {
+  .games-block {
+    flex-direction: column;
+    align-items: center;
+  }
+}
+
+.audio-call-button,
+.sprint-button {
+  width: 250px;
+  height: 45px;
+  background: var(--color-main);
+  font-size: 22px;
+  font-weight: 500;
+  border: 0px;
+  border-radius: 5px;
+  color: #ffffff;
+}
+
+@media (max-width: 480px) {
+  .audio-call-button,
+  .sprint-button {
+    width: 280px;
+    font-size: 1.8rem;
+  }
+}
+
+.audio-call-button:hover,
+.sprint-button:hover {
+  font-weight: 700;
+  cursor: pointer;
 }

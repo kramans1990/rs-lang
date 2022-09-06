@@ -48,7 +48,6 @@ class StatController extends ApplicationContoller {
     let accuracySprint = 0;
     let serieAudio = 0;
     let serieSprint = 0;
-
     let accuracyTotal = 0;
     const today = new Date();
     const stat = new Statistic();
@@ -69,24 +68,27 @@ class StatController extends ApplicationContoller {
     let learnedTotal = 0;
     if (findAudio) {
       newWordsAudio = findAudio.newWords;
-      accuracyAudio = findAudio.accuracy;
+      accuracyAudio = findAudio.accuracy * 100;
       serieAudio = findAudio.serie;
       totalCorrect += findAudio.correctAnswers;
       totalwrong += findAudio.wrongAnswers;
-      learnedFromBook = findAudio.learnedByBook;
+      learnedFromBook = findAudio.learnedByBook ? findAudio.learnedByBook : 0;
       learnedTotal += findAudio.learnedWords;
+      if (totalCorrect + totalwrong !== 0) {
+        accuracyTotal = totalCorrect / (totalCorrect + totalwrong);
+      }
     }
     if (findSprint) {
       newWordsSprint = findSprint.newWords;
-      accuracySprint = findSprint.accuracy;
+      accuracySprint = findSprint.accuracy * 100;
       serieSprint = findSprint.serie;
       totalCorrect += findSprint.correctAnswers;
       totalwrong += findSprint.wrongAnswers;
-      learnedFromBook = findSprint.learnedByBook;
+      learnedFromBook = findSprint.learnedByBook ? findSprint.learnedByBook : 0;
       learnedTotal += findSprint.learnedWords;
     }
     if (totalCorrect + totalwrong !== 0) {
-      accuracyTotal = totalCorrect / (totalCorrect + totalwrong);
+      accuracyTotal = (100 * totalCorrect) / (totalCorrect + totalwrong);
     }
     this.pageView.showEverydayStat(
       newWordsAudio,
@@ -95,7 +97,7 @@ class StatController extends ApplicationContoller {
       accuracySprint,
       serieAudio,
       serieSprint,
-      `${learnedTotal} + ${learnedFromBook}`,
+      (learnedTotal + learnedFromBook).toString(),
       accuracyTotal,
     );
   }

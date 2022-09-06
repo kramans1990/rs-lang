@@ -1,6 +1,7 @@
 /* eslint-disable import/no-cycle */
 import AudioModel from './audio-model';
 import AudioView from './audio-view';
+import Api from '../../../Api';
 import { Word } from '../../../types/Word';
 import ApplicationContoller from '../../application-controller';
 import App from '../../../App';
@@ -11,6 +12,8 @@ class AudioController extends ApplicationContoller {
   model: AudioModel;
 
   pageView: AudioView;
+
+  api: Api = new Api();
 
   wordsPerPage = 20;
 
@@ -25,8 +28,7 @@ class AudioController extends ApplicationContoller {
   gameName = 'audiocall';
 
   constructor(words?: Array<Word>) {
-    super();
-    this.updateRefreshToken();
+    super('audiocall');
 
     if (!words) {
       this.pageView = new AudioView();
@@ -43,14 +45,13 @@ class AudioController extends ApplicationContoller {
     }
   }
 
-  addListeners() {
+  async addListeners() {
     const btns = this.pageView.view.querySelectorAll('button');
     for (let i = 0; i < btns.length; i += 1) {
       btns[i].addEventListener('click', (e: MouseEvent) => {
         const target = e.currentTarget as HTMLButtonElement;
         if (target.classList.contains('game-button')) {
           this.model.gameStatus = 'Set Level';
-
           this.getAllWords(Number(target.value));
         }
       });
@@ -71,7 +72,6 @@ class AudioController extends ApplicationContoller {
       }
       if (target.className === 'audio-icon') {
         const audio = target.firstChild as HTMLAudioElement;
-        // let a = new Audio(audio.src);
         audio.play();
       }
       if (target.id === 'play-again') {

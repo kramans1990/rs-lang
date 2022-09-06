@@ -25,8 +25,9 @@ class SprintController extends ApplicationContoller {
   stat: Statistic = new Statistic();
 
   constructor(words?: Array<Word>) {
-    super();
+    super('sprint');
     this.updateRefreshToken();
+
     this.pageView = new SprintView();
     this.model = new SprintModel(this.pageView);
     if (!words) {

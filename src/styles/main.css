@@ -91,7 +91,9 @@ header {
     gap: 15px;
   }
 }
-
+.hidden{
+  display:none;
+}
 .nav-list__item {
   position: relative;
   padding-bottom: 6px;

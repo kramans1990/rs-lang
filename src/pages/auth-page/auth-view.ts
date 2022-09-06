@@ -48,6 +48,7 @@ class AuthView extends ApplicationView {
     haveNotYetAccountButton.addEventListener('click', App.renderRegPage);
     haveNotYetAccount.append(haveNotYetAccountSpan, haveNotYetAccountButton);
     this.view.append(title, emailInput, passwordInput, signInButton, haveNotYetAccount);
+    (document.querySelector('footer') as HTMLElement).className = '';
   }
 }
 

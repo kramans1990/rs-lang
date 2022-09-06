@@ -55,6 +55,8 @@ class RegistrationView extends ApplicationView {
     haveAccountButton.addEventListener('click', App.renderAuthPage);
     haveAccount.append(haveAccountSpan, haveAccountButton);
     this.view.append(title, nameInput, emailInput, passwordInput, signUpButton, haveAccount);
+
+    (document.querySelector('footer') as HTMLElement).className = '';
   }
 }
 export default RegistrationView;

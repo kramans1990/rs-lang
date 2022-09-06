@@ -61,6 +61,8 @@ class AudioView {
     div.appendChild(modal);
     div.appendChild(modalMessage.modal);
     this.view = div;
+
+    document.querySelector('footer')?.classList.add('hidden');
   }
 
   showGameResult(audioTests: Array<AudioQuestion>) {

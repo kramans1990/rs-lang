@@ -1,0 +1,144 @@
+.levels {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 16px;
+  min-height: 65px;
+  margin: 55px auto 30px;
+  /* background-color:var(--color-accent); */
+  /* font-size: 2rem; */
+}
+
+@media (max-width: 1200px) {
+  .levels {
+    justify-content: center;
+    column-gap: 50px;
+    row-gap: 10px;
+  }
+}
+
+@media (max-width: 768px) {
+  .levels {
+    column-gap: 10px;
+  }
+}
+
+.level {
+  flex-grow: 1;
+  padding: 10px 16px;
+  display: flex;
+  justify-content: center;
+  height: 50px;
+  font-weight: 400;
+  font-size: 2rem;
+  line-height: 2.5rem;
+  display: flex;
+  align-items: center;
+  text-align: center;
+  text-transform: uppercase;
+  color: #ffffff;
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+  cursor: pointer;
+  transition: all 0.3s;
+  user-select: none;
+}
+
+@media (max-width: 992px) {
+  .level {
+    font-size: 1.6rem;
+  }
+}
+
+.level:hover {
+  background: #ffffff;
+}
+
+.level:active {
+  padding: 20px 15px;
+  height: 100%;
+}
+
+.level.active {
+  padding: 20px 15px;
+  height: 100%;
+  background-color: #ffffff;
+  pointer-events: none;
+}
+
+.level_number {
+  font-family: "Arial", sans-serif;
+  font-weight: 600;
+  font-size: 30px;
+}
+
+.level-0 {
+  background: #cdc1a2;
+  border: 2px solid #cdc1a2;
+}
+
+.level-0:hover,
+.level-0.active {
+  color: #cdc1a2;
+}
+
+.level-1 {
+  background: var(--color-gray-medium);
+  border: 2px solid var(--color-gray-medium);
+}
+
+.level-1:hover,
+.level-1.active {
+  color: var(--color-gray-medium);
+}
+
+.level-2 {
+  background: #ffcb05;
+  border: 2px solid #ffcb05;
+}
+
+.level-2:hover,
+.level-2.active {
+  color: #ffcb05;
+}
+
+.level-3 {
+  background: var(--color-main);
+  border: 2px solid var(--color-main);
+}
+
+.level-3:hover,
+.level-3.active {
+  color: var(--color-main);
+}
+
+.level-4 {
+  background: #725747;
+  border: 2px solid #725747;
+}
+
+.level-4:hover,
+.level-4.active {
+  color: #725747;
+}
+
+.level-5 {
+  background: #494343;
+  border: 2px solid #494343;
+}
+
+.level-5:hover,
+.level-5.active {
+  color: #494343;
+}
+
+.level-6 {
+  background: var(--color-accent);
+  border: 2px solid var(--color-accent);
+  flex-grow: 8;
+}
+
+.level-6:hover,
+.level-6.active {
+  color: var(--color-accent);
+}

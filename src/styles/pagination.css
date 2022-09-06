@@ -1,0 +1,48 @@
+.pagination {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  min-height: 40px;
+  margin: 55px auto 30px;
+}
+
+@media (max-width: 992px) {
+  .pagination {
+    flex-wrap: wrap;
+    row-gap: 14px;
+  }
+}
+
+.pagination-element {
+  font-family: "Arial", sans-serif;
+  font-style: normal;
+  font-size: 2rem;
+  font-weight: 400;
+  padding: 3px 6px;
+  cursor: pointer;
+  font-size: 2.1rem;
+  font-weight: 400;
+  line-height: 2.5rem;
+  text-align: center;
+  color: var(--color-gray-light);
+  user-select: none;
+  transition: all 0.2s;
+}
+
+.pagination-element:hover {
+  color: #725747;
+}
+
+.pagination-element.active {
+  padding: 3px 10px;
+  font-weight: 700;
+  font-size: 3rem;
+  text-decoration-line: underline;
+  color: #725747;
+  pointer-events: none;
+  cursor: auto;
+}
+
+.pagination-element.done {
+  color: var(--color-main);
+}

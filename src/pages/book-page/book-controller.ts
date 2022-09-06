@@ -108,7 +108,6 @@ class BookController extends ApplicationContoller {
   }
 
   async setView(): Promise<void> {
-    this.pageView = new BookPageView(this.aggregatedNumber);
     this.view = this.pageView.view;
     this.levels = this.pageView.levels;
     this.cardsList = this.pageView.cardsList;

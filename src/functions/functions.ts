@@ -84,6 +84,6 @@ export {
   removeDataFromLocalStorage,
   burgerMenuHandle,
   clickMenuHandle,
-  getAggregatedNumberFromLS,
   setBackgroundForBookPage,
+  getAggregatedNumberFromLS,
 };

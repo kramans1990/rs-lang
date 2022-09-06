@@ -1,7 +1,5 @@
 /* eslint-disable import/no-cycle */
-import Api from '../../Api';
 import App from '../../App';
-// import User from "../../types/User";
 import ApplicationContoller from '../application-controller';
 import StatModel from './stat-model';
 import StatView from './stat-view';
@@ -15,14 +13,13 @@ class StatController extends ApplicationContoller {
 
   stat: Statistic = new Statistic();
 
-  api: Api = new Api();
-
   constructor() {
     super();
     this.pageView = new StatView();
     this.model = new StatModel(this.pageView);
     this.addEventListeners();
     this.getStat();
+    this.updateRefreshToken();
   }
 
   addEventListeners() {
@@ -39,7 +36,7 @@ class StatController extends ApplicationContoller {
 
   async getStat() {
     if (App.user) {
-      this.stat = await this.api.getUserStat(App.user?.userId, App.user?.token);
+      this.stat = await this.api.getUserStat(App.user?.userId, App.user?.token);     
       this.showDay();
     }
   }
@@ -72,24 +69,28 @@ class StatController extends ApplicationContoller {
     let learnedTotal = 0;
     if (findAudio) {
       newWordsAudio = findAudio.newWords;
-      accuracyAudio = findAudio.accuracy;
+      accuracyAudio = findAudio.accuracy*100;
       serieAudio = findAudio.serie;
       totalCorrect += findAudio.correctAnswers;
-      totalwrong += findAudio.wrongAnswers;
-      learnedFromBook = findAudio.learnedByBook;
+      totalwrong += findAudio.wrongAnswers;  
+      learnedFromBook = findAudio.learnedByBook ? findAudio.learnedByBook : 0 ;      
       learnedTotal += findAudio.learnedWords;
+      if (totalCorrect + totalwrong !== 0) {
+        accuracyTotal = totalCorrect / (totalCorrect + totalwrong);
+      }
+     
     }
     if (findSprint) {
       newWordsSprint = findSprint.newWords;
-      accuracySprint = findSprint.accuracy;
+      accuracySprint = findSprint.accuracy*100;
       serieSprint = findSprint.serie;
       totalCorrect += findSprint.correctAnswers;
       totalwrong += findSprint.wrongAnswers;
-      learnedFromBook = findSprint.learnedByBook;
+      learnedFromBook = findSprint.learnedByBook ? findSprint.learnedByBook : 0 ;
       learnedTotal += findSprint.learnedWords;
     }
     if (totalCorrect + totalwrong !== 0) {
-      accuracyTotal = totalCorrect / (totalCorrect + totalwrong);
+      accuracyTotal = 100* totalCorrect / (totalCorrect + totalwrong);
     }
     this.pageView.showEverydayStat(
       newWordsAudio,

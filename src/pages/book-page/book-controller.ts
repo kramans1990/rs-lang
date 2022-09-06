@@ -1,4 +1,3 @@
-/* eslint-disable import/no-cycle */
 import '../../styles/cards.css';
 import '../../styles/level-buttons.css';
 import '../../styles/main.css';
@@ -64,6 +63,8 @@ class BookController extends ApplicationContoller {
     this.currentLevel = 0;
     this.currentPage = 0;
 
+    this.setAggregatedNumber(this.currentLevel, this.currentPage);
+
     if (getDataFromLocalStorage('pageInfo')) {
       this.getPageInfoFromLocalStorage();
     }
@@ -78,11 +79,10 @@ class BookController extends ApplicationContoller {
         pageNumber: this.currentPage,
       }),
     );
-
     this.setView();
   }
 
-  async setBackgroundByAggregatedNumber(currentLevel: number, currentPage: number) {
+  async setAggregatedNumber(currentLevel: number, currentPage: number) {
     if (App.user) {
       const responce = await this.bookModel.getUserWordsAgregatedByFilter(
         App.user.userId,
@@ -91,14 +91,23 @@ class BookController extends ApplicationContoller {
         `{"$and":[{"group":${currentLevel}},{"page":${currentPage}},{"$or":[{"userWord.difficulty":"hard"},{"userWord.optional.progress":100}]}]}`,
       );
       this.aggregatedNumber = responce.length;
-      setBackgroundForBookPage(this.aggregatedNumber);
-      saveDataToLocalStorage('aggregatedNumber', JSON.stringify(this.aggregatedNumber));
     }
     return this.aggregatedNumber;
   }
 
+  async setBackgroundByAggregatedNumber(currentLevel: number, currentPage: number) {
+    if (App.user) {
+      this.aggregatedNumber = await this.setAggregatedNumber(currentLevel, currentPage);
+      setBackgroundForBookPage(this.aggregatedNumber);
+      saveDataToLocalStorage('aggregatedNumber', JSON.stringify(this.aggregatedNumber));
+    } else {
+      this.aggregatedNumber = 0;
+    }
+    saveDataToLocalStorage('aggregatedNumber', JSON.stringify(this.aggregatedNumber));
+    return this.aggregatedNumber;
+  }
+
   async setView(): Promise<void> {
-    this.pageView = new BookPageView(this.aggregatedNumber);
     this.view = this.pageView.view;
     this.levels = this.pageView.levels;
     this.cardsList = this.pageView.cardsList;
@@ -212,6 +221,7 @@ class BookController extends ApplicationContoller {
           this.cardsList.innerHTML = NoHardWordsText;
         } else {
           this.renderHardCards(allHardWords);
+          document.querySelector('.game__buttons')?.classList.remove('inactive');
         }
       } else {
         this.renderCards(group, this.currentPage);
@@ -231,8 +241,6 @@ class BookController extends ApplicationContoller {
         pageNumber: this.currentPage,
       }),
     );
-
-    BookController.changeStatusOfGameButtons();
   }
 
   static setEventListenersForCard(e: Event) {
@@ -320,11 +328,9 @@ class BookController extends ApplicationContoller {
     const iconSprint = BookPageView.createElementByParams('img', 'game-icon') as HTMLImageElement;
     iconSprint.setAttribute('src', iconSprintSrc);
     sprintGameLink.prepend(iconSprint);
-    const wordsForsprintGame = await this.getWordsForGame();
-    sprintGameLink.addEventListener('click', (): void => {
-      if (wordsForsprintGame) {
-        App.renderSprintPage(wordsForsprintGame[0] as Word[]);
-      }
+    sprintGameLink.addEventListener('click', async (): Promise<void> => {
+      const wordsForsprintGame = await this.getWordsForGame();
+      App.renderSprintPage(wordsForsprintGame[0] as Word[]);
     });
     const audioGameLink = BookPageView.createElementByParams('div', 'btn') as HTMLDivElement;
     audioGameLink.classList.add('btn_colored');
@@ -335,11 +341,9 @@ class BookController extends ApplicationContoller {
     ) as HTMLImageElement;
     iconAudioGame.setAttribute('src', iconAudioGameSrc);
     audioGameLink.prepend(iconAudioGame);
-    const wordsForAudioGame = await this.getWordsForGame('audio');
-    audioGameLink.addEventListener('click', (): void => {
-      if (wordsForAudioGame) {
-        App.renderAudiocallPage(wordsForAudioGame as Word[]);
-      }
+    audioGameLink.addEventListener('click', async (): Promise<void> => {
+      const wordsForAudioGame = await this.getWordsForGame('audio');
+      App.renderAudiocallPage(wordsForAudioGame as Word[]);
     });
 
     const arrOfDonePages = await this.makeArrOfDonePages(this.currentLevel);
@@ -349,57 +353,96 @@ class BookController extends ApplicationContoller {
     this.gameButtons.append(audioGameLink, sprintGameLink);
   }
 
+  // eslint-disable-next-line max-lines-per-function, consistent-return
   async getWordsForGame(gameName?: string) {
-    let allUserWords;
-    const arrForGame: Array<Word[]> = [];
+    if (App.user && this.currentLevel === 6) {
+      let arrOfHardWords = await this.makeArrOfHardWords();
+      if (gameName && arrOfHardWords && arrOfHardWords.length > numberOfCardsPerPage) {
+        arrOfHardWords = arrOfHardWords?.slice(0, 20);
+        return arrOfHardWords;
+      }
+      return [arrOfHardWords] || [[]];
+    }
+
+    const { pageNumber } = getDataFromLocalStorage('pageInfo') as IPageInfo;
+    if (pageNumber) {
+      this.currentPage = pageNumber;
+    }
+
+    let allUserWords: UserWord[] = [];
+    let allUnLearnedWordsForLevel: Word[] = [];
+
+    const allPromises = [];
+    for (let i = this.currentPage; i >= 0; i -= 1) {
+      const wordsForPage = this.bookModel.getWords(this.currentLevel, i);
+      allPromises.push(wordsForPage);
+    }
+    const responce = await Promise.all(allPromises);
+    const allWordsSinceBeginTillCurrentPage: Word[] = [];
+    for (let i = 0; i < responce.length; i += 1) {
+      allWordsSinceBeginTillCurrentPage.push(...responce[i]);
+    }
 
     if (App.user) {
       allUserWords = await this.bookModel.getUserWords(App.user.userId, App.user.token);
-
-      const allPromises = [];
-      for (let i = 0; i < 30; i += 1) {
-        const wordsForPage = this.bookModel.getWords(this.currentLevel, i);
-        allPromises.push(wordsForPage);
-      }
-
-      const responce = await Promise.all(allPromises);
-      const allWordsForLevel: Word[] = [];
-      for (let i = 0; i < responce.length; i += 1) {
-        allWordsForLevel.push(...responce[i]);
-      }
-
-      const arrOfLearnedId = allUserWords
-        .filter((userWord) => userWord.optional.progress === 100)
-        .reduce((arrOfId, userWord) => {
-          arrOfId.push(userWord.wordId);
-          return arrOfId;
-        }, [] as string[]);
-
-      // eslint-disable-next-line max-len, prettier/prettier
-      const allUnLearnedWordsForLevel = allWordsForLevel
-        // eslint-disable-next-line prettier/prettier
-        .filter((userWord) => !arrOfLearnedId.includes(userWord.id));
-
-      for (let i = this.currentPage; i >= 0; i -= 1) {
-        const wordsForSpecialPage = allUnLearnedWordsForLevel.filter(
-          (userWord) => userWord.page === i,
-        );
-        arrForGame.push(wordsForSpecialPage);
-      }
     }
+    const arrOfLearnedWordsId = allUserWords
+      .filter((userWord) => userWord.optional.progress === 100)
+      .reduce((arrOfId, userWord) => {
+        arrOfId.push(userWord.wordId);
+        return arrOfId;
+      }, [] as string[]);
+
+    allUnLearnedWordsForLevel = allWordsSinceBeginTillCurrentPage.filter(
+      (word) => !arrOfLearnedWordsId.includes(word.id),
+    );
 
     if (gameName) {
-      let arrForAudioGame: Word[] = [];
-      for (let i = 0; i < arrForGame.length; i += 1) {
-        arrForAudioGame.push(...arrForGame[i]);
+      if (allUnLearnedWordsForLevel.length > numberOfCardsPerPage) {
+        const arrForAudioGame = allUnLearnedWordsForLevel.slice(0, 20);
+        return arrForAudioGame;
       }
-      if (arrForAudioGame.length > numberOfCardsPerPage) {
-        arrForAudioGame = arrForAudioGame.slice(0, 20);
-      }
-      return arrForAudioGame;
+      return allUnLearnedWordsForLevel;
     }
 
-    return arrForGame;
+    const arrForSprintGame: Array<Word[]> = [];
+    for (let i = this.currentPage; i >= 0; i -= 1) {
+      const wordsForSpecialPage = allUnLearnedWordsForLevel.filter((word) => word.page === i);
+      arrForSprintGame.push(wordsForSpecialPage);
+    }
+    return arrForSprintGame;
+  }
+
+  // eslint-disable-next-line class-methods-use-this, consistent-return
+  async makeArrOfHardWords() {
+    if (App.user) {
+      // eslint-disable-next-line max-len
+      const allHardUserWords = await this.bookModel.getUserWordsAllHard(
+        App.user.userId,
+        App.user.token,
+      );
+      const allHardWords = allHardUserWords.map((userWord) => {
+        const word: Word = {
+          // eslint-disable-next-line no-underscore-dangle
+          id: userWord._id as string,
+          group: userWord.group as number,
+          page: userWord.page as number,
+          word: userWord.word as string,
+          image: userWord.image as string,
+          audio: userWord.audio as string,
+          audioMeaning: userWord.audioMeaning as string,
+          audioExample: userWord.audioExample as string,
+          textMeaning: userWord.textMeaning as string,
+          textExample: userWord.textExample as string,
+          transcription: userWord.transcription as string,
+          wordTranslate: userWord.wordTranslate as string,
+          textMeaningTranslate: userWord.textMeaningTranslate as string,
+          textExampleTranslate: userWord.textExampleTranslate as string,
+        };
+        return word;
+      });
+      return allHardWords;
+    }
   }
 
   getPageInfoFromLocalStorage() {

@@ -61,6 +61,8 @@ class AudioView {
     div.appendChild(modal);
     div.appendChild(modalMessage.modal);
     this.view = div;
+
+    document.querySelector('footer')?.classList.add('hidden');
   }
 
   showGameResult(audioTests: Array<AudioQuestion>) {
@@ -348,7 +350,6 @@ class AudioView {
   // }
 
   setNotEnouthWordsModal() {
-    console.log(this.view.querySelector('.modal-message'));
     (this.view.querySelector('.modal-message') as HTMLDivElement).classList.remove('hidden');
     (this.view.querySelector('.modal-message') as HTMLDivElement).classList.add('popup');
   }

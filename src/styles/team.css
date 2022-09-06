@@ -117,7 +117,7 @@
 
 @media (max-width: 480px) {
   .member-card__slogan {
-    font-size: 1rem;
+    font-size: 1.2rem;
     line-height: 1.5rem;
   }
 }
@@ -131,10 +131,10 @@
 }
 
 .member-card__points p {
-  font-weight: 500;
+  font-weight: 600;
   font-size: 1.4rem;
   line-height: 1.8rem;
-  letter-spacing: 0.1rem;
+  letter-spacing: 0.5px;
   text-align: center;
   text-transform: uppercase;
   color: #ffffff;

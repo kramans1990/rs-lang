@@ -14,15 +14,13 @@ import {
 import App from '../../App';
 
 class RegistrationView extends ApplicationView {
-  view: HTMLDivElement;
-
   constructor() {
     super();
     this.renderRegBlock();
   }
 
   renderRegBlock() {
-    this.view = document.createElement('div');
+    this.view = document.createElement('form');
     this.view.classList.add('registration');
     const title = document.createElement('p');
     title.classList.add('reg-title');
@@ -45,6 +43,7 @@ class RegistrationView extends ApplicationView {
     const signUpButton = document.createElement('button');
     signUpButton.classList.add('sign-up-button');
     signUpButton.innerText = upperSignUpButtonText;
+    signUpButton.addEventListener('click', (e: MouseEvent): void => e.preventDefault());
     const haveAccount = document.createElement('div');
     haveAccount.classList.add('have-account');
     const haveAccountSpan = document.createElement('span');
@@ -56,6 +55,8 @@ class RegistrationView extends ApplicationView {
     haveAccountButton.addEventListener('click', App.renderAuthPage);
     haveAccount.append(haveAccountSpan, haveAccountButton);
     this.view.append(title, nameInput, emailInput, passwordInput, signUpButton, haveAccount);
+
+    (document.querySelector('footer') as HTMLElement).className = '';
   }
 }
 export default RegistrationView;

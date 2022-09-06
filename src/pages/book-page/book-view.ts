@@ -36,7 +36,7 @@ export class BookPageView extends ApplicationView {
 
     this.mainWrapper.style.backgroundColor = '#ffffff';
     setBackgroundForBookPage(aggregatedNumber);
-    this.footer = document.querySelector('footer') as HTMLBodyElement;
+    this.footer = document.querySelector('footer') as HTMLElement;
     this.footer.classList.add('secondary');
   }
 

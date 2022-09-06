@@ -224,6 +224,7 @@ class BookController extends ApplicationContoller {
           this.cardsList.innerHTML = NoHardWordsText;
         } else {
           this.renderHardCards(allHardWords);
+          document.querySelector('.game__buttons')?.classList.remove('inactive');
         }
       } else {
         this.renderCards(group, this.currentPage);
@@ -243,8 +244,6 @@ class BookController extends ApplicationContoller {
         pageNumber: this.currentPage,
       }),
     );
-
-    BookController.changeStatusOfGameButtons();
   }
 
   static setEventListenersForCard(e: Event) {
@@ -360,13 +359,13 @@ class BookController extends ApplicationContoller {
   // eslint-disable-next-line max-lines-per-function, consistent-return
   async getWordsForGame(gameName?: string) {
     if (App.user && this.currentLevel === 6) {
-      const arrOfHardWords = await this.bookModel.getUserWordsAllHard(
-        App.user.userId,
-        App.user.token,
-      );
-      const words = arrOfHardWords as unknown as Word[];
-      return words;
+      let arrOfHardWords = await this.makeArrOfHardWords();
+      if (gameName && arrOfHardWords && arrOfHardWords.length > numberOfCardsPerPage) {
+        arrOfHardWords = arrOfHardWords?.slice(0, 20);
+      }
+      return arrOfHardWords || [];
     }
+
     const { pageNumber } = getDataFromLocalStorage('pageInfo') as IPageInfo;
     if (pageNumber) {
       this.currentPage = pageNumber;
@@ -425,53 +424,39 @@ class BookController extends ApplicationContoller {
     }
     console.log(arrForSprintGame);
     return arrForSprintGame;
-
-    //   if (App.user && this.currentLevel === 6) {
-    //     // console.log('это уровень 6');
-    //     const arrOfHardWordsId = allUserWords
-    //       .filter((userWord) => userWord.difficulty === 'hard')
-    //       .reduce((arrOfId, userWord) => {
-    //         arrOfId.push(userWord.wordId);
-    //         return arrOfId;
-    //       }, [] as string[]);
-    //     // console.log('arrOfHardWordsId', arrOfHardWordsId);
-    //     // console.log('allWordsForLevel', allWordsForLevel);
-
-    //     // eslint-disable-next-line array-callback-return
-    //     allUnLearnedWordsForLevel = allWordsForLevel.filter((word) => {
-    //       arrOfHardWordsId.includes(word.id);
-    //     });
-    //     // console.log('allUnLearnedWordsForLevel', allUnLearnedWordsForLevel);
-    //   } else {
-    //     allUnLearnedWordsForLevel = allWordsForLevel.filter(
-    //       (word) => !arrOfLearnedWordsId.includes(word.id),
-    //     );
-    //   }
-    // }
   }
 
-  // eslint-disable-next-line class-methods-use-this
+  // eslint-disable-next-line class-methods-use-this, consistent-return
   async makeArrOfHardWords() {
-    // arrOfAggregatedHardWords.reduce((arrOfHardWords, userWord) => {
-    //   const word: Word = {
-    //     id: userWord.id,
-    //     group: userWord.group,
-    //     page: userWord.page,
-    //     word: userWord.word,
-    //     image: userWord.image,
-    //     audio: userWord.audio,
-    //     audioMeaning: userWord.audioMeaning,
-    //     audioExample: userWord.audioExample,
-    //     textMeaning: userWord.textMeaning,
-    //     textExample: userWord.textExample,
-    //     transcription: userWord.transcription,
-    //     wordTranslate: userWord.wordTranslate,
-    //     textMeaningTranslate: userWord.textMeaningTranslate,
-    //     textExampleTranslate: userWord.textExampleTranslate,
-    //   };
-    //   arrOfHardWords.push(word);
-    //   return arrOfHardWords;
-    // }, []);
+    if (App.user) {
+      // eslint-disable-next-line max-len
+      const allHardUserWords = await this.bookModel.getUserWordsAllHard(
+        App.user.userId,
+        App.user.token,
+      );
+      console.log('allHardUserWords', allHardUserWords);
+      const allHardWords = allHardUserWords.map((userWord) => {
+        const word: Word = {
+          // eslint-disable-next-line no-underscore-dangle
+          id: userWord._id as string,
+          group: userWord.group as number,
+          page: userWord.page as number,
+          word: userWord.word as string,
+          image: userWord.image as string,
+          audio: userWord.audio as string,
+          audioMeaning: userWord.audioMeaning as string,
+          audioExample: userWord.audioExample as string,
+          textMeaning: userWord.textMeaning as string,
+          textExample: userWord.textExample as string,
+          transcription: userWord.transcription as string,
+          wordTranslate: userWord.wordTranslate as string,
+          textMeaningTranslate: userWord.textMeaningTranslate as string,
+          textExampleTranslate: userWord.textExampleTranslate as string,
+        };
+        return word;
+      });
+      return allHardWords;
+    }
   }
 
   getPageInfoFromLocalStorage() {

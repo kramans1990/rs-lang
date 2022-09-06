@@ -6,7 +6,12 @@ import AudioQuestion from './audio-question-component';
 import Api from '../../../Api';
 import * as modalResult from './modal-content';
 import ModalMessage from './modalMessage';
-import { newAudioGameButtonText, sprintTime } from '../../../utils/constants';
+import {
+  correctAnswerAudioLink,
+  newAudioGameButtonText,
+  sprintTime,
+  wrongAnswerAudioLink,
+} from '../../../utils/constants';
 import GameCommonView from '../game-common-view';
 
 class AudioView {
@@ -17,6 +22,8 @@ class AudioView {
   api: Api = new Api();
 
   timer: HTMLDivElement;
+
+  intervalID: number;
 
   constructor() {
     this.renderView();
@@ -71,8 +78,8 @@ class AudioView {
     const wrongDiv = document.querySelector('.answer-container-wrong') as HTMLDivElement;
     correctdiv.innerHTML = '';
     wrongDiv.innerHTML = '';
-    const corrects = audioTests.filter((p) => p.isCorrect);
-    const wrongs = audioTests.filter((p) => !p.isCorrect);
+    const corrects = audioTests.filter((p) => p.isCorrect && !!p.isAnswered);
+    const wrongs = audioTests.filter((p) => !p.isCorrect && !!p.isAnswered);
     for (let i = 0; i < wrongs.length; i += 1) {
       const divResult = document.createElement('div');
       const divaudioresult = document.createElement('div');
@@ -117,10 +124,9 @@ class AudioView {
   showTimer() {
     this.timer.innerText = `${sprintTime}`;
     this.timer.classList.remove('hidden');
-    this.timer.classList.remove('hidden');
     let gameTime = 0;
     let isResultsShown = false;
-    window.setInterval((): void => {
+    this.intervalID = window.setInterval((): void => {
       if (gameTime <= sprintTime) {
         this.timer.innerText = `${sprintTime - gameTime}`;
         gameTime += 1;
@@ -138,6 +144,10 @@ class AudioView {
 
   hideTimer() {
     this.timer.classList.add('hidden');
+  }
+
+  stopTimer(): void {
+    window.clearInterval(this.intervalID);
   }
 
   showLevelSelection() {
@@ -217,10 +227,10 @@ class AudioView {
   renderAnswerResult(result: boolean, answer: string, correctAnswer: Word) {
     const options = this.view.querySelectorAll('.option');
     if (result) {
-      const audio = new Audio('../../assets/answer-correct.wav');
+      const audio = new Audio(correctAnswerAudioLink);
       audio.play();
     } else {
-      const audio = new Audio('../../assets/answer-wrong.wav');
+      const audio = new Audio(wrongAnswerAudioLink);
       audio.play();
     }
     for (let i = 0; i < options.length; i += 1) {

@@ -42,7 +42,6 @@ class SprintController extends ApplicationContoller {
     }
   }
 
-  // ctrlr
   addListeners() {
     const btns = this.pageView.view.querySelectorAll('button');
     for (let i = 0; i < btns.length; i += 1) {
@@ -76,7 +75,6 @@ class SprintController extends ApplicationContoller {
       }
       if (target.className === 'audio-icon') {
         const audio = target.firstChild as HTMLAudioElement;
-        // let a = new Audio(audio.src);
         audio.play();
       }
       if (target.id === 'play-again') {
@@ -89,24 +87,21 @@ class SprintController extends ApplicationContoller {
         this.model.closeResult();
       }
     });
-    this.pageView.view.querySelector('#new-game')?.addEventListener('click', (): void => {
+    this.pageView.view.querySelector('.new-game-button')?.addEventListener('click', (): void => {
       this.model.gameStatus = 'Select Level';
     });
   }
 
-  // ctrlr
   addKeyBoardListeners() {
     document.addEventListener('keydown', (e): void => this.keyPress(e));
   }
 
-  // ctrlr
   keyPress(e: KeyboardEvent) {
     if (App.controller instanceof SprintController) {
       this.pageView.handlePressKey(e.key);
     }
   }
 
-  // ctrlr
   async getAllWords(group: number): Promise<Array<Word>> {
     this.pageView.showProgressBar();
     this.model.gameStatus = 'Loading';
@@ -128,7 +123,6 @@ class SprintController extends ApplicationContoller {
     return words;
   }
 
-  // model
   /* eslint-disable @typescript-eslint/indent */
   getWords(group: number, page: number): Promise<Array<Word>> {
     return new Promise((res, rej) => {
@@ -148,15 +142,5 @@ class SprintController extends ApplicationContoller {
     });
   }
 }
-
-// startGame() {
-//   this.pageView = new SprintView();
-//   this.setTimer();
-// }
-
-//   setTimer() {
-//     const timer = this.pageView.view.querySelector('.sprint-timer') as HTMLDivElement;
-//   }
-// }
 
 export default SprintController;

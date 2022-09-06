@@ -53,12 +53,14 @@ const newAudioGameButtonText = 'Новая игра Аудиовызов (N)';
 const newSprintGameButtonText = 'Новая игра Спринт (N)';
 const skipText = 'Пропустить (Space)';
 const nextText = 'Далее (Space)';
+const correctAnswerAudioLink = './assets/answer-correct.wav';
+const wrongAnswerAudioLink = './assets/answer-wrong.wav';
 
 const correctResultsText = 'Верные ответы';
 const incorrectResultsText = 'Неверные ответы:';
 const resultsText = 'Результаты';
 
-const sprintTime = 10;
+const sprintTime = 60;
 const correctText = 'Верно';
 const incorrectText = 'Неверно';
 const arrowRight = '→';
@@ -148,4 +150,6 @@ export {
   progressForNoDoneWord,
   NoHardWordsText,
   millisecondsInHour,
+  correctAnswerAudioLink,
+  wrongAnswerAudioLink,
 };

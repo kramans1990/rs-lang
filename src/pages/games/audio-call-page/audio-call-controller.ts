@@ -14,11 +14,11 @@ class AudioController extends ApplicationContoller {
 
   wordsPerPage = 20;
 
-  countQuestions = 20;
+  countQuestions = 200;
 
   initialbarProgress = 3;
 
-  pagesPerGame = 3;
+  pagesPerGame = 9;
 
   stat: Statistic = new Statistic();
 

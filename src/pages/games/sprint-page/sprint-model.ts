@@ -29,13 +29,11 @@ class SprintModel {
     this.corrrectAnswers = 0;
   }
 
-  // ctrlr
   set loadingStatus(loading: number) {
     this.loadingProgress = loading;
     this.pageView.updateProgressBar(this.loadingProgress);
   }
 
-  // ctrlr
   set gameStatus(status: string) {
     this.status = status;
 
@@ -51,6 +49,7 @@ class SprintModel {
       this.pageView.hideGame();
       this.pageView.hideProgressBar();
       this.pageView.hideResults();
+      this.pageView.stopTimer();
     }
 
     if (this.status === 'Game') {
@@ -61,7 +60,6 @@ class SprintModel {
     }
   }
 
-  // ctrlr
   set Question(currentQuestion: number) {
     this.currentQuestion = currentQuestion;
     this.pageView.showQuestion(this.audioTests[this.currentQuestion].audioTestView);
@@ -84,13 +82,11 @@ class SprintModel {
     if (this.currentQuestion === this.audioTests.length || this.pageView.timer.innerText === '0') {
       this.pageView.showGameResult(this.audioTests);
       this.pageView.hideGame();
-      this.pageView.hideTimer();
     } else {
       this.pageView.showQuestion(this.audioTests[this.currentQuestion].audioTestView);
     }
   }
 
-  // ctrlr
   closeResult() {
     // если авторизованы переходим на страницу учебника
     // this.audioTests = new Array<AudioQuestion>();
@@ -101,7 +97,6 @@ class SprintModel {
     //
   }
 
-  // ctrlr
   // сформировать список вопросов и начать игру
   createQuiz(words: Array<Word>, countQuestions: number) {
     if (words.length < 6) {
@@ -140,7 +135,6 @@ class SprintModel {
     }
   }
 
-  // ctrlr
   handleAnswer(answer: string) {
     let userAnswer;
     switch (answer) {

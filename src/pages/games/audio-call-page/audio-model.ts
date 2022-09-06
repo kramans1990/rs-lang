@@ -48,6 +48,7 @@ class AudioModel {
       this.pageView.hideGame();
       this.pageView.hideProgressBar();
       this.pageView.hideResults();
+      this.pageView.stopTimer();
     }
 
     if (this.status === 'Game') {
@@ -77,7 +78,7 @@ class AudioModel {
 
   nextQuestion() {
     this.currentQuestion += 1;
-    if (this.currentQuestion === this.audioTests.length) {
+    if (this.currentQuestion === this.audioTests.length || this.pageView.timer.innerText === '0') {
       this.pageView.showGameResult(this.audioTests);
       this.pageView.hideGame();
       this.pageView.hideTimer();

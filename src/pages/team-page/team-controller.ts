@@ -1,3 +1,4 @@
+/* eslint-disable import/no-cycle */
 import ApplicationContoller from '../application-controller';
 import TeamView from './team-view';
 

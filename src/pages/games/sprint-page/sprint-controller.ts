@@ -1,5 +1,4 @@
 /* eslint-disable import/no-cycle */
-import Api from '../../../Api';
 import App from '../../../App';
 import UserWord from '../../../types/userword';
 import { Word } from '../../../types/Word';
@@ -15,8 +14,6 @@ class SprintController extends ApplicationContoller {
 
   pageView: SprintView;
 
-  api: Api = new Api();
-
   wordsPerPage = 20;
 
   countQuestions = 200;
@@ -29,6 +26,7 @@ class SprintController extends ApplicationContoller {
 
   constructor(words?: Array<Word>) {
     super();
+    this.updateRefreshToken();
     this.pageView = new SprintView();
     this.model = new SprintModel(this.pageView);
     if (!words) {

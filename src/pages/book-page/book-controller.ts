@@ -1,4 +1,3 @@
-/* eslint-disable import/no-cycle */
 import '../../styles/cards.css';
 import '../../styles/level-buttons.css';
 import '../../styles/main.css';
@@ -80,7 +79,6 @@ class BookController extends ApplicationContoller {
         pageNumber: this.currentPage,
       }),
     );
-
     this.setView();
   }
 

@@ -60,7 +60,6 @@ class App {
       App.renderMainPage();
       const signInButton = document.querySelector('.sign-in-page-link') as HTMLAnchorElement;
       signInButton.innerText = logOutText;
-      signInButton.removeEventListener('click', App.renderAuthPage);
       signInButton.addEventListener('click', App.logOut);
       return;
     }
@@ -112,7 +111,6 @@ class App {
   }
 
   static renderAudiocallPage(words?: Array<Word>) {
-    // console.log(words);
     const controller: ApplicationContoller = new AudioController(words);
     App.setController(controller);
     const mainButton = document.querySelector('.game-page-link') as HTMLElement;
@@ -155,7 +153,6 @@ class App {
   }
 
   static renderStatPage() {
-    // console.log(App.user);
     if (App.user) {
       const controller: ApplicationContoller = new StatController();
       App.setController(controller);
@@ -203,6 +200,7 @@ class App {
     });
     document.querySelector('.sign-in-page-link')?.addEventListener('click', App.renderAuthPage);
     document.querySelector('.stat-page-link')?.addEventListener('click', App.renderStatPage);
+    document.querySelector('.team-page-link')?.addEventListener('click', App.renderTeamPage);
     document
       .querySelector('.audio-page-link')
       ?.addEventListener('click', (): void => App.renderAudiocallPage());

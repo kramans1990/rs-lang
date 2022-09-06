@@ -14,7 +14,6 @@ class TeamView extends ApplicationView {
   renderTeamPage() {
     this.view = document.createElement('div');
     this.view.classList.add('team-page');
-    (document.querySelector('footer') as HTMLElement).className = '';
     this.createMemberCards();
   }
 

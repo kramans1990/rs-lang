@@ -118,18 +118,21 @@ class StatController extends ApplicationContoller {
     }>();
     let dates: Array<string> = stat.optional.map((p) => p.dateShort);
     dates = dates.filter((item, index, arr) => index === arr.indexOf(item));
-    let learnded = this.stat.learnedWords;
+    let learned = this.stat.learnedWords;
     let newWords = 0;
     dates.forEach((date: string) => {
       const optionals = stat.optional.filter((p) => p.dateShort === date);
       newWords = 0;
+      let learnedByBook = 0;
       optionals.forEach((item) => {
+        learnedByBook = item.learnedByBook;
         newWords += item.newWords;
-        learnded += item.learnedWords;
+        learned += item.learnedWords;
       });
       newWordsProgress.push({ date: new Date(date), count: newWords });
-      learnedProgress.push({ date: new Date(date), count: learnded });
+      learnedProgress.push({ date: new Date(date), count: learned + learnedByBook });
     });
+    console.log(newWordsProgress, learnedProgress);
     this.pageView.showAllStat(newWordsProgress, learnedProgress);
     // let learnedWords :  Array<{date:Date , count:number}>
   }

@@ -359,6 +359,7 @@ class BookController extends ApplicationContoller {
       let arrOfHardWords = await this.makeArrOfHardWords();
       if (gameName && arrOfHardWords && arrOfHardWords.length > numberOfCardsPerPage) {
         arrOfHardWords = arrOfHardWords?.slice(0, 20);
+        return arrOfHardWords;
       }
       return [arrOfHardWords] || [[]];
     }

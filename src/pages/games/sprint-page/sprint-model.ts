@@ -98,37 +98,36 @@ class SprintModel {
   }
 
   // сформировать список вопросов и начать игру
-  createQuiz(words: Array<Word>, countQuestions: number) {
-    if (words.length < 6) {
+  createQuiz(wordsArr: Array<Word[]>) {
+    if (wordsArr.flat().length < 2) {
       this.gameStatus = 'Select Level';
       this.pageView.setNotEnouthWordsModal();
     } else {
       const tests: Array<SprintQuestion> = new Array<SprintQuestion>();
-      const count = Math.min(words.length, countQuestions);
-      let id = 0;
-      while (tests.length < count) {
-        let correctAnswer = words[Math.floor(Math.random() * words.length)];
-        let find: Array<SprintQuestion> = tests.filter(
-          (p) => p.correctAnswer.id === correctAnswer.id,
-        );
-        /* eslint-disable  @typescript-eslint/no-loop-func */
-        while (find.length > 0) {
-          correctAnswer = words[Math.floor(Math.random() * words.length)];
-          find = tests.filter((p) => p.correctAnswer.id === correctAnswer.id);
-        }
-        let options: Array<Word> = new Array<Word>();
-        options.push(correctAnswer);
-        while (options.length < 2) {
-          const word = words[Math.floor(Math.random() * words.length)];
-          options.push(word);
-          options = options.filter((item, index, arr) => arr.indexOf(item) === index);
-        }
-        options = options.sort(() => 0.5 - Math.random());
-        const test: SprintQuestion = new SprintQuestion(options, correctAnswer, id);
-        test.renderAudioTestView();
-        id += 1;
-        tests.push(test);
-      }
+      wordsArr.forEach((words: Word[]): void => {
+        words.forEach((): void => {
+          let correctAnswer = words[Math.floor(Math.random() * words.length)];
+          let find: Array<SprintQuestion> = tests.filter(
+            (p) => p.correctAnswer.id === correctAnswer.id,
+          );
+          /* eslint-disable  @typescript-eslint/no-loop-func */
+          while (find.length > 0) {
+            correctAnswer = words[Math.floor(Math.random() * words.length)];
+            find = tests.filter((p) => p.correctAnswer.id === correctAnswer.id);
+          }
+          let options: Array<Word> = new Array<Word>();
+          options.push(correctAnswer);
+          while (options.length < 2) {
+            const word = words[Math.floor(Math.random() * words.length)];
+            options.push(word);
+            options = options.filter((item, index, arr) => arr.indexOf(item) === index);
+          }
+          options = options.sort(() => 0.5 - Math.random());
+          const test: SprintQuestion = new SprintQuestion(options, correctAnswer);
+          test.renderAudioTestView();
+          tests.push(test);
+        });
+      });
       this.audioTests = tests;
       this.Question = 0;
       this.gameStatus = 'Game';

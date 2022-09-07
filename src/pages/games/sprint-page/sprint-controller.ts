@@ -16,15 +16,13 @@ class SprintController extends ApplicationContoller {
 
   wordsPerPage = 20;
 
-  countQuestions = 200;
-
   initialbarProgress = 3;
 
   pagesPerGame = 9;
 
   stat: Statistic = new Statistic();
 
-  constructor(words?: Array<Word>) {
+  constructor(words?: Array<Word[]>) {
     super('sprint');
     this.updateRefreshToken();
 
@@ -39,7 +37,7 @@ class SprintController extends ApplicationContoller {
       this.model = new SprintModel(this.pageView);
       this.addListeners();
       this.addKeyBoardListeners();
-      this.model.createQuiz(words, this.countQuestions);
+      this.model.createQuiz(words);
     }
   }
 
@@ -51,7 +49,9 @@ class SprintController extends ApplicationContoller {
         if (target.classList.contains('game-button')) {
           this.model.gameStatus = 'Set Level';
           const words = await this.getAllWords(Number(target.value));
-          this.model.createQuiz(words, this.countQuestions);
+          const wordsWrapper: Word[][] = [];
+          wordsWrapper.push(words);
+          this.model.createQuiz(wordsWrapper);
         }
       });
     }

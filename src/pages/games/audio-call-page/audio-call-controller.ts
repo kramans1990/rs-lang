@@ -27,7 +27,7 @@ class AudioController extends ApplicationContoller {
 
   gameName = 'audiocall';
 
-  constructor(words?: Array<Word>) {
+  constructor(words?: Array<Word[]>) {
     super('audiocall');
 
     if (!words) {
@@ -41,18 +41,21 @@ class AudioController extends ApplicationContoller {
       this.model = new AudioModel(this.pageView);
       this.addListeners();
       this.addKeyBoardListener();
-      this.model.createQuiz(words, this.countQuestions);
+      this.model.createQuiz(words);
     }
   }
 
   async addListeners() {
     const btns = this.pageView.view.querySelectorAll('button');
     for (let i = 0; i < btns.length; i += 1) {
-      btns[i].addEventListener('click', (e: MouseEvent) => {
+      btns[i].addEventListener('click', async (e: MouseEvent): Promise<void> => {
         const target = e.currentTarget as HTMLButtonElement;
         if (target.classList.contains('game-button')) {
           this.model.gameStatus = 'Set Level';
-          this.getAllWords(Number(target.value));
+          const words = await this.getAllWords(Number(target.value));
+          const wordsWrapper: Word[][] = [];
+          wordsWrapper.push(words);
+          this.model.createQuiz(wordsWrapper);
         }
       });
     }
@@ -99,7 +102,7 @@ class AudioController extends ApplicationContoller {
     }
   }
 
-  async getAllWords(group: number): Promise<void> {
+  async getAllWords(group: number): Promise<Word[]> {
     this.pageView.showProgressBar();
     this.model.gameStatus = 'Loading';
     let progress = this.initialbarProgress;
@@ -110,8 +113,6 @@ class AudioController extends ApplicationContoller {
       randomPages.push(Math.floor(Math.random() * this.pagesPerGame + 1));
       randomPages = randomPages.filter((item, index, arr) => index === arr.indexOf(item));
     }
-
-    // else{
     for (let i = 0; i <= this.pagesPerGame; i += 1) {
       progress = (i / this.pagesPerGame) * 100;
       this.model.loadingStatus = progress;
@@ -119,8 +120,7 @@ class AudioController extends ApplicationContoller {
       const value: Array<Word> = await this.getwords(group, i);
       words = words.concat(value);
     }
-    // }
-    this.model.createQuiz(words, this.countQuestions);
+    return words;
   }
 
   /* eslint-disable @typescript-eslint/indent */

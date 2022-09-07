@@ -34,11 +34,10 @@ class SprintQuestion {
 
   variation: HTMLParagraphElement;
 
-  constructor(options: Array<Word>, correctAnswer: Word, id: number) {
+  constructor(options: Array<Word>, correctAnswer: Word) {
     this.audioTestView = document.createElement('div');
     this.isAnswered = null;
     this.options = options;
-    this.id = id;
     this.correctAnswer = correctAnswer;
     this.answerView = this.renderAnswerView(correctAnswer);
     this.renderAudioTestView();
@@ -63,7 +62,6 @@ class SprintQuestion {
   renderAudioTestView() {
     const quizContainer = document.createElement('div');
     quizContainer.className = 'div-quiz-container';
-    quizContainer.id = this.id.toString();
     const divPlay = this.audioAnswer;
     const questionContainer = document.createElement('div');
     questionContainer.className = 'sprint-question-container';

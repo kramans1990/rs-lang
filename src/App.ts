@@ -110,7 +110,7 @@ class App {
     // setBackgroundForBookPage(aggregatedNumber);
   }
 
-  static renderAudiocallPage(words?: Array<Word>) {
+  static renderAudiocallPage(words?: Array<Word[]>) {
     const controller: ApplicationContoller = new AudioController(words);
     App.setController(controller);
     const mainButton = document.querySelector('.game-page-link') as HTMLElement;
@@ -119,7 +119,7 @@ class App {
     App.pageInfo = { pageName: 'audiocallPage' };
   }
 
-  static renderSprintPage(words?: Array<Word>) {
+  static renderSprintPage(words?: Array<Word[]>) {
     const controller: ApplicationContoller = new SprintController(words);
     App.setController(controller);
     const mainButton = document.querySelector('.game-page-link') as HTMLElement;

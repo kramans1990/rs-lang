@@ -97,38 +97,36 @@ class AudioModel {
   }
 
   // сформировать список вопросов и начать игру
-  createQuiz(words: Array<Word>, countQuestions: number) {
-    if (words.length < 6) {
+  createQuiz(wordsArr: Array<Word[]>) {
+    if (wordsArr.flat().length < 6) {
       this.gameStatus = 'Select Level';
-
       this.pageView.setNotEnouthWordsModal();
     } else {
       const tests: Array<AudioQuestion> = new Array<AudioQuestion>();
-      const count = words.length < countQuestions ? words.length : countQuestions;
-      let id = 0;
-      while (tests.length < count) {
-        let correctAnswer = words[Math.floor(Math.random() * words.length)];
-        let find: Array<AudioQuestion> = tests.filter(
-          (p) => p.correctAnswer.id === correctAnswer.id,
-        );
-        /* eslint-disable  @typescript-eslint/no-loop-func */
-        while (find.length > 0) {
-          correctAnswer = words[Math.floor(Math.random() * words.length)];
-          find = tests.filter((p) => p.correctAnswer.id === correctAnswer.id);
-        }
-        let options: Array<Word> = new Array<Word>();
-        options.push(correctAnswer);
-        while (options.length < 6) {
-          const word = words[Math.floor(Math.random() * words.length)];
-          options.push(word);
-          options = options.filter((item, index, arr) => arr.indexOf(item) === index);
-        }
-        options = options.sort(() => 0.5 - Math.random());
-        const test: AudioQuestion = new AudioQuestion(options, correctAnswer, id);
-        test.renderAudioTestView();
-        id += 1;
-        tests.push(test);
-      }
+      wordsArr.forEach((words: Word[]): void => {
+        words.forEach((): void => {
+          let correctAnswer = words[Math.floor(Math.random() * words.length)];
+          let find: Array<AudioQuestion> = tests.filter(
+            (p) => p.correctAnswer.id === correctAnswer.id,
+          );
+          /* eslint-disable  @typescript-eslint/no-loop-func */
+          while (find.length > 0) {
+            correctAnswer = words[Math.floor(Math.random() * words.length)];
+            find = tests.filter((p) => p.correctAnswer.id === correctAnswer.id);
+          }
+          let options: Array<Word> = new Array<Word>();
+          options.push(correctAnswer);
+          while (options.length < 6) {
+            const word = words[Math.floor(Math.random() * words.length)];
+            options.push(word);
+            options = options.filter((item, index, arr) => arr.indexOf(item) === index);
+          }
+          options = options.sort(() => 0.5 - Math.random());
+          const test: AudioQuestion = new AudioQuestion(options, correctAnswer);
+          test.renderAudioTestView();
+          tests.push(test);
+        });
+      });
       this.audioTests = tests;
       this.Question = 0;
       this.gameStatus = 'Game';

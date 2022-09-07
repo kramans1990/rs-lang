@@ -15,19 +15,16 @@ class AudioQuestion {
 
   isAnswered: string | null;
 
-  id: number;
-
   api: Api = new Api();
 
   answerView: HTMLDivElement;
 
   audioAnswer: HTMLDivElement;
 
-  constructor(options: Array<Word>, correctAnswer: Word, id: number) {
+  constructor(options: Array<Word>, correctAnswer: Word) {
     this.audioTestView = document.createElement('div');
     this.isAnswered = null;
     this.options = options;
-    this.id = id;
     this.correctAnswer = correctAnswer;
     this.answerView = this.renderAnswerView(correctAnswer);
     this.renderAudioTestView();
@@ -48,7 +45,6 @@ class AudioQuestion {
   renderAudioTestView() {
     const divQuizContainer = document.createElement('div');
     divQuizContainer.className = 'div-quiz-container';
-    divQuizContainer.id = this.id.toString();
     // const label = document.createElement('label');
     const divPlay = this.audioAnswer;
 

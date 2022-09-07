@@ -29,13 +29,11 @@ class SprintModel {
     this.corrrectAnswers = 0;
   }
 
-  // ctrlr
   set loadingStatus(loading: number) {
     this.loadingProgress = loading;
     this.pageView.updateProgressBar(this.loadingProgress);
   }
 
-  // ctrlr
   set gameStatus(status: string) {
     this.status = status;
 
@@ -51,6 +49,7 @@ class SprintModel {
       this.pageView.hideGame();
       this.pageView.hideProgressBar();
       this.pageView.hideResults();
+      this.pageView.stopTimer();
     }
 
     if (this.status === 'Game') {
@@ -61,7 +60,6 @@ class SprintModel {
     }
   }
 
-  // ctrlr
   set Question(currentQuestion: number) {
     this.currentQuestion = currentQuestion;
     this.pageView.showQuestion(this.audioTests[this.currentQuestion].audioTestView);
@@ -84,63 +82,56 @@ class SprintModel {
     if (this.currentQuestion === this.audioTests.length || this.pageView.timer.innerText === '0') {
       this.pageView.showGameResult(this.audioTests);
       this.pageView.hideGame();
-      this.pageView.hideTimer();
     } else {
       this.pageView.showQuestion(this.audioTests[this.currentQuestion].audioTestView);
     }
   }
 
-  // ctrlr
   closeResult() {
     // если авторизованы переходим на страницу учебника
-    // this.audioTests = new Array<AudioQuestion>();
     this.wrongAnswers = 0;
     this.rigthAnswers = 0;
     this.pageView.hideResults();
     this.audioTests = new Array<SprintQuestion>();
-    //
   }
 
-  // ctrlr
   // сформировать список вопросов и начать игру
-  createQuiz(words: Array<Word>, countQuestions: number) {
-    if (words.length < 6) {
+  createQuiz(wordsArr: Array<Word[]>) {
+    if (wordsArr.flat().length < 2) {
       this.gameStatus = 'Select Level';
       this.pageView.setNotEnouthWordsModal();
     } else {
       const tests: Array<SprintQuestion> = new Array<SprintQuestion>();
-      const count = Math.min(words.length, countQuestions);
-      let id = 0;
-      while (tests.length < count) {
-        let correctAnswer = words[Math.floor(Math.random() * words.length)];
-        let find: Array<SprintQuestion> = tests.filter(
-          (p) => p.correctAnswer.id === correctAnswer.id,
-        );
-        /* eslint-disable  @typescript-eslint/no-loop-func */
-        while (find.length > 0) {
-          correctAnswer = words[Math.floor(Math.random() * words.length)];
-          find = tests.filter((p) => p.correctAnswer.id === correctAnswer.id);
-        }
-        let options: Array<Word> = new Array<Word>();
-        options.push(correctAnswer);
-        while (options.length < 2) {
-          const word = words[Math.floor(Math.random() * words.length)];
-          options.push(word);
-          options = options.filter((item, index, arr) => arr.indexOf(item) === index);
-        }
-        options = options.sort(() => 0.5 - Math.random());
-        const test: SprintQuestion = new SprintQuestion(options, correctAnswer, id);
-        test.renderAudioTestView();
-        id += 1;
-        tests.push(test);
-      }
+      wordsArr.forEach((words: Word[]): void => {
+        words.forEach((): void => {
+          let correctAnswer = words[Math.floor(Math.random() * words.length)];
+          let find: Array<SprintQuestion> = tests.filter(
+            (p) => p.correctAnswer.id === correctAnswer.id,
+          );
+          /* eslint-disable  @typescript-eslint/no-loop-func */
+          while (find.length > 0) {
+            correctAnswer = words[Math.floor(Math.random() * words.length)];
+            find = tests.filter((p) => p.correctAnswer.id === correctAnswer.id);
+          }
+          let options: Array<Word> = new Array<Word>();
+          options.push(correctAnswer);
+          while (options.length < 2) {
+            const word = words[Math.floor(Math.random() * words.length)];
+            options.push(word);
+            options = options.filter((item, index, arr) => arr.indexOf(item) === index);
+          }
+          options = options.sort(() => 0.5 - Math.random());
+          const test: SprintQuestion = new SprintQuestion(options, correctAnswer);
+          test.renderAudioTestView();
+          tests.push(test);
+        });
+      });
       this.audioTests = tests;
       this.Question = 0;
       this.gameStatus = 'Game';
     }
   }
 
-  // ctrlr
   handleAnswer(answer: string) {
     let userAnswer;
     switch (answer) {
@@ -164,9 +155,5 @@ class SprintModel {
     }
     audioTest.isAnswered = 'Yes';
   }
-
-  // updateGameProgress() {
-  //   // обновление статистики
-  // }
 }
 export default SprintModel;

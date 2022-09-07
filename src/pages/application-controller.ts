@@ -2,7 +2,6 @@
 import Api from '../Api';
 import { getDataFromLocalStorage, saveDataToLocalStorage } from '../functions/functions';
 import { ISignIn } from '../types/interfaces';
-import { millisecondsInHour } from '../utils/constants';
 import ApplicationView from './application-view';
 
 class ApplicationContoller {
@@ -35,7 +34,6 @@ class ApplicationContoller {
         throw new Error(await response.text());
       }
     }
-    window.setTimeout(await this.updateRefreshToken, millisecondsInHour);
   }
 }
 

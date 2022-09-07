@@ -15,7 +15,7 @@ const haveNotYetAccountText = 'Ещё не успели создать акка�
 const haveAccountText = 'Уже есть аккаунт?';
 
 const invalidEmail = 'Invalid email';
-const invalidPassword = 'Password should contain digits, letters or both';
+const invalidPassword = 'Password should contain digits, letters or both, minimum 8 characters';
 
 /* prettier-ignore */
 

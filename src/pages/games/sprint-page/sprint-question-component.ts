@@ -80,12 +80,10 @@ class SprintQuestion {
     for (let i = 0; i < this.options.length; i += 1) {
       const button = document.createElement('button');
       button.className = 'game-button option';
-      // button.textContent = this.options[i].wordTranslate;
       const divOptionGrid = document.createElement('div');
       divOptionGrid.className = 'div-option-grid';
       const spanValue = document.createElement('span');
       spanValue.className = 'span-value';
-      // spanValue.textContent = this.options[i].wordTranslate;
       const arrow = document.createElement('span');
       if (i) {
         arrow.textContent = arrowRight;

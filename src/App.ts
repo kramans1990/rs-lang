@@ -63,7 +63,6 @@ class App {
       signInButton.addEventListener('click', App.logOut);
       return;
     }
-    // заменить алерт на что-то человеческое
     alert(data);
   }
 
@@ -106,8 +105,6 @@ class App {
     const mainButton = document.querySelector('.book-page-link') as HTMLElement;
     App.changeActiveClassForNavItemByElement(mainButton);
     App.pageInfo = { pageName: 'bookPage' };
-    // const aggregatedNumber = getAggregatedNumberFromLS();
-    // setBackgroundForBookPage(aggregatedNumber);
   }
 
   static renderAudiocallPage(words?: Array<Word[]>) {

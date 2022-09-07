@@ -57,11 +57,7 @@ class SprintController extends ApplicationContoller {
     }
     this.pageView.view.addEventListener('click', async (e: MouseEvent): Promise<void> => {
       const target = e.target as HTMLElement;
-      // if (target.className === 'game-button option') {
-      //   this.model.updateGameProgress();//обновление статистики
-      // }
       if (target.id === 'next-question-button') {
-        // this.UpdateUserWords(this.model.audioTests[this.model.currentQuestion]);
         // обновить userwords и статистику
         const test = this.model.audioTests[this.model.currentQuestion];
         const userWord: UserWord = new UserWord();
@@ -113,7 +109,6 @@ class SprintController extends ApplicationContoller {
       randomPages.push(Math.floor(Math.random() * this.pagesPerGame + 1));
       randomPages = randomPages.filter((item, index, arr) => index === arr.indexOf(item));
     }
-
     for (let i = 0; i <= this.pagesPerGame; i += 1) {
       progress = (i / this.pagesPerGame) * 100;
       this.model.loadingStatus = progress;

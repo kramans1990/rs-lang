@@ -89,7 +89,6 @@ class AudioModel {
 
   closeResult() {
     // если авторизованы переходим на страницу учебника
-    // this.audioTests = new Array<AudioQuestion>();
     this.wrongAnswers = 0;
     this.rigthAnswers = 0;
     this.pageView.hideResults();

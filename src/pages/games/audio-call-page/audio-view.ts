@@ -52,7 +52,6 @@ class AudioView {
     divDifficulty.className = 'dif-container hidden';
     divDifficulty.append(levelSelectLabel, divButtonsContainer);
     const progressBar = document.createElement('div');
-    // progressBar.innerHTML = '<div id="loading"  class="loading"></div>';
     const innerdiv = document.createElement('div');
     innerdiv.className = 'loading';
     progressBar.className = 'game-progress-bar hidden';
@@ -112,7 +111,6 @@ class AudioView {
       divResult.append(divaudioresult, word, dash, wordTranslation);
       correctdiv.appendChild(divResult);
     }
-
     (
       this.view.querySelector('.game-span-wrong') as HTMLSpanElement
     ).innerText = `Неверные ответы (${wrongs.length}) : `;
@@ -262,7 +260,6 @@ class AudioView {
         (buttons[0] as HTMLButtonElement).focus();
       } else {
         this.focusIndex = this.focusIndex === i - 1 ? this.focusIndex : (this.focusIndex += 1);
-
         const dif = this.view.querySelector('.game-container')?.firstChild as HTMLDivElement;
         if (dif?.className === 'dif-container hidden') {
           while (buttons[this.focusIndex - 1].className.includes('game-button l')) {
@@ -275,7 +272,6 @@ class AudioView {
     if (pressedKey === 'ArrowLeft' || pressedKey === 'ArrowUp') {
       const focusedbutton: Element = document.activeElement as Element;
       const name = focusedbutton.tagName;
-
       if (name !== 'BUTTON') {
         buttons[0].focus();
       } else {
@@ -301,7 +297,6 @@ class AudioView {
 
   handleKeysLevel(pressedKey: string) {
     const key = pressedKey.toLowerCase();
-
     if (key === 'n') {
       const newGame = this.view.querySelector('.new-game-button') as HTMLButtonElement;
       newGame.click();
@@ -319,7 +314,6 @@ class AudioView {
 
   handleKeysOption(pressedKey: string) {
     const key = pressedKey.toLowerCase();
-
     if (key === 'n') {
       const newGame = this.view.querySelector('.new-game-button') as HTMLButtonElement;
       newGame.click();
@@ -351,38 +345,6 @@ class AudioView {
       this.handleNavKeys(key);
     }
   }
-  /* eslint-disable class-methods-use-this */
-
-  // createModalContent(): HTMLDivElement {
-  //   const modalContent = document.createElement('div');
-  //   modalContent.classList.add('modal-content');
-  //   const modalClose = document.createElement('span');
-  //   modalClose.classList.add('modal-close');
-  //   modalClose.innerHTML = '&times;';
-  //   const resultsBox = document.createElement('div');
-  //   resultsBox.classList.add('div-result-flex');
-  //   const resilts = document.createElement('span');
-  //   resilts.innerText = resultsText;
-  //   const incorrectAnswers = document.createElement('span');
-  //   incorrectAnswers.classList.add('game-span-wrong');
-  //   incorrectAnswers.innerText = incorrectResultsText;
-  //   const correctAnswers = document.createElement('span');
-  //   correctAnswers.classList.add('game-span-correct');
-  //   correctAnswers.innerText = correctResultsText;
-  //   const incorrectAnswersContainer = document.createElement('div');
-  //   incorrectAnswersContainer.classList.add('answer-container-wrong');
-  //   const correctAnswersContainer = document.createElement('div');
-  //   correctAnswersContainer.classList.add('answer-container-correct');
-  //   resultsBox.append(
-  //     resilts,
-  //     incorrectAnswers,
-  //     incorrectAnswersContainer,
-  //     correctAnswers,
-  //     correctAnswersContainer,
-  //   );
-  //   modalContent.append(modalClose, resultsBox);
-  //   return modalContent;
-  // }
 
   setNotEnouthWordsModal() {
     (this.view.querySelector('.modal-message') as HTMLDivElement).classList.remove('hidden');

@@ -29,7 +29,6 @@ class StatView extends ApplicationView {
     accuracyTotal: number,
   ) {
     const div = this.view.querySelector('.stat-content') as HTMLDivElement;
-    // div.classList.remove('popup');
     div.classList.add('popup');
     div.innerHTML = '';
     const title = document.createElement('div');
@@ -123,7 +122,7 @@ class StatView extends ApplicationView {
         labels: date,
         datasets: [
           {
-            label: 'новых слов',
+            label: 'Новых слов',
             data: count,
             backgroundColor: ['#ec990e'],
             borderColor: ['#ffcb05'],

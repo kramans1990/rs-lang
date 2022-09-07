@@ -15,14 +15,7 @@ class MainPageController extends ApplicationContoller {
   setView(): void {
     this.api = new Api();
     this.pageView = new MainPageView();
-    // this.addListeners();
   }
-
-  // addListeners(): void {
-  //   this.pageView.view
-  //     .querySelector('.sign-up-button')
-  //     ?.addEventListener('click', async (): Promise<void> => {});
-  // }
 }
 
 export default MainPageController;

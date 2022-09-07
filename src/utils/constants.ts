@@ -67,8 +67,6 @@ const arrowRight = '→';
 const arrowLeft = '←';
 const millisecondsInHour = 3600000;
 
-// const
-
 const team = [
   {
     name: 'Роман Саксонов',

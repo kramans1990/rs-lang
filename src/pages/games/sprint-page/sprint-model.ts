@@ -89,12 +89,10 @@ class SprintModel {
 
   closeResult() {
     // если авторизованы переходим на страницу учебника
-    // this.audioTests = new Array<AudioQuestion>();
     this.wrongAnswers = 0;
     this.rigthAnswers = 0;
     this.pageView.hideResults();
     this.audioTests = new Array<SprintQuestion>();
-    //
   }
 
   // сформировать список вопросов и начать игру

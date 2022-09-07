@@ -1,147 +1,132 @@
 .modal-content {
-    display: flex;
-    flex-direction: column;
-    background-color: rgb(255, 255, 255);
-    margin: auto;
-    padding: 5px 10px 5px 10px;
-    border: 1px solid rgb(255, 255, 255);
-    width: 550px;
-    border-radius: 15px;
-    margin-bottom: 10px;
+  display: flex;
+  flex-direction: column;
+  background-color: rgb(255 255 255);
+  margin: auto;
+  padding: 5px 10px;
+  border: 1px solid rgb(255 255 255);
+  width: 550px;
+  border-radius: 15px;
+  margin-bottom: 10px;
 }
+
 .modal-message-content {
-    background-color: rgb(255, 255, 255);
-    padding: 0px 5px 5px 5px;
-    width: 300px;
-    height: 100px;
-    border-radius: 15px;
-    margin-bottom: 100x;
+  background-color: rgb(255 255 255);
+  padding: 0 5px 5px;
+  width: 300px;
+  height: 100px;
+  border-radius: 15px;
+  margin-bottom: 100x;
 }
+
 .modal-close {
-    float: right;
-    font-size: 40px;
-    font-weight: bold;
-    text-align: right;
+  float: right;
+  font-size: 40px;
+  font-weight: bold;
+  text-align: right;
 }
+
 .message-text {
-    position: relative;
-    top: 40%;
-    font-size: 18px;
-    color: black;
-    text-align: center;
-    align-self: center;
-    font-weight: bold;
-    height: 40px;
+  position: relative;
+  top: 40%;
+  font-size: 18px;
+  color: black;
+  text-align: center;
+  align-self: center;
+  font-weight: bold;
+  height: 40px;
 }
+
 .modal-message-close {
-    color: black;
-    float: right;
-    font-size: 20px;
-    font-weight: bold;
-    margin-bottom: 10px;
+  color: black;
+  float: right;
+  font-size: 20px;
+  font-weight: bold;
+  margin-bottom: 10px;
 }
+
 .modal-close:hover,
 .modal-close:focus,
 .modal-message-close:hover {
-    color: var(--color-accent);
-    text-decoration: none;
-    cursor: pointer;
+  color: var(--color-accent);
+  text-decoration: none;
+  cursor: pointer;
 }
 
 .div-result-flex {
-    width: 500px;
-    display: flex;
-    flex-direction: column;
+  width: 500px;
+  display: flex;
+  flex-direction: column;
 }
 
 .div-result-flex > span {
-    font-size: 24px;
-    text-align: center;
-    /* font-family: Arial, Helvetica, sans-serif; */
-    margin-top: 14px;
+  font-size: 24px;
+  text-align: center;
+  margin-top: 14px;
 }
 
 .game-span-correct {
-    color: var(--color-green-common);
-
-    font-weight: bold;
+  color: var(--color-green-common);
+  font-weight: bold;
 }
 
 .game-span-wrong {
-    color: var(--color-accent);
-    font-weight: bold;
+  color: var(--color-accent);
+  font-weight: bold;
 }
 
 .answer-container-correct > div > span,
 .answer-container-wrong > div > span {
-    margin-left: 20px;
-    font-size: 22px;
-    font-weight: bold;
-    align-self: center;
-    margin-top: 30px;
+  margin-left: 20px;
+  font-size: 22px;
+  font-weight: bold;
+  align-self: center;
+  margin-top: 30px;
 }
 
 .answer-container-correct > div > div,
 .answer-container-wrong > div > div {
-    display: inline-block;
-    width: 30px;
-    height: 20px;
+  display: inline-block;
+  width: 30px;
+  height: 20px;
 }
 
-.audio-icon {
-    width: 37px;
-    height: 27px;
-    cursor: pointer;
-    background-color: var(--color-gray-medium);
-    mask-image: url("../../../assets/svg/audio.svg");
-    mask-repeat: no-repeat;
-    mask-size: contain;
-    -webkit-mask-image: url("../../../assets/svg/audio.svg");
-    -webkit-mask-repeat: no-repeat;
-    -webkit-mask-size: contain;
-    transition: all 0.3s;
-}
-
-.audio-icon:hover {
-    background-color: var(--color-brown);
-}
-
-.audio-icon.disabled {
-    pointer-events: none;
-}
 .popup {
-    animation: popup 0.7s;
-    border-radius: 15px;
+  animation: popup 0.7s;
+  border-radius: 15px;
 }
 
 @keyframes popup {
-    0% {
-        transform: scale(0.2);
-    }
+  0% {
+    transform: scale(0.2);
+  }
 
-    100% {
-        transform: scale(1);
-    }
+  100% {
+    transform: scale(1);
+  }
 }
+
 @media (max-width: 600px) {
-    .answer-container-correct > div > span,
-    .answer-container-wrong > div > span {
-        margin-left: 0px;
-        font-size: 14px;
-        font-weight: bold;
-        align-self: center;
-        margin-top: 30px;
-    }
-    .div-result-flex {
-        width: 300px;
-    }
-    .div-result-flex > span {
-        font-size: 16px;
-        text-align: center;
-        /* font-family: Arial, Helvetica, sans-serif; */
-        margin-bottom: 5px;
-    }
-    .modal-content {
-        width: 300px;
-    }
+  .answer-container-correct > div > span,
+  .answer-container-wrong > div > span {
+    margin-left: 0;
+    font-size: 14px;
+    font-weight: bold;
+    align-self: center;
+    margin-top: 30px;
+  }
+
+  .div-result-flex {
+    width: 300px;
+  }
+
+  .div-result-flex > span {
+    font-size: 16px;
+    text-align: center;
+    margin-bottom: 5px;
+  }
+
+  .modal-content {
+    width: 300px;
+  }
 }

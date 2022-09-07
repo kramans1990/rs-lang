@@ -16,15 +16,13 @@ class SprintController extends ApplicationContoller {
 
   wordsPerPage = 20;
 
-  countQuestions = 200;
-
   initialbarProgress = 3;
 
   pagesPerGame = 9;
 
   stat: Statistic = new Statistic();
 
-  constructor(words?: Array<Word>) {
+  constructor(words?: Array<Word[]>) {
     super('sprint');
     this.updateRefreshToken();
 
@@ -39,11 +37,10 @@ class SprintController extends ApplicationContoller {
       this.model = new SprintModel(this.pageView);
       this.addListeners();
       this.addKeyBoardListeners();
-      this.model.createQuiz(words, this.countQuestions);
+      this.model.createQuiz(words);
     }
   }
 
-  // ctrlr
   addListeners() {
     const btns = this.pageView.view.querySelectorAll('button');
     for (let i = 0; i < btns.length; i += 1) {
@@ -52,17 +49,15 @@ class SprintController extends ApplicationContoller {
         if (target.classList.contains('game-button')) {
           this.model.gameStatus = 'Set Level';
           const words = await this.getAllWords(Number(target.value));
-          this.model.createQuiz(words, this.countQuestions);
+          const wordsWrapper: Word[][] = [];
+          wordsWrapper.push(words);
+          this.model.createQuiz(wordsWrapper);
         }
       });
     }
     this.pageView.view.addEventListener('click', async (e: MouseEvent): Promise<void> => {
       const target = e.target as HTMLElement;
-      // if (target.className === 'game-button option') {
-      //   this.model.updateGameProgress();//обновление статистики
-      // }
       if (target.id === 'next-question-button') {
-        // this.UpdateUserWords(this.model.audioTests[this.model.currentQuestion]);
         // обновить userwords и статистику
         const test = this.model.audioTests[this.model.currentQuestion];
         const userWord: UserWord = new UserWord();
@@ -77,7 +72,6 @@ class SprintController extends ApplicationContoller {
       }
       if (target.className === 'audio-icon') {
         const audio = target.firstChild as HTMLAudioElement;
-        // let a = new Audio(audio.src);
         audio.play();
       }
       if (target.id === 'play-again') {
@@ -90,24 +84,21 @@ class SprintController extends ApplicationContoller {
         this.model.closeResult();
       }
     });
-    this.pageView.view.querySelector('#new-game')?.addEventListener('click', (): void => {
+    this.pageView.view.querySelector('.new-game-button')?.addEventListener('click', (): void => {
       this.model.gameStatus = 'Select Level';
     });
   }
 
-  // ctrlr
   addKeyBoardListeners() {
     document.addEventListener('keydown', (e): void => this.keyPress(e));
   }
 
-  // ctrlr
   keyPress(e: KeyboardEvent) {
     if (App.controller instanceof SprintController) {
       this.pageView.handlePressKey(e.key);
     }
   }
 
-  // ctrlr
   async getAllWords(group: number): Promise<Array<Word>> {
     this.pageView.showProgressBar();
     this.model.gameStatus = 'Loading';
@@ -118,7 +109,6 @@ class SprintController extends ApplicationContoller {
       randomPages.push(Math.floor(Math.random() * this.pagesPerGame + 1));
       randomPages = randomPages.filter((item, index, arr) => index === arr.indexOf(item));
     }
-
     for (let i = 0; i <= this.pagesPerGame; i += 1) {
       progress = (i / this.pagesPerGame) * 100;
       this.model.loadingStatus = progress;
@@ -129,7 +119,6 @@ class SprintController extends ApplicationContoller {
     return words;
   }
 
-  // model
   /* eslint-disable @typescript-eslint/indent */
   getWords(group: number, page: number): Promise<Array<Word>> {
     return new Promise((res, rej) => {
@@ -149,15 +138,5 @@ class SprintController extends ApplicationContoller {
     });
   }
 }
-
-// startGame() {
-//   this.pageView = new SprintView();
-//   this.setTimer();
-// }
-
-//   setTimer() {
-//     const timer = this.pageView.view.querySelector('.sprint-timer') as HTMLDivElement;
-//   }
-// }
 
 export default SprintController;

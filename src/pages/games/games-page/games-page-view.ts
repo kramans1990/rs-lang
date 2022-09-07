@@ -1,5 +1,4 @@
 /* eslint-disable import/no-cycle */
-// import ApplicationContoller from '../../application-controller';
 import AudioController from '../audio-call-page/audio-call-controller';
 import SprintController from '../sprint-page/sprint-controller';
 import { audioGameName, sprintGameName } from '../../../utils/constants';

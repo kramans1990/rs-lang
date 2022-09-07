@@ -132,9 +132,7 @@ class StatController extends ApplicationContoller {
       newWordsProgress.push({ date: new Date(date), count: newWords });
       learnedProgress.push({ date: new Date(date), count: learned + learnedByBook });
     });
-    console.log(newWordsProgress, learnedProgress);
     this.pageView.showAllStat(newWordsProgress, learnedProgress);
-    // let learnedWords :  Array<{date:Date , count:number}>
   }
 }
 

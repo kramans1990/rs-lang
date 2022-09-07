@@ -15,7 +15,7 @@ const haveNotYetAccountText = 'Ещё не успели создать акка�
 const haveAccountText = 'Уже есть аккаунт?';
 
 const invalidEmail = 'Invalid email';
-const invalidPassword = 'Password should contain digits, letters or both';
+const invalidPassword = 'Password should contain digits, letters or both, minimum 8 characters';
 
 /* prettier-ignore */
 
@@ -53,6 +53,8 @@ const newAudioGameButtonText = 'Новая игра Аудиовызов (N)';
 const newSprintGameButtonText = 'Новая игра Спринт (N)';
 const skipText = 'Пропустить (Space)';
 const nextText = 'Далее (Space)';
+const correctAnswerAudioLink = './assets/answer-correct.wav';
+const wrongAnswerAudioLink = './assets/answer-wrong.wav';
 
 const correctResultsText = 'Верные ответы';
 const incorrectResultsText = 'Неверные ответы:';
@@ -64,8 +66,6 @@ const incorrectText = 'Неверно';
 const arrowRight = '→';
 const arrowLeft = '←';
 const millisecondsInHour = 3600000;
-
-// const
 
 const team = [
   {
@@ -148,4 +148,6 @@ export {
   progressForNoDoneWord,
   NoHardWordsText,
   millisecondsInHour,
+  correctAnswerAudioLink,
+  wrongAnswerAudioLink,
 };

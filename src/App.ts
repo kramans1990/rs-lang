@@ -1,7 +1,6 @@
 /* eslint-disable import/no-cycle */
 import MainPageController from './pages/main-page/main-page-controller';
 import ApplicationContoller from './pages/application-controller';
-// import AudioController from './pages/games/audio-call-page/audio-call-controller';
 import TeamController from './pages/team-page/team-controller';
 import AuthController from './pages/auth-page/auth-controller';
 import RegistrationController from './pages/registration-page/registration-controller';
@@ -40,6 +39,7 @@ class App {
   }
 
   /* eslint-disable class-methods-use-this */
+
   start(): void {
     this.addEventListeners();
     window.onbeforeunload = () => {

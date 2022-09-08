@@ -27,7 +27,7 @@
   },
   "rules": {
     "no-debugger": "off",
-    "no-console": 0,
+    "no-console": 1,
     "@typescript-eslint/no-explicit-any": "error",
     "max-lines-per-function": ["error", { "max": 60 }]
   }

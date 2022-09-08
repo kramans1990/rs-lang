@@ -34,11 +34,10 @@ class SprintQuestion {
 
   variation: HTMLParagraphElement;
 
-  constructor(options: Array<Word>, correctAnswer: Word, id: number) {
+  constructor(options: Array<Word>, correctAnswer: Word) {
     this.audioTestView = document.createElement('div');
     this.isAnswered = null;
     this.options = options;
-    this.id = id;
     this.correctAnswer = correctAnswer;
     this.answerView = this.renderAnswerView(correctAnswer);
     this.renderAudioTestView();
@@ -63,7 +62,6 @@ class SprintQuestion {
   renderAudioTestView() {
     const quizContainer = document.createElement('div');
     quizContainer.className = 'div-quiz-container';
-    quizContainer.id = this.id.toString();
     const divPlay = this.audioAnswer;
     const questionContainer = document.createElement('div');
     questionContainer.className = 'sprint-question-container';
@@ -82,12 +80,10 @@ class SprintQuestion {
     for (let i = 0; i < this.options.length; i += 1) {
       const button = document.createElement('button');
       button.className = 'game-button option';
-      // button.textContent = this.options[i].wordTranslate;
       const divOptionGrid = document.createElement('div');
       divOptionGrid.className = 'div-option-grid';
       const spanValue = document.createElement('span');
       spanValue.className = 'span-value';
-      // spanValue.textContent = this.options[i].wordTranslate;
       const arrow = document.createElement('span');
       if (i) {
         arrow.textContent = arrowRight;

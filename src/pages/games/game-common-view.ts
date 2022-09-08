@@ -40,51 +40,6 @@ class GameCommonView {
     timer.classList.add('sprint-timer', 'hidden');
     return timer;
   }
-
-  showLevelSelection() {
-    (this.view.querySelector('.dif-container') as HTMLDivElement).classList.remove('hidden');
-  }
-
-  showDifficultySelection(): void {
-    (this.view.querySelector('.dif-container') as HTMLDivElement)?.classList.remove('hidden');
-  }
-
-  hideDifficultySelection() {
-    (this.view.querySelector('.dif-container') as HTMLDivElement)?.classList.add('hidden');
-  }
-
-  showGame() {
-    (this.view.querySelector('.div-quiz-container') as HTMLDivElement)?.classList.remove('hidden');
-  }
-
-  hideGame() {
-    (this.view.querySelector('.div-quiz-container') as HTMLDivElement)?.classList.add('hidden');
-  }
-
-  hideProgressBar() {
-    (this.view.querySelector('.game-progress-bar') as HTMLDivElement)?.classList.add('hidden');
-  }
-
-  showProgressBar() {
-    (this.view.querySelector('.game-progress-bar') as HTMLDivElement)?.classList.remove('hidden');
-  }
-
-  showResults() {
-    (this.view.querySelector('.game-result') as HTMLDivElement)?.classList.remove('hidden');
-  }
-
-  hideResults() {
-    (this.view.querySelector('.game-result') as HTMLDivElement)?.classList.add('hidden');
-    const correctDiv = document.querySelector('.answer-container-correct') as HTMLDivElement;
-    const wrongDiv = document.querySelector('.answer-container-wrong') as HTMLDivElement;
-    correctDiv.innerHTML = '';
-    wrongDiv.innerHTML = '';
-  }
-
-  updateProgressBar(loading: number) {
-    const div = this.view.querySelector('.loading') as HTMLDivElement;
-    div.style.width = `${loading}%`;
-  }
 }
 
 export default GameCommonView;

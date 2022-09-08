@@ -16,7 +16,7 @@ export type Word = {
   textExampleTranslate: string;
 };
 
-export type SprintWord = {
+export type sprintword = {
   word: string;
   correctTranslation: string;
   currentTranslation: string;

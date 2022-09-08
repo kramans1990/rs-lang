@@ -109,6 +109,7 @@ class Statistic {
 
   async addLearnedWordFromBook() {
     if (App.user) {
+      console.log('learn');
       const today: Date = new Date();
       const currentStat = await this.api.getUserStat(App.user.userId, App.user.token);
       const dateShort = this.toShortDate(today);

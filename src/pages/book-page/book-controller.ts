@@ -330,7 +330,7 @@ class BookController extends ApplicationContoller {
     sprintGameLink.prepend(iconSprint);
     sprintGameLink.addEventListener('click', async (): Promise<void> => {
       const wordsForsprintGame = await this.getWordsForGame();
-      App.renderSprintPage(wordsForsprintGame[0] as Word[]);
+      App.renderSprintPage(wordsForsprintGame as Word[][]);
     });
     const audioGameLink = BookPageView.createElementByParams('div', 'btn') as HTMLDivElement;
     audioGameLink.classList.add('btn_colored');
@@ -342,8 +342,8 @@ class BookController extends ApplicationContoller {
     iconAudioGame.setAttribute('src', iconAudioGameSrc);
     audioGameLink.prepend(iconAudioGame);
     audioGameLink.addEventListener('click', async (): Promise<void> => {
-      const wordsForAudioGame = await this.getWordsForGame('audio');
-      App.renderAudiocallPage(wordsForAudioGame as Word[]);
+      const wordsForAudioGame = await this.getWordsForGame();
+      App.renderAudiocallPage(...wordsForAudioGame);
     });
 
     const arrOfDonePages = await this.makeArrOfDonePages(this.currentLevel);
@@ -354,14 +354,14 @@ class BookController extends ApplicationContoller {
   }
 
   // eslint-disable-next-line max-lines-per-function, consistent-return
-  async getWordsForGame(gameName?: string) {
+  async getWordsForGame() {
     if (App.user && this.currentLevel === 6) {
       let arrOfHardWords = await this.makeArrOfHardWords();
-      if (gameName && arrOfHardWords && arrOfHardWords.length > numberOfCardsPerPage) {
+      if (arrOfHardWords && arrOfHardWords.length > numberOfCardsPerPage) {
         arrOfHardWords = arrOfHardWords?.slice(0, 20);
-        return arrOfHardWords;
+        return [arrOfHardWords];
       }
-      return [arrOfHardWords] || [[]];
+      return arrOfHardWords?.length ? [arrOfHardWords] : [[]];
     }
 
     const { pageNumber } = getDataFromLocalStorage('pageInfo') as IPageInfo;
@@ -396,14 +396,6 @@ class BookController extends ApplicationContoller {
     allUnLearnedWordsForLevel = allWordsSinceBeginTillCurrentPage.filter(
       (word) => !arrOfLearnedWordsId.includes(word.id),
     );
-
-    if (gameName) {
-      if (allUnLearnedWordsForLevel.length > numberOfCardsPerPage) {
-        const arrForAudioGame = allUnLearnedWordsForLevel.slice(0, 20);
-        return arrForAudioGame;
-      }
-      return allUnLearnedWordsForLevel;
-    }
 
     const arrForSprintGame: Array<Word[]> = [];
     for (let i = this.currentPage; i >= 0; i -= 1) {

@@ -19,6 +19,7 @@
   user-select: none;
 }
 .div-quiz-container {
+  height: 450px;
   justify-self: center;
   display: grid;
   grid-template-rows: auto auto auto;
@@ -32,11 +33,11 @@
   align-items: center;
 }
 .quesion-container > div {
-  margin-bottom: 25px;
+  margin-bottom: 5px;
 }
 .next-question-button {
-  margin-top: 30px;
-  margin-bottom: 20px;
+  position: absolute;
+  top : 600px;
   width: 270px;
   height: 45px;
   background: var(--color-brown);

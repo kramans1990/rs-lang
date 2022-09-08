@@ -8,7 +8,6 @@
   --color-brown: #725747;
   --color-yellow-bright: #ffcb05;
   --color-green-common: #6da070;
-
   font-size: 10px;
 }
 
@@ -23,7 +22,6 @@
 
 html {
   min-height: 100vh;
-  /* overflow: none; */
   width: 100vw;
   overflow-x: hidden;
 }
@@ -91,9 +89,11 @@ header {
     gap: 15px;
   }
 }
-.hidden{
-  display:none;
+
+.hidden {
+  display: none;
 }
+
 .nav-list__item {
   position: relative;
   padding-bottom: 6px;
@@ -138,7 +138,7 @@ header {
   .header_nav {
     position: fixed;
     flex-direction: column;
-    background-color: rgba(0, 0, 0, 0.9);
+    background-color: rgb(0 0 0 / 90%);
     width: 300px;
     height: 100vh;
     top: 0;
@@ -161,7 +161,7 @@ header {
   }
 }
 
-/* --------- sub-nav -------------*/
+/* --------- sub-nav ------------- */
 
 .sub-nav {
   z-index: 3;
@@ -222,7 +222,7 @@ header {
   transform: translateY(16%);
 }
 
-/* -------------------------------*/
+/* ------------------------------- */
 
 .sign-in {
   padding: 6px 30px;
@@ -255,7 +255,7 @@ header {
 }
 
 .main_wrapper.all-done {
-  background-image: linear-gradient(180deg, rgba(236, 153, 14, 0.37) 0%, rgba(236, 153, 14, 0) 100%),
+  background-image: linear-gradient(180deg, rgb(236 153 14 / 37%) 0%, rgb(236 153 14 / 0%) 100%),
     url("../assets/svg/flags.svg");
   background-repeat: no-repeat;
   background-position: top center;
@@ -284,7 +284,7 @@ header {
   width: 276px;
   padding: 8px 30px;
   line-height: 3.7rem;
-  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+  box-shadow: 0 4px 4px rgb(0 0 0 / 25%);
   user-select: none;
 }
 
@@ -307,11 +307,11 @@ header {
 .footer_main {
   display: flex;
   flex-direction: column;
-  background-color: rgba(43, 31, 31, 0.5);
+  background-color: rgb(43 31 31 / 50%);
 }
 
 footer {
-  background-color: rgba(0, 0, 0, 0.5);
+  background-color: rgb(0 0 0 / 50%);
   margin-top: auto;
 }
 
@@ -320,7 +320,8 @@ footer.secondary {
   background-size: cover;
   background-repeat: no-repeat;
   background-attachment: fixed;
-  background-image: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url("../assets/img/bg_main.jpg");
+  background-image: linear-gradient(rgb(0 0 0 / 60%), rgb(0 0 0 / 60%)),
+    url("../assets/img/bg_main.jpg");
 }
 
 footer.hidden {
@@ -348,7 +349,7 @@ footer.hidden {
 @media (max-width: 480px) {
   .footer__wrapper {
     min-height: 170px;
-    padding: 10px 10px;
+    padding: 10px;
     justify-content: space-around;
     padding-bottom: 20px;
   }
@@ -469,7 +470,7 @@ footer.hidden {
   background: var(--color-main);
   font-size: 22px;
   font-weight: 500;
-  border: 0px;
+  border: 0;
   border-radius: 5px;
   color: #ffffff;
 }

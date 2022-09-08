@@ -123,6 +123,22 @@
         transform: scale(1);
     }
 }
+.popup-card {
+    height: 290px;
+    width: 250px;
+    animation: popup-card 0.7s;
+    border-radius: 15px;
+}
+
+@keyframes popup-card {
+    0% {
+        transform: scale(0.2);
+    }
+
+    100% {
+        transform: scale(1);
+    }
+}
 @media (max-width: 600px) {
     .answer-container-correct > div > span,
     .answer-container-wrong > div > span {

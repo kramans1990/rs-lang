@@ -44,7 +44,7 @@ const baseConfig = {
         ],
       }),
       new CleanWebpackPlugin(),
-      new EslingPlugin({ extensions: "ts" }),
+      // new EslingPlugin({ extensions: "ts" }),
     ],
 };
 

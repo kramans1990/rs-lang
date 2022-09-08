@@ -1,7 +1,6 @@
 /* eslint-disable import/no-cycle */
 import MainPageController from './pages/main-page/main-page-controller';
 import ApplicationContoller from './pages/application-controller';
-// import AudioController from './pages/games/audio-call-page/audio-call-controller';
 import TeamController from './pages/team-page/team-controller';
 import AuthController from './pages/auth-page/auth-controller';
 import RegistrationController from './pages/registration-page/registration-controller';
@@ -40,7 +39,9 @@ class App {
   }
 
   /* eslint-disable class-methods-use-this */
+
   start(): void {
+    App.renderMainPage();
     this.addEventListeners();
     window.onbeforeunload = () => {
       const { pageName } = App.pageInfo;
@@ -63,7 +64,6 @@ class App {
       signInButton.addEventListener('click', App.logOut);
       return;
     }
-    // заменить алерт на что-то человеческое
     alert(data);
   }
 
@@ -106,8 +106,6 @@ class App {
     const mainButton = document.querySelector('.book-page-link') as HTMLElement;
     App.changeActiveClassForNavItemByElement(mainButton);
     App.pageInfo = { pageName: 'bookPage' };
-    // const aggregatedNumber = getAggregatedNumberFromLS();
-    // setBackgroundForBookPage(aggregatedNumber);
   }
 
   static renderAudiocallPage(words?: Array<Word>) {
@@ -119,7 +117,7 @@ class App {
     App.pageInfo = { pageName: 'audiocallPage' };
   }
 
-  static renderSprintPage(words?: Array<Word>) {
+  static renderSprintPage(words?: Array<Word[]>) {
     const controller: ApplicationContoller = new SprintController(words);
     App.setController(controller);
     const mainButton = document.querySelector('.game-page-link') as HTMLElement;

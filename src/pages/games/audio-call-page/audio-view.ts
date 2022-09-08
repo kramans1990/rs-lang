@@ -7,7 +7,8 @@ import Api from '../../../Api';
 import * as modalResult from './modal-content';
 import ModalMessage from './modalMessage';
 import { newAudioGameButtonText } from '../../../utils/constants';
-
+import CardView from '../../book-page/card-view';
+import UserWord from '../../../types/userword';
 class AudioView {
   view: HTMLDivElement;
 
@@ -189,7 +190,7 @@ class AudioView {
     div.style.width = `${loading}%`;
   }
 
-  renderAnswerResult(result: boolean, answer: string, correctAnswer: Word) {
+ async renderAnswerResult(result: boolean, answer: string, correctAnswer: Word) {
     const options = this.view.querySelectorAll('.option');
     if (result) {
       const audio = new Audio('../../assets/answer-correct.wav');
@@ -201,19 +202,52 @@ class AudioView {
     for (let i = 0; i < options.length; i += 1) {
       const button = options[i] as HTMLButtonElement;
       const text = (button.querySelector('.span-value') as HTMLSpanElement).innerText;
+      button.classList.add('hidden')
+      
       if (text === correctAnswer.wordTranslate) {
         button.classList.add('correct');
+        button.classList.remove('hidden')
       }
-      if (!result) {
+      else if (!result) {
         if (text === answer) {
           button.classList.add('wrong');
-        }
+          button.classList.remove('hidden');
+        } 
+         
       }
+     
+
     }
     const nextButton = this.view.querySelector('#next-question-button') as HTMLButtonElement;
     nextButton.innerText = 'Далее (Space)';
+   await this.renderCard(correctAnswer);
+   document.querySelector('.card__progress-bar')?.classList.add('hidden');    
+   document.querySelector('.card__stat')?.classList.add('hidden');
+   (document.querySelector('.card__buttons') as HTMLDivElement).style.marginTop = '50px';
+   (document.querySelector('.word') as HTMLDivElement).style.marginBottom = '50px';
+   
+  }
+  async renderCard(correctAnswer:Word){
+   
+    const words = new Array<Word>;
+    words.push(correctAnswer);
+    let usersWords = new Array<UserWord>();
+   
+    words.forEach((wordInfo: Word) => {
+      const card = new CardView(wordInfo, usersWords);
+     let container =  this.view.querySelector('.quesion-container') as HTMLElement;
+     let audio =  this.view.querySelector('.audio-icon') as HTMLDivElement;
+     audio.classList.add('hidden');
+     container.insertBefore(card.view,audio);
+     card.view.classList.add('popup-card');
+     card.view.style.width = '270px';  
+   
+    
+    });
+
   }
 
+  
   handleNavKeys(pressedKey: string) {
     this.handleKeysLevel(pressedKey);
     const buttons = this.view.querySelectorAll('button');

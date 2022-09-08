@@ -15,16 +15,19 @@ class AudioQuestion {
 
   isAnswered: string | null;
 
+  id: number;
+
   api: Api = new Api();
 
   answerView: HTMLDivElement;
 
   audioAnswer: HTMLDivElement;
 
-  constructor(options: Array<Word>, correctAnswer: Word) {
+  constructor(options: Array<Word>, correctAnswer: Word, id: number) {
     this.audioTestView = document.createElement('div');
     this.isAnswered = null;
     this.options = options;
+    this.id = id;
     this.correctAnswer = correctAnswer;
     this.answerView = this.renderAnswerView(correctAnswer);
     this.renderAudioTestView();
@@ -45,9 +48,13 @@ class AudioQuestion {
   renderAudioTestView() {
     const divQuizContainer = document.createElement('div');
     divQuizContainer.className = 'div-quiz-container';
+    divQuizContainer.id = this.id.toString();
+    // const label = document.createElement('label');
     const divPlay = this.audioAnswer;
+
     const quesionContainer = document.createElement('div');
     quesionContainer.className = 'quesion-container';
+
     const nextButton = document.createElement('button');
     nextButton.innerText = 'Пропустить (Space)';
     nextButton.id = 'next-question-button';
@@ -58,6 +65,8 @@ class AudioQuestion {
     for (let i = 0; i < this.options.length; i += 1) {
       const button = document.createElement('button');
       button.className = 'game-button option';
+      // button.textContent = this.options[i].wordTranslate;
+
       const divOptiongrid = document.createElement('div');
       divOptiongrid.className = 'div-option-grid';
       const spanNumber = document.createElement('span');
@@ -65,11 +74,14 @@ class AudioQuestion {
       const spanValue = document.createElement('span');
       spanValue.className = 'span-value';
       spanValue.textContent = this.options[i].wordTranslate;
+
       divOptiongrid.append(spanNumber, spanValue);
       button.appendChild(divOptiongrid);
+
       quesionContainer.append(button);
     }
     quesionContainer.appendChild(nextButton);
+
     this.audioTestView = divQuizContainer;
   }
 }

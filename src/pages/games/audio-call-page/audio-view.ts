@@ -6,24 +6,15 @@ import AudioQuestion from './audio-question-component';
 import Api from '../../../Api';
 import * as modalResult from './modal-content';
 import ModalMessage from './modalMessage';
-import {
-  correctAnswerAudioLink,
-  newAudioGameButtonText,
-  sprintTime,
-  wrongAnswerAudioLink,
-} from '../../../utils/constants';
-import GameCommonView from '../game-common-view';
-
+import { newAudioGameButtonText } from '../../../utils/constants';
+import CardView from '../../book-page/card-view';
+import UserWord from '../../../types/userword';
 class AudioView {
   view: HTMLDivElement;
 
   focusIndex = 0;
 
   api: Api = new Api();
-
-  timer: HTMLDivElement;
-
-  intervalID: number;
 
   constructor() {
     this.renderView();
@@ -38,6 +29,7 @@ class AudioView {
     buttonNewGame.className = 'new-game-button';
     const divButtonsContainer = document.createElement('div');
     divButtonsContainer.className = 'buttons-container';
+    div.appendChild(buttonNewGame);
 
     for (let i = 1; i < 7; i += 1) {
       const button = document.createElement('button');
@@ -52,6 +44,7 @@ class AudioView {
     divDifficulty.className = 'dif-container hidden';
     divDifficulty.append(levelSelectLabel, divButtonsContainer);
     const progressBar = document.createElement('div');
+    // progressBar.innerHTML = '<div id="loading"  class="loading"></div>';
     const innerdiv = document.createElement('div');
     innerdiv.className = 'loading';
     progressBar.className = 'game-progress-bar hidden';
@@ -65,8 +58,9 @@ class AudioView {
     const modalMessage = new ModalMessage('Недостаточно слов для игры');
     gameContainer.className = 'game-container';
     gameContainer.append(divDifficulty, progressBar, statusContainer);
-    this.timer = GameCommonView.createTimer();
-    div.append(buttonNewGame, this.timer, gameContainer, modal, modalMessage.modal);
+    div.appendChild(gameContainer);
+    div.appendChild(modal);
+    div.appendChild(modalMessage.modal);
     this.view = div;
   }
 
@@ -77,8 +71,8 @@ class AudioView {
     const wrongDiv = document.querySelector('.answer-container-wrong') as HTMLDivElement;
     correctdiv.innerHTML = '';
     wrongDiv.innerHTML = '';
-    const corrects = audioTests.filter((p) => p.isCorrect && !!p.isAnswered);
-    const wrongs = audioTests.filter((p) => !p.isCorrect && !!p.isAnswered);
+    const corrects = audioTests.filter((p) => p.isCorrect);
+    const wrongs = audioTests.filter((p) => !p.isCorrect);
     for (let i = 0; i < wrongs.length; i += 1) {
       const divResult = document.createElement('div');
       const divaudioresult = document.createElement('div');
@@ -111,6 +105,7 @@ class AudioView {
       divResult.append(divaudioresult, word, dash, wordTranslation);
       correctdiv.appendChild(divResult);
     }
+
     (
       this.view.querySelector('.game-span-wrong') as HTMLSpanElement
     ).innerText = `Неверные ответы (${wrongs.length}) : `;
@@ -119,34 +114,9 @@ class AudioView {
     ).innerText = `Верные ответы (${corrects.length}) :`;
   }
 
-  showTimer() {
-    this.timer.innerText = `${sprintTime}`;
-    this.timer.classList.remove('hidden');
-    let gameTime = 0;
-    let isResultsShown = false;
-    this.intervalID = window.setInterval((): void => {
-      if (gameTime <= sprintTime) {
-        this.timer.innerText = `${sprintTime - gameTime}`;
-        gameTime += 1;
-      }
-      if (this.timer.innerText === '0' && !isResultsShown) {
-        const nextQuestionButton = this.view.querySelector(
-          '.next-question-button',
-        ) as HTMLButtonElement;
-        nextQuestionButton.click();
-        this.hideTimer();
-        isResultsShown = true;
-      }
-    }, 1000);
-  }
+  // renderResultWindow(): HTMLDivElement {
 
-  hideTimer() {
-    this.timer.classList.add('hidden');
-  }
-
-  stopTimer(): void {
-    window.clearInterval(this.intervalID);
-  }
+  // }
 
   showLevelSelection() {
     (this.view.querySelector('.dif-container') as HTMLDivElement).classList.remove('hidden');
@@ -178,13 +148,11 @@ class AudioView {
   }
 
   showGame() {
-    this.showTimer();
     (this.view.querySelector('.div-quiz-container') as HTMLDivElement)?.classList.remove('hidden');
     (this.view.querySelector('.modal-message') as HTMLDivElement).classList.add('hidden');
   }
 
   hideGame() {
-    this.hideTimer();
     (this.view.querySelector('.div-quiz-container') as HTMLDivElement)?.classList.add('hidden');
     (this.view.querySelector('.modal-message') as HTMLDivElement).classList.add('hidden');
   }
@@ -222,33 +190,64 @@ class AudioView {
     div.style.width = `${loading}%`;
   }
 
-  renderAnswerResult(result: boolean, answer: string, correctAnswer: Word) {
+ async renderAnswerResult(result: boolean, answer: string, correctAnswer: Word) {
     const options = this.view.querySelectorAll('.option');
     if (result) {
-      const audio = new Audio(correctAnswerAudioLink);
+      const audio = new Audio('../../assets/answer-correct.wav');
       audio.play();
     } else {
-      const audio = new Audio(wrongAnswerAudioLink);
+      const audio = new Audio('../../assets/answer-wrong.wav');
       audio.play();
     }
     for (let i = 0; i < options.length; i += 1) {
       const button = options[i] as HTMLButtonElement;
       const text = (button.querySelector('.span-value') as HTMLSpanElement).innerText;
+      button.classList.add('hidden')
+      
       if (text === correctAnswer.wordTranslate) {
         button.classList.add('correct');
+        button.classList.remove('hidden')
       }
-      if (!result) {
+      else if (!result) {
         if (text === answer) {
           button.classList.add('wrong');
-        }
+          button.classList.remove('hidden');
+        } 
+         
       }
+     
+
     }
-    const nextButton = this.view.querySelector('.next-question-button') as HTMLButtonElement;
-    window.setTimeout((): void => {
-      nextButton.click();
-    }, 200);
+    const nextButton = this.view.querySelector('#next-question-button') as HTMLButtonElement;
+    nextButton.innerText = 'Далее (Space)';
+   await this.renderCard(correctAnswer);
+   document.querySelector('.card__progress-bar')?.classList.add('hidden');    
+   document.querySelector('.card__stat')?.classList.add('hidden');
+   (document.querySelector('.card__buttons') as HTMLDivElement).style.marginTop = '50px';
+   (document.querySelector('.word') as HTMLDivElement).style.marginBottom = '50px';
+   
+  }
+  async renderCard(correctAnswer:Word){
+   
+    const words = new Array<Word>;
+    words.push(correctAnswer);
+    let usersWords = new Array<UserWord>();
+   
+    words.forEach((wordInfo: Word) => {
+      const card = new CardView(wordInfo, usersWords);
+     let container =  this.view.querySelector('.quesion-container') as HTMLElement;
+     let audio =  this.view.querySelector('.audio-icon') as HTMLDivElement;
+     audio.classList.add('hidden');
+     container.insertBefore(card.view,audio);
+     card.view.classList.add('popup-card');
+     card.view.style.width = '270px';  
+   
+    
+    });
+
   }
 
+  
   handleNavKeys(pressedKey: string) {
     this.handleKeysLevel(pressedKey);
     const buttons = this.view.querySelectorAll('button');
@@ -260,6 +259,7 @@ class AudioView {
         (buttons[0] as HTMLButtonElement).focus();
       } else {
         this.focusIndex = this.focusIndex === i - 1 ? this.focusIndex : (this.focusIndex += 1);
+
         const dif = this.view.querySelector('.game-container')?.firstChild as HTMLDivElement;
         if (dif?.className === 'dif-container hidden') {
           while (buttons[this.focusIndex - 1].className.includes('game-button l')) {
@@ -272,6 +272,7 @@ class AudioView {
     if (pressedKey === 'ArrowLeft' || pressedKey === 'ArrowUp') {
       const focusedbutton: Element = document.activeElement as Element;
       const name = focusedbutton.tagName;
+
       if (name !== 'BUTTON') {
         buttons[0].focus();
       } else {
@@ -297,6 +298,7 @@ class AudioView {
 
   handleKeysLevel(pressedKey: string) {
     const key = pressedKey.toLowerCase();
+
     if (key === 'n') {
       const newGame = this.view.querySelector('.new-game-button') as HTMLButtonElement;
       newGame.click();
@@ -314,6 +316,7 @@ class AudioView {
 
   handleKeysOption(pressedKey: string) {
     const key = pressedKey.toLowerCase();
+
     if (key === 'n') {
       const newGame = this.view.querySelector('.new-game-button') as HTMLButtonElement;
       newGame.click();
@@ -345,6 +348,38 @@ class AudioView {
       this.handleNavKeys(key);
     }
   }
+  /* eslint-disable class-methods-use-this */
+
+  // createModalContent(): HTMLDivElement {
+  //   const modalContent = document.createElement('div');
+  //   modalContent.classList.add('modal-content');
+  //   const modalClose = document.createElement('span');
+  //   modalClose.classList.add('modal-close');
+  //   modalClose.innerHTML = '&times;';
+  //   const resultsBox = document.createElement('div');
+  //   resultsBox.classList.add('div-result-flex');
+  //   const resilts = document.createElement('span');
+  //   resilts.innerText = resultsText;
+  //   const incorrectAnswers = document.createElement('span');
+  //   incorrectAnswers.classList.add('game-span-wrong');
+  //   incorrectAnswers.innerText = incorrectResultsText;
+  //   const correctAnswers = document.createElement('span');
+  //   correctAnswers.classList.add('game-span-correct');
+  //   correctAnswers.innerText = correctResultsText;
+  //   const incorrectAnswersContainer = document.createElement('div');
+  //   incorrectAnswersContainer.classList.add('answer-container-wrong');
+  //   const correctAnswersContainer = document.createElement('div');
+  //   correctAnswersContainer.classList.add('answer-container-correct');
+  //   resultsBox.append(
+  //     resilts,
+  //     incorrectAnswers,
+  //     incorrectAnswersContainer,
+  //     correctAnswers,
+  //     correctAnswersContainer,
+  //   );
+  //   modalContent.append(modalClose, resultsBox);
+  //   return modalContent;
+  // }
 
   setNotEnouthWordsModal() {
     (this.view.querySelector('.modal-message') as HTMLDivElement).classList.remove('hidden');

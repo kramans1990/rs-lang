@@ -343,7 +343,7 @@ class BookController extends ApplicationContoller {
     audioGameLink.prepend(iconAudioGame);
     audioGameLink.addEventListener('click', async (): Promise<void> => {
       const wordsForAudioGame = await this.getWordsForGame();
-      App.renderAudiocallPage(wordsForAudioGame);
+      App.renderAudiocallPage(...wordsForAudioGame);
     });
 
     const arrOfDonePages = await this.makeArrOfDonePages(this.currentLevel);

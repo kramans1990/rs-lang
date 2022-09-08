@@ -41,6 +41,7 @@ class App {
   /* eslint-disable class-methods-use-this */
 
   start(): void {
+    App.renderMainPage();
     this.addEventListeners();
     window.onbeforeunload = () => {
       const { pageName } = App.pageInfo;
@@ -107,7 +108,7 @@ class App {
     App.pageInfo = { pageName: 'bookPage' };
   }
 
-  static renderAudiocallPage(words?: Array<Word[]>) {
+  static renderAudiocallPage(words?: Array<Word>) {
     const controller: ApplicationContoller = new AudioController(words);
     App.setController(controller);
     const mainButton = document.querySelector('.game-page-link') as HTMLElement;
